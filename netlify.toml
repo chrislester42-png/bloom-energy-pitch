@@ -1,0 +1,8 @@
+# Netlify config — static Next.js export.
+# Connect this repo in Netlify and it picks these up automatically.
+[build]
+  command = "npm run build"
+  publish = "out"
+
+[build.environment]
+  NODE_VERSION = "22"
