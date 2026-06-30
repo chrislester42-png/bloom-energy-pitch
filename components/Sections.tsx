@@ -141,7 +141,23 @@ export function WhyNow() {
   return (
     <Section id="why-now" tone="surface">
       <SectionHeader {...whyNow} />
-      <div className="mt-12">
+
+      {/* Plain-English key for the energy units used across the site */}
+      <Reveal i={1}>
+        <div
+          className="mt-8 flex flex-wrap items-center gap-x-5 gap-y-1.5 rounded-xl border px-5 py-3.5 text-[13px]"
+          style={{ borderColor: t.line, background: t.surface, color: t.fgDim }}
+        >
+          <span className="font-mono text-[10px] uppercase tracking-[0.16em]" style={{ color: t.accent }}>
+            Reading the numbers
+          </span>
+          <span><b style={{ color: t.ink2 }}>MW</b> (megawatt) ≈ power for ~750 homes</span>
+          <span><b style={{ color: t.ink2 }}>GW</b> (gigawatt) = 1,000 MW</span>
+          <span><b style={{ color: t.ink2 }}>MWh</b> = one MW running for an hour — a unit of energy you can price</span>
+        </div>
+      </Reveal>
+
+      <div className="mt-8">
         <FactGrid facts={whyNow.facts} />
       </div>
     </Section>

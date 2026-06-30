@@ -40,11 +40,11 @@ export const thesis = {
 export const whyNow = {
   eyebrow: "01 · Why now",
   headline: "AI's power crunch has no easy fix.",
-  dek: "Hyperscalers can spend; they can't wait for the grid. Power, not chips, is the bottleneck.",
+  dek: "The cloud giants (Amazon, Google, Microsoft) have the money; what they can't get fast is electricity. Power, not chips, is the real bottleneck for AI.",
   facts: [
-    { value: "82 → 153 GW", label: "US data-center demand, 2025→2028", source: "McKinsey" },
-    { value: "~$375B", label: "Amazon + Google 2026 AI capex", source: "Q4 2025 call" },
-    { value: "90 days vs 3–5 yrs", label: "Bloom install vs gas-turbine lead time", source: "SemiAnalysis / Utility Dive" },
+    { value: "82 → 153 GW", label: "how much power US data centers will need, 2025→2028 — nearly doubling (1 GW ≈ 750,000 homes)", source: "McKinsey" },
+    { value: "~$375B", label: "Amazon + Google's planned 2026 spending on AI", source: "Q4 2025 call" },
+    { value: "90 days vs 3–5 yrs", label: "how fast Bloom installs vs the wait for a gas turbine", source: "SemiAnalysis / Utility Dive" },
     { value: "$50B → 3×", label: "Brookfield AI spend, tripling in 3 yrs", source: "Q3 2025 call" },
   ] as Fact[],
 };
@@ -52,12 +52,12 @@ export const whyNow = {
 export const whatBloomIs = {
   eyebrow: "02 · What Bloom is",
   headline: "Shippable power blocks, online in months.",
-  dek: "Solid-oxide fuel cells that make clean power on-site from existing-pipeline gas — no combustion, no grid wait.",
+  dek: "Bloom makes fuel cells — boxes that turn natural gas into electricity through a chemical reaction instead of burning it — installed right next to the building that needs power. No smokestack, and no multi-year wait for the utility grid.",
   facts: [
-    { value: "325 kW", label: "modular base block (~300 = a 100 MW site)", source: "Heat Capture datasheet" },
-    { value: "54% → >90%", label: "electrical efficiency on gas — rising to >90% total when the >350°C exhaust is captured for cooling/heat (CHP)", source: "Heat Capture brochure" },
-    { value: "100 MW", label: "power per acre (~2× a gas-turbine site)", source: "Check-in memo" },
-    { value: ">800°C", label: "SOFC reaction — no precious-metal catalyst", source: "Server brochure / DOE" },
+    { value: "325 kW", label: "one shippable building block; about 300 of them make a 100-megawatt site — enough to power a small city or an AI data center", source: "Heat Capture datasheet" },
+    { value: "54% → >90%", label: "share of the gas's energy that becomes electricity — rising past 90% once the leftover heat (above 350°C) is captured for cooling or heating instead of wasted", source: "Heat Capture brochure" },
+    { value: "100 MW", label: "of power per acre of land — about twice what a gas-turbine plant fits in the same space", source: "Check-in memo" },
+    { value: ">800°C", label: "how hot the cells run — hot enough to skip the costly precious-metal catalysts other fuel cells need", source: "Server brochure / DOE" },
   ] as Fact[],
 };
 
@@ -66,9 +66,9 @@ export const moat = {
   headline: "A 17-year head start nobody can buy.",
   dek: "Time, data, and a service annuity compound into a lead competitors can't shortcut.",
   facts: [
-    { value: "~17 yrs", label: "SOFC head start; ~1.8 GW fleet deployed", source: "Doosan-Ceres SOP / 10-K" },
-    { value: "100%", label: "service attach rate — every box, an annuity", source: "Q1 2026 call" },
-    { value: "1T+ cell-hrs", label: "6B data points/day feed a per-stack digital twin", source: "Q4 2025 call" },
+    { value: "~17 yrs", label: "lead in this fuel-cell tech (called SOFC); ~1.8 GW already installed — roughly a mid-size city's worth of power", source: "Doosan-Ceres SOP / 10-K" },
+    { value: "100%", label: "service attach rate — every box sold also signs a long-term service contract", source: "Q1 2026 call" },
+    { value: "1T+ cell-hrs", label: "over a trillion hours of run-data; 6 billion sensor readings a day train a digital model of each unit to predict maintenance before it fails", source: "Q4 2025 call" },
     { value: "~$127M", label: "recurring service revenue per deployed GW — the annuity compounds with the fleet", source: "FY2025 (derived)" },
   ] as Fact[],
 };
@@ -87,39 +87,39 @@ export const competition = {
   dek: "Bloom wins the AI-power land grab on speed and density. The honest question isn't who it beats now, but what happens when the bottleneck clears.",
   rows: [
     {
-      name: "Gas turbines (CCGT)",
+      name: "Gas turbines",
       role: "The real alternative",
-      point: "3–5+ yr interconnect/turbine queues vs Bloom's 90–120-day install. Bloom now competes head-to-head with CCGT on multi-gigawatt projects and is cost-competitive with grid power in most US markets.",
-      caveat: "If turbine and interconnect queues clear, Bloom's speed premium narrows — the core durability risk.",
+      point: "The standard way to make on-site power (a \"combined-cycle gas turbine,\" or CCGT) takes 3–5+ years to order a turbine and get hooked up. Bloom installs in 90–120 days, now goes head-to-head with turbines on the biggest projects, and matches grid prices in most US markets.",
+      caveat: "If the turbine backlog and grid-connection waits clear up, Bloom's speed advantage shrinks — the core long-term risk.",
       source: "SemiAnalysis / Q1 2026 call",
     },
     {
       name: "Nuclear / SMR",
       role: "Not yet a competitor",
-      point: "Timeline mismatch: SMRs are a 2030s story; AI power is needed now. Bloom fills the gap the next decade can't.",
-      caveat: "A genuine long-term substitute if SMR economics and schedules ever arrive.",
+      point: "Small modular reactors (SMRs) — compact next-gen nuclear — are a 2030s story; AI needs power now. Bloom fills the gap the next decade can't.",
+      caveat: "A genuine long-term substitute if SMR costs and timelines ever arrive.",
       source: "SMR timeline note",
     },
     {
       name: "Other fuel cells",
       role: "Sub-scale or exiting",
-      point: "Plug (PEM, 40–60%, backup-only, 25+ yrs without profit), FuelCell Energy (MCFC, sub-scale), Doosan (50 MW/yr, Ceres-licensed), Mitsubishi MEGAMIE (250 kW, Japan-only). Bosch exited SOFC entirely in Feb 2025.",
-      caveat: "A licensee like Doosan/Ceres scaling SOFC is the one to watch.",
+      point: "Rivals use different, weaker chemistries: Plug (backup-only, 25+ yrs without a profit), FuelCell Energy (small-scale), Doosan (50 MW/yr, licensed tech), Mitsubishi (a 250 kW product sold only in Japan). Bosch quit fuel cells entirely in Feb 2025.",
+      caveat: "Doosan scaling up its licensed solid-oxide line is the one to watch.",
       source: "Doosan-Ceres / H2View",
     },
     {
       name: "The grid",
       role: "The status quo it displaces",
-      point: "Behind-the-meter generation sidesteps interconnection queues entirely; Bloom's microgrid needs no grid, diesel, batteries, or turbines, with a reactive-power range turbines can't match. Every box still needs a gas line — \"off-grid\" means off the electric grid, not off fuel.",
-      caveat: "All-in ~$121/MWh still costs more than grid power, so Bloom sells speed, not price — where the grid is cheap and available, it's a harder sell.",
+      point: "Making power on-site skips the years-long wait to connect to the utility grid; Bloom's setup needs no grid, no diesel, no batteries, no turbines. Each box does still need a gas line — \"off-grid\" means off the electric grid, not off fuel.",
+      caveat: "At roughly $121 to make an hour of power, Bloom still costs more than buying from the grid — so it sells speed, not price. Where the grid is cheap and available, it's a harder sell.",
       source: "Q1 2026 call / Tech page",
     },
   ] as FieldRow[],
   facts: [
-    { value: "~$121/MWh", label: "all-in cost (~$95 with the 30% ITC) — undercuts gensets, not the grid", source: "Driver Tree (derived)" },
-    { value: "90–120 days", label: "install vs gas-turbine 3–5+ yr lead time", source: "SemiAnalysis" },
-    { value: "100 MW/acre", label: "power density (~2× a gas-turbine site)", source: "Heat Capture datasheet" },
-    { value: "679–839", label: "lb CO₂/MWh on natural gas — at gas-turbine parity", source: "NG-SOFC emissions note" },
+    { value: "~$121/MWh", label: "the all-in cost to make one unit of power (a megawatt-hour); about $95 after a federal tax credit. Cheaper than a backup generator, still pricier than the grid", source: "Driver Tree (derived)" },
+    { value: "90–120 days", label: "to install and switch on — versus 3–5+ years for a gas turbine", source: "SemiAnalysis" },
+    { value: "100 MW/acre", label: "power packed into an acre of land — about double a gas-turbine plant", source: "Heat Capture datasheet" },
+    { value: "679–839", label: "pounds of CO₂ per unit of power on gas — about the same carbon as a regular gas power plant", source: "NG-SOFC emissions note" },
   ] as Fact[],
 };
 
@@ -138,18 +138,18 @@ export const financials = {
 export const catalysts = {
   eyebrow: "06 · Catalysts",
   headline: "A backlog of gigawatt-scale anchors.",
-  dek: "The deals are signed, the logos are real, and capacity is being built to meet them.",
+  dek: "The deals are signed, the logos are real, and factory capacity is being built to meet them. (One gigawatt — GW — is enough to power roughly 750,000 homes.)",
   deals: [
-    { partner: "Oracle", terms: "up to 2.8 GW · ~$8–9B lifetime", note: "Project Jupiter switched from turbines", source: "Bloom-Oracle PR" },
-    { partner: "AEP", terms: "1 GW · ~$2.65B", note: "powering AWS behind the meter", source: "Bloom-AEP PR" },
+    { partner: "Oracle", terms: "up to 2.8 GW · ~$8–9B lifetime", note: "Project Jupiter switched from gas turbines to Bloom", source: "Bloom-Oracle PR" },
+    { partner: "AEP", terms: "1 GW · ~$2.65B", note: "powering AWS on-site, before the utility meter", source: "Bloom-AEP PR" },
     { partner: "Brookfield", terms: "$5B · 1 GW", note: "preferred provider across $1T portfolio", source: "Brookfield PR" },
     { partner: "SK ecoplant", terms: "500 MW · $4.5B JV", note: "400 MW already deployed", source: "SK PR" },
     { partner: "Nebius", terms: "~$2.6B · 250 MW", note: "neo-cloud, guaranteed (May 2026)", source: "Nebius agreement" },
   ],
   facts: [
-    { value: "6 vs 1", label: "hyperscale/neo-cloud customers vs a year earlier", source: "Q4 2025 call" },
-    { value: "2 GW", label: "capacity by YE2026 (expandable to 5 GW)", source: "Utility Dive" },
-    { value: "800V DC", label: "transition Bloom is built for — copper/transformer limits", source: "Q1 2026 call" },
+    { value: "6 vs 1", label: "big-cloud and AI-cloud customers, up from just one a year earlier", source: "Q4 2025 call" },
+    { value: "2 GW", label: "of annual factory capacity by end-2026 — and the plants can stretch to 5 GW", source: "Utility Dive" },
+    { value: "800V DC", label: "the new power standard AI server racks are moving to — Bloom's boxes already put it out directly", source: "Q1 2026 call" },
   ] as Fact[],
 };
 
