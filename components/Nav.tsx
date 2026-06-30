@@ -39,16 +39,12 @@ export default function Nav() {
       }}
     >
       <nav className="mx-auto flex h-16 max-w-7xl items-center justify-between px-5 sm:px-8">
-        <a
-          href="#top"
-          className="flex items-center gap-2 text-[15px] font-semibold tracking-tight"
-          style={{ color: t.ink }}
-        >
-          <span
-            className="inline-block h-2.5 w-2.5 rounded-[3px]"
-            style={{ background: t.accentGrad }}
-          />
-          Bloom Energy · BE
+        <a href="#top" className="flex items-center gap-2.5">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/logos/bloom.png" alt="Bloom Energy" style={{ height: 20, width: "auto" }} />
+          <span className="font-mono text-[11px] tracking-[0.1em]" style={{ color: t.fgMute }}>
+            · BE
+          </span>
         </a>
 
         <div className="hidden items-center gap-7 md:flex">

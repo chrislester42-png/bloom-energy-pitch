@@ -2,6 +2,7 @@
 
 import { ArrowUpRight } from "@phosphor-icons/react";
 import { Section, SectionHeader, FactGrid, Reveal, SourceChip } from "./ui";
+import { LogoWall } from "./LogoWall";
 import { t } from "./tokens";
 import {
   whyNow,
@@ -86,6 +87,8 @@ export function Catalysts() {
       <div className="mt-6">
         <FactGrid facts={catalysts.facts} />
       </div>
+
+      <LogoWall />
     </Section>
   );
 }
