@@ -6,10 +6,11 @@ import { t, sectionEase } from "./tokens";
 import { PriceTicker } from "./LivePrice";
 
 const links = [
-  ["Why now", "#deck"],
-  ["Financials", "#deck"],
-  ["Catalysts", "#deck"],
-  ["The call", "#deck"],
+  ["Why now", "#why-now"],
+  ["Financials", "#financials"],
+  ["Catalysts", "#catalysts"],
+  ["The call", "#the-call"],
+  ["Knowledge Bank", "/vault"],
 ];
 
 export default function Nav() {

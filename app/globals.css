@@ -105,6 +105,31 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
+/* ============================================================
+   Knowledge Bank (/vault) — graph + reading pane
+   ============================================================ */
+.vault-canvas { display: block; width: 100%; height: 100%; touch-action: none; cursor: grab; }
+.vault-canvas:active { cursor: grabbing; }
+
+/* Rendered note content (baked HTML from the Obsidian vault) */
+.vault-note { color: var(--color-ink-2); font-size: 15px; line-height: 1.7; }
+.vault-note h1 { font-size: 21px; line-height: 1.3; margin: 0 0 14px; color: var(--color-ink); }
+.vault-note h2 { font-size: 15px; text-transform: uppercase; letter-spacing: 0.12em;
+  font-weight: 600; margin: 26px 0 10px; color: var(--color-accent); }
+.vault-note h3 { font-size: 16px; margin: 20px 0 8px; color: var(--color-ink); }
+.vault-note p { margin: 0 0 13px; }
+.vault-note ul { margin: 0 0 14px; padding-left: 20px; list-style: disc; }
+.vault-note li { margin: 0 0 6px; }
+.vault-note blockquote { margin: 0 0 14px; padding: 8px 16px; border-left: 2px solid var(--color-line-strong);
+  color: var(--color-fg-dim); font-style: italic; }
+.vault-note code { font-family: var(--font-mono); font-size: 12.5px;
+  background: var(--color-bg-deep); padding: 1px 5px; border-radius: 4px; }
+.vault-note hr { border: 0; border-top: 1px solid var(--color-line); margin: 20px 0; }
+.vault-note a { color: var(--color-accent); text-decoration: none; border-bottom: 1px solid var(--color-accent-soft); }
+.vault-note a:hover { border-bottom-color: var(--color-accent); }
+.vault-note a.wl { font-weight: 500; }
+.vault-note a.wl::before { content: "↳ "; opacity: 0.5; }
+
 /* ── Scrollbar ── */
 ::-webkit-scrollbar { width: 10px; height: 10px; }
 ::-webkit-scrollbar-track { background: transparent; }

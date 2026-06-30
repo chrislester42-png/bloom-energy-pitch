@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "vault": "python3 scripts/build_vault.py",
     "dev": "next dev",
     "build": "next build",
     "start": "next start"
