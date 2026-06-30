@@ -1,9 +1,11 @@
 import Nav from "@/components/Nav";
 import Hero from "@/components/Hero";
 import {
+  Thesis,
   WhyNow,
   WhatBloomIs,
   Moat,
+  Competition,
   Catalysts,
   Risks,
   Sources,
@@ -19,9 +21,11 @@ export default function Home() {
     <main className="relative">
       <Nav />
       <Hero />
+      <Thesis />
       <WhyNow />
       <WhatBloomIs />
       <Moat />
+      <Competition />
       <Financials />
       <Catalysts />
       <Risks />

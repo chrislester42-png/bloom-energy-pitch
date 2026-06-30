@@ -8,6 +8,35 @@ export interface Fact {
   source: string; // primary source (for the citation chip)
 }
 
+export const thesis = {
+  eyebrow: "00 · The thesis",
+  headline: "A real franchise, at an unforgiving price.",
+  statement:
+    "Bloom is the only company that can drop clean, gigawatt-scale power next to an AI data center in months instead of years — and after 17 years of losses it just crossed into sustained profit with a ~$20B backlog behind it. The debate isn't whether it's a real franchise; it's whether today's price already pays for everything that has to go right.",
+  bull: [
+    "Signed hyperscale demand — Oracle, AEP, Brookfield — into an AI power crunch the grid can't fix in time.",
+    "A 17-year head start, a 100% service attach rate, and a trillion-cell-hour data moat competitors can't shortcut.",
+    "The margin inflection is finally on the P&L: first sustained profit, service segment turning, ~80% revenue step-up guided.",
+  ],
+  bear: [
+    "Priced for perfection — ~80× book, >600× EV/EBITDA — with little room for a stumble.",
+    "About half of revenue is related-party (SK + Brookfield JVs); quality-of-revenue is a fair question.",
+    "Install gross margin is still negative, and ~91% of the fleet runs on natural gas at gas-turbine emissions parity.",
+  ],
+  call:
+    "Constructive but disciplined: own the inflection, respect the price. The position sizes to how much of the backlog you believe converts at margin — and how much you trust revenue that's still half related-party.",
+  toc: [
+    { n: "01", label: "Why now", href: "#why-now" },
+    { n: "02", label: "What Bloom is", href: "#what" },
+    { n: "03", label: "The moat", href: "#moat" },
+    { n: "04", label: "The field", href: "#competition" },
+    { n: "05", label: "Financials", href: "#financials" },
+    { n: "06", label: "Catalysts", href: "#catalysts" },
+    { n: "07", label: "The risks", href: "#risks" },
+    { n: "08", label: "The call", href: "#the-call" },
+  ],
+};
+
 export const whyNow = {
   eyebrow: "01 · Why now",
   headline: "AI's power crunch has no easy fix.",
@@ -44,8 +73,58 @@ export const moat = {
   ] as Fact[],
 };
 
+export interface FieldRow {
+  name: string;
+  role: string;
+  point: string;
+  caveat: string;
+  source: string;
+}
+
+export const competition = {
+  eyebrow: "04 · The field",
+  headline: "Built for speed today — the real debate is durability.",
+  dek: "Bloom wins the AI-power land grab on speed and density. The honest question isn't who it beats now, but what happens when the bottleneck clears.",
+  rows: [
+    {
+      name: "Gas turbines (CCGT)",
+      role: "The real alternative",
+      point: "3–5+ yr interconnect/turbine queues vs Bloom's 90–120-day install. Bloom now competes head-to-head with CCGT on multi-gigawatt projects and is cost-competitive with grid power in most US markets.",
+      caveat: "If turbine and interconnect queues clear, Bloom's speed premium narrows — the core durability risk.",
+      source: "SemiAnalysis / Q1 2026 call",
+    },
+    {
+      name: "Nuclear / SMR",
+      role: "Not yet a competitor",
+      point: "Timeline mismatch: SMRs are a 2030s story; AI power is needed now. Bloom fills the gap the next decade can't.",
+      caveat: "A genuine long-term substitute if SMR economics and schedules ever arrive.",
+      source: "SMR timeline note",
+    },
+    {
+      name: "Other fuel cells",
+      role: "Sub-scale or exiting",
+      point: "Plug (PEM, 40–60%, backup-only, 25+ yrs without profit), FuelCell Energy (MCFC, sub-scale), Doosan (50 MW/yr, Ceres-licensed), Mitsubishi MEGAMIE (250 kW, Japan-only). Bosch exited SOFC entirely in Feb 2025.",
+      caveat: "A licensee like Doosan/Ceres scaling SOFC is the one to watch.",
+      source: "Doosan-Ceres / H2View",
+    },
+    {
+      name: "The grid",
+      role: "The status quo it displaces",
+      point: "Behind-the-meter generation sidesteps interconnection queues entirely; Bloom's microgrid needs no grid, diesel, batteries, or turbines, with a reactive-power range turbines can't match.",
+      caveat: "Where the grid is cheap and available, on-site power is a harder sell.",
+      source: "Q1 2026 call / Tech page",
+    },
+  ] as FieldRow[],
+  facts: [
+    { value: "~17 yrs", label: "SOFC head start vs nearest competitor", source: "Doosan-Ceres SOP" },
+    { value: "90–120 days", label: "install vs gas-turbine 3–5+ yr lead time", source: "SemiAnalysis" },
+    { value: "100 MW/acre", label: "power density (~2× a gas-turbine site)", source: "Heat Capture datasheet" },
+    { value: "679–839", label: "lb CO₂/MWh on natural gas — at gas-turbine parity", source: "NG-SOFC emissions note" },
+  ] as Fact[],
+};
+
 export const financials = {
-  eyebrow: "04 · Financials",
+  eyebrow: "05 · Financials",
   headline: "The inflection is finally on the P&L.",
   dek: "After 17 years of losses, Q1 2026 was the first sustained profit — and 2026 guidance implies an ~80% revenue step-up.",
   facts: [
@@ -57,7 +136,7 @@ export const financials = {
 };
 
 export const catalysts = {
-  eyebrow: "05 · Catalysts",
+  eyebrow: "06 · Catalysts",
   headline: "A backlog of gigawatt-scale anchors.",
   dek: "The deals are signed, the logos are real, and capacity is being built to meet them.",
   deals: [
@@ -82,7 +161,7 @@ export interface Risk {
 }
 
 export const risks = {
-  eyebrow: "06 · The risks",
+  eyebrow: "07 · The risks",
   headline: "Priced for perfection — and leaning on related parties.",
   dek: "We're not naive. Here's the bear case, and the honest counter to each point.",
   items: [
@@ -114,7 +193,7 @@ export const risks = {
 };
 
 export const theCall = {
-  eyebrow: "07 · The call",
+  eyebrow: "08 · The call",
   headline: "A real franchise at an unforgiving price.",
   dek: "Bloom crossed a genuine inflection — but today's price already pays for the bull case. Drag the assumptions and decide what you have to believe.",
   conclusion:

@@ -6,7 +6,7 @@ import { t, sectionEase } from "./tokens";
 import { PriceTicker } from "./LivePrice";
 
 const links = [
-  ["Why now", "#why-now"],
+  ["Thesis", "#thesis"],
   ["Financials", "#financials"],
   ["Catalysts", "#catalysts"],
   ["The call", "#the-call"],

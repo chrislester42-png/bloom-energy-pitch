@@ -5,13 +5,137 @@ import { Section, SectionHeader, FactGrid, Reveal, SourceChip } from "./ui";
 import { LogoWall } from "./LogoWall";
 import { t } from "./tokens";
 import {
+  thesis,
   whyNow,
   whatBloomIs,
   moat,
+  competition,
   catalysts,
   risks,
   sources,
 } from "@/data/content";
+
+export function Thesis() {
+  return (
+    <Section id="thesis" tone="deep">
+      <div className="grid grid-cols-1 gap-12 lg:grid-cols-12">
+        {/* Left: the one-minute thesis */}
+        <div className="lg:col-span-7">
+          <Reveal i={0}>
+            <p
+              className="font-mono text-[11px] uppercase tracking-[0.2em]"
+              style={{ color: t.accent }}
+            >
+              {thesis.eyebrow}
+            </p>
+          </Reveal>
+          <Reveal i={1}>
+            <h2
+              className="mt-4 text-3xl font-semibold tracking-tight sm:text-4xl lg:text-5xl"
+              style={{ color: t.ink }}
+            >
+              {thesis.headline}
+            </h2>
+          </Reveal>
+          <Reveal i={2}>
+            <p className="mt-6 text-[18px] leading-relaxed" style={{ color: t.ink2 }}>
+              {thesis.statement}
+            </p>
+          </Reveal>
+          <Reveal i={3}>
+            <div
+              className="mt-7 rounded-xl border-l-2 px-5 py-4"
+              style={{ borderColor: t.accent, background: "var(--color-accent-soft)" }}
+            >
+              <p className="text-[15px] leading-relaxed" style={{ color: t.ink2 }}>
+                <span style={{ color: t.accent, fontWeight: 600 }}>The call · </span>
+                {thesis.call}
+              </p>
+            </div>
+          </Reveal>
+        </div>
+
+        {/* Right: bull / bear */}
+        <div className="lg:col-span-5">
+          <Reveal i={2}>
+            <div className="grid grid-cols-1 gap-5">
+              <ThesisColumn tone="bull" title="The bull case" items={thesis.bull} />
+              <ThesisColumn tone="bear" title="The bear case" items={thesis.bear} />
+            </div>
+          </Reveal>
+        </div>
+      </div>
+
+      {/* Table of contents — jump into the argument */}
+      <Reveal i={3}>
+        <div className="mt-14">
+          <div
+            className="mb-4 font-mono text-[10px] uppercase tracking-[0.18em]"
+            style={{ color: t.fgMute }}
+          >
+            The argument, in eight steps
+          </div>
+          <div className="grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-line bg-line sm:grid-cols-4">
+            {thesis.toc.map((s) => (
+              <a
+                key={s.n}
+                href={s.href}
+                className="group flex items-center gap-3 px-5 py-4 transition-colors hover:bg-sunken"
+                style={{ background: t.surface }}
+              >
+                <span
+                  className="font-mono text-[12px] tabular-nums"
+                  style={{ color: t.accent }}
+                >
+                  {s.n}
+                </span>
+                <span
+                  className="text-[14px] font-medium transition-opacity group-hover:opacity-70"
+                  style={{ color: t.ink }}
+                >
+                  {s.label}
+                </span>
+              </a>
+            ))}
+          </div>
+        </div>
+      </Reveal>
+    </Section>
+  );
+}
+
+function ThesisColumn({
+  tone,
+  title,
+  items,
+}: {
+  tone: "bull" | "bear";
+  title: string;
+  items: string[];
+}) {
+  const color = tone === "bull" ? t.accent : "var(--color-hot)";
+  return (
+    <div className="rounded-2xl border border-line p-6" style={{ background: t.surface }}>
+      <div className="flex items-center gap-2">
+        <span className="inline-block h-1.5 w-1.5 rounded-full" style={{ background: color }} />
+        <h3
+          className="font-mono text-[11px] uppercase tracking-[0.14em]"
+          style={{ color: tone === "bull" ? t.accent : "var(--color-hot)" }}
+        >
+          {title}
+        </h3>
+      </div>
+      <ul className="mt-4 flex flex-col gap-3">
+        {items.map((it) => (
+          <li key={it} className="flex gap-2.5 text-[14px] leading-relaxed" style={{ color: t.fgDim }}>
+            <span style={{ color }}>—</span>
+            <span>{it}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
 
 export function WhyNow() {
   return (
@@ -41,6 +165,56 @@ export function Moat() {
       <SectionHeader {...moat} />
       <div className="mt-12">
         <FactGrid facts={moat.facts} />
+      </div>
+    </Section>
+  );
+}
+
+export function Competition() {
+  return (
+    <Section id="competition" tone="deep">
+      <SectionHeader
+        eyebrow={competition.eyebrow}
+        headline={competition.headline}
+        dek={competition.dek}
+      />
+
+      <div className="mt-12 overflow-hidden rounded-2xl border border-line">
+        {competition.rows.map((r, i) => (
+          <Reveal key={r.name} i={i}>
+            <div
+              className="grid grid-cols-1 gap-3 border-b border-line px-6 py-5 last:border-b-0 lg:grid-cols-12 lg:items-start lg:gap-6"
+              style={{ background: t.surface }}
+            >
+              <div className="lg:col-span-3">
+                <div className="text-[16px] font-semibold tracking-tight" style={{ color: t.ink }}>
+                  {r.name}
+                </div>
+                <div className="mt-1 font-mono text-[10.5px] uppercase tracking-[0.12em]" style={{ color: t.accent }}>
+                  {r.role}
+                </div>
+              </div>
+              <div className="lg:col-span-6">
+                <p className="text-[14.5px] leading-relaxed" style={{ color: t.ink2 }}>
+                  {r.point}
+                </p>
+              </div>
+              <div className="lg:col-span-3">
+                <p className="text-[13px] leading-relaxed" style={{ color: t.fgDim }}>
+                  <span style={{ color: "var(--color-warm)", fontWeight: 600 }}>Watch · </span>
+                  {r.caveat}
+                </p>
+                <div className="mt-2">
+                  <SourceChip>{r.source}</SourceChip>
+                </div>
+              </div>
+            </div>
+          </Reveal>
+        ))}
+      </div>
+
+      <div className="mt-6">
+        <FactGrid facts={competition.facts} />
       </div>
     </Section>
   );
@@ -151,7 +325,7 @@ export function Sources() {
   return (
     <Section id="sources" tone="deep">
       <SectionHeader
-        eyebrow="08 · Sources"
+        eyebrow="09 · Sources"
         headline="Every number traces to a primary filing."
         dek="Built on a sourced research vault — filings, transcripts, and deal releases. The audit trail is the point."
       />
