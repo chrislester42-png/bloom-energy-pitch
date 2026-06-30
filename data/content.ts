@@ -55,7 +55,7 @@ export const whatBloomIs = {
   dek: "Solid-oxide fuel cells that make clean power on-site from existing-pipeline gas — no combustion, no grid wait.",
   facts: [
     { value: "325 kW", label: "modular base block (~300 = a 100 MW site)", source: "Heat Capture datasheet" },
-    { value: "53–65%", label: "electrical efficiency (Server 6.5)", source: "Server 6.5 datasheet" },
+    { value: "54% → >90%", label: "electrical efficiency on gas — rising to >90% total when the >350°C exhaust is captured for cooling/heat (CHP)", source: "Heat Capture brochure" },
     { value: "100 MW", label: "power per acre (~2× a gas-turbine site)", source: "Check-in memo" },
     { value: ">800°C", label: "SOFC reaction — no precious-metal catalyst", source: "Server brochure / DOE" },
   ] as Fact[],
@@ -69,7 +69,7 @@ export const moat = {
     { value: "~17 yrs", label: "SOFC head start; ~1.8 GW fleet deployed", source: "Doosan-Ceres SOP / 10-K" },
     { value: "100%", label: "service attach rate — every box, an annuity", source: "Q1 2026 call" },
     { value: "1T+ cell-hrs", label: "6B data points/day feed a per-stack digital twin", source: "Q4 2025 call" },
-    { value: "10×", label: "volume at the same shop-floor headcount", source: "Q1 2026 call" },
+    { value: "~$127M", label: "recurring service revenue per deployed GW — the annuity compounds with the fleet", source: "FY2025 (derived)" },
   ] as Fact[],
 };
 
@@ -110,13 +110,13 @@ export const competition = {
     {
       name: "The grid",
       role: "The status quo it displaces",
-      point: "Behind-the-meter generation sidesteps interconnection queues entirely; Bloom's microgrid needs no grid, diesel, batteries, or turbines, with a reactive-power range turbines can't match.",
-      caveat: "Where the grid is cheap and available, on-site power is a harder sell.",
+      point: "Behind-the-meter generation sidesteps interconnection queues entirely; Bloom's microgrid needs no grid, diesel, batteries, or turbines, with a reactive-power range turbines can't match. Every box still needs a gas line — \"off-grid\" means off the electric grid, not off fuel.",
+      caveat: "All-in ~$121/MWh still costs more than grid power, so Bloom sells speed, not price — where the grid is cheap and available, it's a harder sell.",
       source: "Q1 2026 call / Tech page",
     },
   ] as FieldRow[],
   facts: [
-    { value: "~17 yrs", label: "SOFC head start vs nearest competitor", source: "Doosan-Ceres SOP" },
+    { value: "~$121/MWh", label: "all-in cost (~$95 with the 30% ITC) — undercuts gensets, not the grid", source: "Driver Tree (derived)" },
     { value: "90–120 days", label: "install vs gas-turbine 3–5+ yr lead time", source: "SemiAnalysis" },
     { value: "100 MW/acre", label: "power density (~2× a gas-turbine site)", source: "Heat Capture datasheet" },
     { value: "679–839", label: "lb CO₂/MWh on natural gas — at gas-turbine parity", source: "NG-SOFC emissions note" },
@@ -166,10 +166,10 @@ export const risks = {
   dek: "We're not naive. Here's the bear case, and the honest counter to each point.",
   items: [
     {
-      claim: "~50% related-party revenue",
-      detail: "Q1 2026: $373M from SK + Brookfield JVs — not arm's-length. Top-3 customers were 53% of FY2024.",
-      rebuttal: "Hyperscale customers went 1 → 6 in a year; more than half of data-center backlog is now non-Oracle.",
-      source: "Q1 2026 release / FY2024 10-K",
+      claim: "Half the revenue isn't arm's-length",
+      detail: "Strip out the affiliate channel and Q1 2026's reported 130% growth is ~17%: $377.8M arm's-length (+16.9%) vs $373.3M into the Brookfield/SK JVs — which carry their own equity-method drag.",
+      rebuttal: "Hyperscale customers went 1 → 6 in a year; more than half of data-center backlog is now non-Oracle — so the arm's-length engine is broadening.",
+      source: "Q1 2026 release (derived)",
     },
     {
       claim: "~80× book, >600× EV/EBITDA",
