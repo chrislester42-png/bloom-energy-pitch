@@ -10,10 +10,12 @@ import {
 } from "@/components/Sections";
 import { Financials } from "@/components/Financials";
 import { TheCall } from "@/components/TheCall";
+import { LivePriceProvider } from "@/components/LivePrice";
 import { t } from "@/components/tokens";
 
 export default function Home() {
   return (
+    <LivePriceProvider>
     <main className="relative">
       <Nav />
       <Hero />
@@ -40,5 +42,6 @@ export default function Home() {
         </div>
       </footer>
     </main>
+    </LivePriceProvider>
   );
 }

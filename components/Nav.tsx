@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { t, sectionEase } from "./tokens";
+import { PriceTicker } from "./LivePrice";
 
 const links = [
   ["Why now", "#deck"],
@@ -63,13 +64,18 @@ export default function Nav() {
           ))}
         </div>
 
-        <a
-          href="#deck"
-          className="inline-flex h-10 items-center justify-center rounded-full px-5 text-[13.5px] font-medium text-white transition-transform hover:-translate-y-[1px] active:translate-y-[1px]"
-          style={{ background: t.inkGrad }}
-        >
-          The pitch
-        </a>
+        <div className="flex items-center gap-4">
+          <div className="hidden sm:block">
+            <PriceTicker />
+          </div>
+          <a
+            href="#deck"
+            className="inline-flex h-10 items-center justify-center rounded-full px-5 text-[13.5px] font-medium text-white transition-transform hover:-translate-y-[1px] active:translate-y-[1px]"
+            style={{ background: t.inkGrad }}
+          >
+            The pitch
+          </a>
+        </div>
       </nav>
     </motion.header>
   );

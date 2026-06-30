@@ -30,22 +30,26 @@ export const annual: FYData[] = [
   { fy: 2025, revenue: 2023994000, revGrowth: 0.3733, grossProfit: 587400000, grossMargin: 0.2902, operatingIncome: 72802000, operatingMargin: 0.036, ebitda: 123368000, ebitdaMargin: 0.061, netIncome: -87140000, cfo: 113949000, capex: 56759000, fcf: 57190000, cash: 2454108000, totalDebt: 2617879000, netDebt: 163771000, dilutedShares: 240402000 },
 ];
 
+// netDebt + dilutedShares refreshed from FactSet (as of Q1 2026, 03/31/2026)
+// so per-share math reflects the real current capital structure.
 export const latest = {
   fy: 2025,
   revenue: 2023994000,
   ebitdaMargin: 0.061,
-  netDebt: 163771000,
-  dilutedShares: 240402000,
+  netDebt: 456449000, // FactSet Q1 2026
+  dilutedShares: 319708000, // FactSet diluted, Q1 2026
 };
 
 export interface Scenario { revCagr: number; ebitdaMargin: number; exitMultiple: number; }
 
 export const HORIZON_YEARS = 4;
 
+// Ranges widened so the model can reach (and exceed) today's ~$275 price —
+// the point is to let a viewer dial in "what you must believe."
 export const sliderRanges = {
-  revCagr:      { min: 0.05, max: 0.70, step: 0.01,  default: 0.30 },
-  ebitdaMargin: { min: 0.05, max: 0.22, step: 0.005, default: 0.13 },
-  exitMultiple: { min: 10,   max: 40,   step: 0.5,   default: 22 },
+  revCagr:      { min: 0.05, max: 0.80, step: 0.01,  default: 0.32 },
+  ebitdaMargin: { min: 0.05, max: 0.25, step: 0.005, default: 0.13 },
+  exitMultiple: { min: 10,   max: 60,   step: 0.5,   default: 22 },
 };
 
 // Provisional presets - refine as model work continues.

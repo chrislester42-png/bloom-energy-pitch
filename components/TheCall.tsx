@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Section, SectionHeader, Reveal } from "./ui";
+import { PeerComps } from "./PeerComps";
 import { t } from "./tokens";
 import { theCall, market } from "@/data/content";
 import { scenarios, valuePerShare, latest, HORIZON_YEARS } from "@/data/financials";
@@ -97,6 +98,9 @@ export function TheCall() {
         </div>
       </Reveal>
 
+      {/* peer comps */}
+      <PeerComps />
+
       {/* balanced conclusion */}
       <Reveal>
         <div
@@ -113,9 +117,8 @@ export function TheCall() {
             {theCall.conclusion}
           </p>
           <p className="mt-4 text-[12.5px]" style={{ color: t.fgMute }}>
-            For reference, a published bear target sits at {PS(market.bearPT)} ({market.source}).
-            {" "}
-            {theCall.note}
+            Street consensus target {PS(market.consensusPT)} ({market.source}); a
+            published bear case sits at {PS(market.bearPT)} (24/7 Wall St). {theCall.note}
           </p>
         </div>
       </Reveal>

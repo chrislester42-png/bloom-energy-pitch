@@ -122,12 +122,14 @@ export const theCall = {
   note: "Scenario outputs are model-derived and provisional — they move with the assumptions and will be refined as the model work continues.",
 };
 
-// Provisional market reference — NOT a live quote. Update before publishing.
+// Market reference — fallback when the live quote hasn't loaded.
+// Refreshed from FactSet (Q1 2026). The live Finnhub quote overrides this.
 export const market = {
-  capProvisional: 79e9, // ~$79B
-  asOf: "May 2026",
-  source: "24/7 Wall St",
-  bearPT: 149.93,
+  capProvisional: 88.24e9, // ~$88B (FactSet, Q1 2026)
+  asOf: "Q1 2026",
+  source: "FactSet",
+  bearPT: 149.93, // 24/7 Wall St bear case
+  consensusPT: 282.16, // FactSet consensus mean target
 };
 
 export interface SourceRow {

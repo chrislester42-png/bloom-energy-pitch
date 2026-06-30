@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Section, SectionHeader, FactGrid, Reveal, SourceChip } from "./ui";
+import { useLivePrice } from "./LivePrice";
 import { t } from "./tokens";
 import { financials, market } from "@/data/content";
 import {
@@ -163,7 +164,9 @@ function Model() {
     exitMultiple: sliderRanges.exitMultiple.default,
   });
   const out = valuePerShare(s);
-  const todayPrice = market.capProvisional / latest.dilutedShares;
+  const live = useLivePrice();
+  const todayPrice = live.ok && live.price ? live.price : market.capProvisional / latest.dilutedShares;
+  const priceIsLive = live.ok && !!live.price;
   const upside = (out.perShare / todayPrice - 1) * 100;
   const up = upside >= 0;
 
@@ -272,10 +275,21 @@ function Model() {
           ))}
         </div>
         <p className="mt-4 text-[11.5px] leading-relaxed" style={{ color: t.fgMute }}>
-          ~{PS(todayPrice)} reference = ${(market.capProvisional / 1e9).toFixed(0)}B
-          cap ÷ {(latest.dilutedShares / 1e6).toFixed(0)}M shares ({market.asOf},
-          {" "}
-          {market.source}). Provisional — swap in a live quote.
+          {priceIsLive ? (
+            <>
+              <span style={{ color: t.accent }}>● Live</span> BE quote
+              ({PS(todayPrice)}). Implied value ÷ {(latest.dilutedShares / 1e6).toFixed(0)}M
+              diluted shares.
+            </>
+          ) : (
+            <>
+              ~{PS(todayPrice)} reference = $
+              {(market.capProvisional / 1e9).toFixed(0)}B cap ÷
+              {" "}
+              {(latest.dilutedShares / 1e6).toFixed(0)}M shares ({market.asOf},{" "}
+              {market.source}). Provisional until the live quote loads.
+            </>
+          )}
         </p>
       </div>
     </div>
