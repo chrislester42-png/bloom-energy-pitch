@@ -1,7 +1,9 @@
 "use client";
 
 import { useEffect, useRef, useState, useCallback } from "react";
+import { ChatCircleDots } from "@phosphor-icons/react";
 import { t } from "./tokens";
+import AskChat from "./AskChat";
 
 /* ---- data shapes (baked by scripts/build_vault.py) ---------------------- */
 type GNode = { id: string; title: string; type: string; tags: string[]; deg: number };
@@ -45,6 +47,7 @@ export default function VaultExplorer() {
   const selRef = useRef<string | null>(null);
   const searchRef = useRef("");
   const activeTypesRef = useRef<Set<string>>(new Set());
+  const highlightRef = useRef<Set<string>>(new Set());
   const dprRef = useRef(1);
 
   const [loaded, setLoaded] = useState(false);
@@ -54,6 +57,8 @@ export default function VaultExplorer() {
   const [selId, setSelId] = useState<string | null>(null);
   const [search, setSearch] = useState("");
   const [activeTypes, setActiveTypes] = useState<Set<string>>(new Set());
+  const [askOpen, setAskOpen] = useState(false);
+  const [askMounted, setAskMounted] = useState(false);
 
   /* ---- load baked data -------------------------------------------------- */
   useEffect(() => {
@@ -189,6 +194,8 @@ export default function VaultExplorer() {
       const q = searchRef.current;
       const types = activeTypesRef.current;
       const typeFilterOn = types.size > 0;
+      const hl = highlightRef.current;
+      const hlOn = hl.size > 0;
 
       c.save();
       c.scale(dpr, dpr);
@@ -223,21 +230,26 @@ export default function VaultExplorer() {
       const labelEvery = cam.scale > 1.3;
       for (const n of nodes) {
         const m = metaOf(n.type);
-        const dim = dimmed(n.id) || filteredOut(n);
+        const isHl = hl.has(n.id);
+        const dim = dimmed(n.id) || filteredOut(n) || (hlOn && !isHl && n.id !== focus);
         const isFocus = n.id === focus;
         c.beginPath();
-        c.arc(n.x, n.y, n.r + (isFocus ? 2 : 0), 0, Math.PI * 2);
+        c.arc(n.x, n.y, n.r + (isFocus || isHl ? 2 : 0), 0, Math.PI * 2);
         c.fillStyle = dim ? "rgba(10,10,10,0.10)" : m.color;
         c.globalAlpha = dim ? 0.35 : 1;
         c.fill();
         if (isFocus) {
           c.lineWidth = 2 / cam.scale; c.strokeStyle = "#0a0a0a"; c.stroke();
         }
+        if (isHl) {
+          c.lineWidth = 3 / cam.scale; c.strokeStyle = "#0f8a4d";
+          c.beginPath(); c.arc(n.x, n.y, n.r + 4, 0, Math.PI * 2); c.stroke();
+        }
         c.globalAlpha = 1;
 
         const showLabel =
-          !dim && (isFocus || (focusSet && focusSet.has(n.id)) || labelEvery || n.r > 7 ||
-          (q && n.title.toLowerCase().includes(q)));
+          (isHl) || (!dim && (isFocus || (focusSet && focusSet.has(n.id)) || labelEvery || n.r > 7 ||
+          (q && n.title.toLowerCase().includes(q))));
         if (showLabel) {
           c.font = `${isFocus ? "600 " : ""}${11 / cam.scale}px ui-sans-serif, system-ui, -apple-system, sans-serif`;
           c.fillStyle = "rgba(10,10,10,0.78)";
@@ -305,6 +317,7 @@ export default function VaultExplorer() {
       if (moved < 5) {
         const n = hit(e.clientX, e.clientY);
         setSelId(n ? n.id : null);
+        if (n) setAskOpen(false); // reveal the reading pane for the clicked node
       }
       dragNode = null; panning = false;
       try { canvas.releasePointerCapture(e.pointerId); } catch {}
@@ -351,6 +364,29 @@ export default function VaultExplorer() {
     focusNode(id);
   }, [focusNode]);
 
+  // chat answered → light up the cited notes in the graph and frame them
+  const handleCite = useCallback((ids: string[]) => {
+    highlightRef.current = new Set(ids.filter((id) => byIdRef.current.has(id)));
+    alphaRef.current = Math.max(alphaRef.current, 0.2);
+    const pts = ids.map((id) => byIdRef.current.get(id)).filter(Boolean) as SimNode[];
+    const canvas = canvasRef.current;
+    if (pts.length && canvas) {
+      const dpr = dprRef.current;
+      const cx = pts.reduce((a, n) => a + n.x, 0) / pts.length;
+      const cy = pts.reduce((a, n) => a + n.y, 0) / pts.length;
+      const cam = camRef.current;
+      cam.x = canvas.width / (2 * dpr) - cx * cam.scale;
+      cam.y = canvas.height / (2 * dpr) - cy * cam.scale;
+    }
+  }, []);
+
+  // citation chip in chat → open that note (and reveal the reading pane)
+  const openFromChat = useCallback((id: string) => {
+    highlightRef.current = new Set([id]);
+    setAskOpen(false);
+    openNote(id);
+  }, [openNote]);
+
   // intercept clicks on wiki-links inside the rendered note
   const onNoteClick = (e: React.MouseEvent) => {
     const el = (e.target as HTMLElement).closest("a.wl") as HTMLElement | null;
@@ -392,11 +428,24 @@ export default function VaultExplorer() {
           </div>
         </div>
         <div className="flex items-center gap-3">
+          <button
+            onClick={() => { setAskMounted(true); setAskOpen((o) => !o); }}
+            className="inline-flex h-9 items-center gap-1.5 rounded-full border px-3.5 text-[13px] font-medium transition-colors"
+            style={{
+              borderColor: askOpen ? t.accent : t.line,
+              background: askOpen ? "var(--color-accent-soft)" : t.surface,
+              color: askOpen ? t.accent : t.ink2,
+            }}
+          >
+            <ChatCircleDots size={16} weight="fill" />
+            <span className="hidden sm:inline">Ask the research</span>
+            <span className="sm:hidden">Ask</span>
+          </button>
           <input
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search notes…"
-            className="h-9 w-40 rounded-full border px-4 text-[13px] outline-none sm:w-56"
+            className="hidden h-9 w-40 rounded-full border px-4 text-[13px] outline-none sm:block sm:w-48"
             style={{ borderColor: t.line, background: t.surface, color: t.ink }}
           />
           <a
@@ -472,8 +521,40 @@ export default function VaultExplorer() {
           )}
         </div>
 
+        {/* ask panel — mounted once opened so chat history persists */}
+        {askMounted && (
+          <aside
+            className={(askOpen ? "flex" : "hidden") + " w-full max-w-full flex-col border-l sm:w-[440px]"}
+            style={{ borderColor: t.line, background: t.bg }}
+          >
+            <div
+              className="flex items-center justify-between gap-3 border-b px-5 py-3.5"
+              style={{ borderColor: t.line, background: "rgba(255,255,255,0.7)" }}
+            >
+              <div>
+                <div className="text-[14px] font-semibold tracking-tight" style={{ color: t.ink }}>
+                  Ask the research
+                </div>
+                <div className="font-mono text-[10px] uppercase tracking-[0.14em]" style={{ color: t.fgMute }}>
+                  answers cite the notes &amp; light up the graph
+                </div>
+              </div>
+              <button
+                onClick={() => setAskOpen(false)}
+                className="shrink-0 rounded-full border px-2.5 py-1 text-[12px]"
+                style={{ borderColor: t.line, color: t.fgDim }}
+              >
+                ✕
+              </button>
+            </div>
+            <div className="min-h-0 flex-1">
+              <AskChat onCite={handleCite} onOpenNote={openFromChat} compact />
+            </div>
+          </aside>
+        )}
+
         {/* reading pane */}
-        {note && (
+        {note && !askOpen && (
           <aside
             className="flex w-full max-w-full flex-col border-l sm:w-[460px]"
             style={{ borderColor: t.line, background: t.surface }}

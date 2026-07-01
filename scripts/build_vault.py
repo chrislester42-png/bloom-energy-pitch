@@ -132,6 +132,18 @@ def first_heading(body, fallback):
     return fallback
 
 
+def parse_status(fm):
+    m = re.search(r"^status:\s*(.+)$", fm, re.MULTILINE)
+    return m.group(1).strip().strip('"\'') if m else ""
+
+
+def strip_html(html_str):
+    s = re.sub(r"<[^>]+>", " ", html_str or "")
+    s = (s.replace("&amp;", "&").replace("&lt;", "<").replace("&gt;", ">")
+          .replace("&#x27;", "'").replace("&quot;", '"').replace("&#39;", "'"))
+    return re.sub(r"\s+", " ", s).strip()
+
+
 def parse_tags(fm):
     m = re.search(r"^tags:\s*\[(.*?)\]", fm, re.MULTILINE)
     if m:
@@ -220,7 +232,8 @@ for rel, ab in files:
 
     nodes[nid] = {"id": nid, "title": title, "type": typ, "tags": tags}
     notes[nid] = {"title": title, "type": typ, "tags": tags, "path": rel,
-                  "html": htmlbody, "sources": sorted(set(fm_links))}
+                  "html": htmlbody, "sources": sorted(set(fm_links)),
+                  "status": parse_status(fm)}
 
 backlinks = {nid: set() for nid in nodes}
 for s, t in edges:
@@ -250,6 +263,20 @@ with open(os.path.join(OUT, "graph.json"), "w") as f:
     json.dump(graph, f, separators=(",", ":"))
 with open(os.path.join(OUT, "notes.json"), "w") as f:
     json.dump(notes, f, separators=(",", ":"))
+
+# Compact knowledge base for the /ask serverless function (plaintext, no HTML).
+KB_OUT = os.path.join(REPO, "netlify", "functions", "kb.json")
+os.makedirs(os.path.dirname(KB_OUT), exist_ok=True)
+kb = [{
+    "id": nid,
+    "title": n["title"],
+    "type": n["type"],
+    "status": n.get("status", ""),
+    "tags": n.get("tags", []),
+    "text": strip_html(n["html"]),
+} for nid, n in notes.items()]
+with open(KB_OUT, "w") as f:
+    json.dump(kb, f, separators=(",", ":"))
 
 print(f"nodes={len(node_list)} links={len(link_list)}")
 print("by type:", json.dumps(graph["counts"]))
