@@ -8,5 +8,9 @@
 [build.environment]
   NODE_VERSION = "22"
 
+# Bundle functions with esbuild so the kb.json import inlines reliably.
+[functions]
+  node_bundler = "esbuild"
+
 # Live price proxy lives at /.netlify/functions/quote
 # Requires env var FINNHUB_API_KEY (Site settings → Environment variables).

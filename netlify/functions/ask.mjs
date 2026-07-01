@@ -2,9 +2,9 @@
 // Answers strictly from the baked knowledge bank (kb.json) using Claude Haiku.
 // The API key stays server-side. Set ANTHROPIC_API_KEY in Netlify → Env vars.
 // Endpoint: /.netlify/functions/ask   (POST { question, history? })
-import kb from "./kb.json" with { type: "json" };
+import kb from "./kb.json";
 
-const MODEL = "claude-haiku-4-5"; // fast + cheap; update the string if needed
+const MODEL = "claude-haiku-4-5-20251001"; // fast + cheap; update the string if needed
 const MAX_NOTES = 28; // how many notes to retrieve into context
 const MAX_OUTPUT_TOKENS = 700;
 const MAX_Q_LEN = 1000;
@@ -119,10 +119,7 @@ export default async (req, context) => {
         model: MODEL,
         max_tokens: MAX_OUTPUT_TOKENS,
         temperature: 0.2,
-        system: [
-          { type: "text", text: SYSTEM },
-          { type: "text", text: titleIndex(), cache_control: { type: "ephemeral" } },
-        ],
+        system: SYSTEM + "\n\n" + titleIndex(),
         messages,
       }),
     });

@@ -61,7 +61,8 @@ export default function AskChat({
       } else if (d?.reason === "rate-limited") {
         content = "A lot of questions just came through — give it a few seconds and try again.";
       } else {
-        content = "Something went wrong reaching the research assistant. Please try again in a moment.";
+        const why = [d?.reason, d?.status, d?.detail].filter(Boolean).join(" · ");
+        content = "The research assistant hit a problem" + (why ? ` (${why})` : "") + ". Please try again in a moment.";
       }
       setMsgs((m) => [...m, { role: "assistant", content, cited }]);
       if (cited.length && onCite) onCite(cited.map((c) => c.id));
