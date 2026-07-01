@@ -29,8 +29,83 @@ const TYPE_META: Record<string, { color: string; label: string }> = {
 };
 const metaOf = (ty: string) => TYPE_META[ty] ?? TYPE_META.other;
 
+/* ---- preset thematic filters (dim everything except matching notes) ----- */
+/* Tags in the vault are sparse, so each theme matches on tag OR title keyword. */
+const THEMES: { label: string; tags: string[]; kw: string[] }[] = [
+  { label: "The bull case",
+    tags: ["moat","customer","financials","backlog","service","annuity","speed-to-power","capacity","operating-leverage"],
+    kw: ["oracle","aep","brookfield","backlog","demand","growth","attach","annuity","inflection"] },
+  { label: "The bear case",
+    tags: ["bear","risk","related-party","revenue-quality","dilution","feoc","supply-chain","valuation","affiliate"],
+    kw: ["risk","degradation","dilution","valuation","concentration","related","deficit","overvalued"] },
+  { label: "Catalysts & deals",
+    tags: ["customer","backlog","oracle","aep","brookfield","warrant","data-center","deployment"],
+    kw: ["oracle","aep","brookfield","nebius","sk ","warrant","backlog","deal","gigawatt","procurement"] },
+  { label: "The moat",
+    tags: ["moat","service","annuity","manufacturing","unit-economics","stack-life","efficiency"],
+    kw: ["moat","service","attach","head start","digital twin","cell-hour","annuity"] },
+  { label: "Financials",
+    tags: ["financials","margin","revenue","balance-sheet","capital-structure","convertible","capex","operating-leverage"],
+    kw: ["revenue","ebitda","margin","cash","guidance","backlog","profit","convertible"] },
+  { label: "Technology",
+    tags: ["tech","efficiency","chp","heat-capture","carbon-capture","ccus","fuel","biogas"],
+    kw: ["efficiency","heat","800v","sofc","fuel cell","electrolyzer","hydrogen","emissions"] },
+  { label: "Policy & tax",
+    tags: ["itc","feoc","regulation","policy","scandium","supply-chain","single-source"],
+    kw: ["itc","tax","feoc","tariff","policy","credit","obbba","subsidy"] },
+  { label: "Revenue quality",
+    tags: ["related-party","revenue-quality","brookfield","affiliate","rpo","backlog","quality-of-revenue","contracts"],
+    kw: ["related","arm's","brookfield","affiliate","rpo","take-or-pay","cost-plus"] },
+];
+
 /* ---- simulation node (mutable, lives in a ref) -------------------------- */
 type SimNode = GNode & { x: number; y: number; vx: number; vy: number; fx?: number; fy?: number; r: number };
+
+/* ---- one integration step of the force sim (shared by pre-warm + loop) --- */
+function stepPhysics(nodes: SimNode[], links: { s: SimNode; t: SimNode }[], k: number) {
+  const REPULSION = 1200;   // slightly softer than before → more compact
+  const SPRING = 0.045;
+  const TARGET = 70;
+  const GRAVITY = 0.016;    // a touch stronger centering
+  const DAMP = 0.82;
+  const MAX_R = 1050;       // soft radial boundary — keeps isolated nodes from escaping
+  const VMAX = 28;          // per-tick velocity cap — nothing gets flung across the stage
+
+  // repulsion (O(n^2) — fine for a few hundred nodes)
+  for (let i = 0; i < nodes.length; i++) {
+    const a = nodes[i];
+    for (let j = i + 1; j < nodes.length; j++) {
+      const b = nodes[j];
+      let dx = a.x - b.x, dy = a.y - b.y;
+      let d2 = dx * dx + dy * dy;
+      if (d2 < 0.01) { d2 = 0.01; dx = Math.random(); dy = Math.random(); }
+      const rep = (REPULSION * k) / d2;
+      const d = Math.sqrt(d2);
+      const fx = (dx / d) * rep, fy = (dy / d) * rep;
+      a.vx += fx; a.vy += fy; b.vx -= fx; b.vy -= fy;
+    }
+  }
+  // link springs
+  for (const { s, t: tt } of links) {
+    let dx = tt.x - s.x, dy = tt.y - s.y;
+    const d = Math.sqrt(dx * dx + dy * dy) || 0.01;
+    const f = (d - TARGET) * SPRING * k;
+    const fx = (dx / d) * f, fy = (dy / d) * f;
+    s.vx += fx; s.vy += fy; tt.vx -= fx; tt.vy -= fy;
+  }
+  // gravity to origin + integrate + clamp
+  for (const n of nodes) {
+    n.vx += -n.x * GRAVITY * k;
+    n.vy += -n.y * GRAVITY * k;
+    if (n.fx !== undefined) { n.x = n.fx; n.y = n.fy!; n.vx = 0; n.vy = 0; continue; }
+    n.vx *= DAMP; n.vy *= DAMP;
+    const sp = Math.sqrt(n.vx * n.vx + n.vy * n.vy);
+    if (sp > VMAX) { n.vx = (n.vx / sp) * VMAX; n.vy = (n.vy / sp) * VMAX; }
+    n.x += n.vx; n.y += n.vy;
+    const dist = Math.sqrt(n.x * n.x + n.y * n.y);
+    if (dist > MAX_R) { n.x = (n.x / dist) * MAX_R; n.y = (n.y / dist) * MAX_R; n.vx *= 0.5; n.vy *= 0.5; }
+  }
+}
 
 export default function VaultExplorer() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -48,6 +123,7 @@ export default function VaultExplorer() {
   const searchRef = useRef("");
   const activeTypesRef = useRef<Set<string>>(new Set());
   const highlightRef = useRef<Set<string>>(new Set());
+  const themeSetRef = useRef<Set<string> | null>(null);
   const dprRef = useRef(1);
 
   const [loaded, setLoaded] = useState(false);
@@ -59,6 +135,8 @@ export default function VaultExplorer() {
   const [activeTypes, setActiveTypes] = useState<Set<string>>(new Set());
   const [askOpen, setAskOpen] = useState(false);
   const [askMounted, setAskMounted] = useState(false);
+  const [askWidth, setAskWidth] = useState(440);
+  const [activeTheme, setActiveTheme] = useState<number | null>(null);
 
   /* ---- load baked data -------------------------------------------------- */
   useEffect(() => {
@@ -75,11 +153,11 @@ export default function VaultExplorer() {
         const N = g.nodes.length;
         const sim: SimNode[] = g.nodes.map((n, i) => {
           const a = (i / N) * Math.PI * 2;
-          const rad = 260 + Math.random() * 60;
+          const rad = 230 + Math.random() * 40;
           return {
             ...n,
-            x: Math.cos(a) * rad + (Math.random() - 0.5) * 40,
-            y: Math.sin(a) * rad + (Math.random() - 0.5) * 40,
+            x: Math.cos(a) * rad + (Math.random() - 0.5) * 18,
+            y: Math.sin(a) * rad + (Math.random() - 0.5) * 18,
             vx: 0, vy: 0,
             r: 3.2 + Math.sqrt(n.deg) * 1.7,
           };
@@ -92,11 +170,15 @@ export default function VaultExplorer() {
         sim.forEach((n) => adj.set(n.id, new Set()));
         links.forEach(({ s, t }) => { adj.get(s.id)!.add(t.id); adj.get(t.id)!.add(s.id); });
 
+        // pre-warm the layout headless so it opens near-settled (no scramble/fling)
+        let warm = 1;
+        for (let s = 0; s < 320; s++) { stepPhysics(sim, links, warm); warm *= 0.99; }
+
         nodesRef.current = sim;
         linksRef.current = links;
         byIdRef.current = byId;
         adjRef.current = adj;
-        alphaRef.current = 1;
+        alphaRef.current = 0.12; // gentle final settle on first paint
         setCounts(g.counts);
         setLoaded(true);
 
@@ -113,6 +195,25 @@ export default function VaultExplorer() {
   useEffect(() => { selRef.current = selId; alphaRef.current = Math.max(alphaRef.current, 0.3); }, [selId]);
   useEffect(() => { searchRef.current = search.trim().toLowerCase(); }, [search]);
   useEffect(() => { activeTypesRef.current = activeTypes; }, [activeTypes]);
+
+  // compute the set of nodes matching the active theme (tag ∩ theme.tags, else title keyword)
+  useEffect(() => {
+    if (activeTheme == null) { themeSetRef.current = null; return; }
+    const th = THEMES[activeTheme];
+    const tags = new Set(th.tags);
+    const kws = th.kw.map((k) => k.toLowerCase());
+    const s = new Set<string>();
+    for (const n of nodesRef.current) {
+      const tagHit = n.tags.some((tg) => tags.has(tg));
+      const kwHit = !tagHit && kws.some((k) => n.title.toLowerCase().includes(k));
+      if (tagHit || kwHit) s.add(n.id);
+    }
+    themeSetRef.current = s;
+    alphaRef.current = Math.max(alphaRef.current, 0.03); // nudge a repaint
+  }, [activeTheme, loaded]);
+
+  // manual interaction / closing the ask panel should never leave the graph dimmed
+  useEffect(() => { if (!askOpen) highlightRef.current = new Set(); }, [askOpen]);
 
   /* ---- physics + render loop ------------------------------------------- */
   useEffect(() => {
@@ -142,38 +243,7 @@ export default function VaultExplorer() {
       let alpha = alphaRef.current;
 
       if (alpha > 0.005) {
-        const k = alpha;
-        // repulsion (O(n^2) — fine for a few hundred nodes)
-        for (let i = 0; i < nodes.length; i++) {
-          const a = nodes[i];
-          for (let j = i + 1; j < nodes.length; j++) {
-            const b = nodes[j];
-            let dx = a.x - b.x, dy = a.y - b.y;
-            let d2 = dx * dx + dy * dy;
-            if (d2 < 0.01) { d2 = 0.01; dx = Math.random(); dy = Math.random(); }
-            const rep = (1400 * k) / d2;
-            const d = Math.sqrt(d2);
-            const fx = (dx / d) * rep, fy = (dy / d) * rep;
-            a.vx += fx; a.vy += fy; b.vx -= fx; b.vy -= fy;
-          }
-        }
-        // link springs
-        const target = 70;
-        for (const { s, t: tt } of links) {
-          let dx = tt.x - s.x, dy = tt.y - s.y;
-          const d = Math.sqrt(dx * dx + dy * dy) || 0.01;
-          const f = ((d - target) * 0.045 * k);
-          const fx = (dx / d) * f, fy = (dy / d) * f;
-          s.vx += fx; s.vy += fy; tt.vx -= fx; tt.vy -= fy;
-        }
-        // gravity to origin + integrate
-        for (const n of nodes) {
-          n.vx += -n.x * 0.012 * k;
-          n.vy += -n.y * 0.012 * k;
-          if (n.fx !== undefined) { n.x = n.fx; n.y = n.fy!; n.vx = 0; n.vy = 0; continue; }
-          n.vx *= 0.82; n.vy *= 0.82;
-          n.x += n.vx; n.y += n.vy;
-        }
+        stepPhysics(nodes, links, alpha);
         alphaRef.current = alpha * 0.985;
       }
 
@@ -196,6 +266,7 @@ export default function VaultExplorer() {
       const typeFilterOn = types.size > 0;
       const hl = highlightRef.current;
       const hlOn = hl.size > 0;
+      const themeSet = themeSetRef.current;
 
       c.save();
       c.scale(dpr, dpr);
@@ -217,8 +288,10 @@ export default function VaultExplorer() {
       c.lineWidth = 1 / cam.scale;
       for (const { s, t: tt } of links) {
         const related = focus && (s.id === focus || tt.id === focus);
+        const inTheme = !themeSet || (themeSet.has(s.id) && themeSet.has(tt.id));
         if (focus && !related) c.strokeStyle = "rgba(10,10,10,0.03)";
         else if (related) c.strokeStyle = "rgba(15,138,77,0.45)";
+        else if (!inTheme) c.strokeStyle = "rgba(10,10,10,0.03)";
         else c.strokeStyle = "rgba(10,10,10,0.10)";
         c.beginPath();
         c.moveTo(s.x, s.y);
@@ -227,12 +300,13 @@ export default function VaultExplorer() {
       }
 
       // nodes
-      const labelEvery = cam.scale > 1.3;
+      const labelEvery = cam.scale > 1.9; // only when zoomed well in
       for (const n of nodes) {
         const m = metaOf(n.type);
         const isHl = hl.has(n.id);
-        const dim = dimmed(n.id) || filteredOut(n) || (hlOn && !isHl && n.id !== focus);
         const isFocus = n.id === focus;
+        const dim = dimmed(n.id) || filteredOut(n) || (hlOn && !isHl && n.id !== focus) ||
+          (!!themeSet && !themeSet.has(n.id) && !isFocus);
         c.beginPath();
         c.arc(n.x, n.y, n.r + (isFocus || isHl ? 2 : 0), 0, Math.PI * 2);
         c.fillStyle = dim ? "rgba(10,10,10,0.10)" : m.color;
@@ -247,8 +321,11 @@ export default function VaultExplorer() {
         }
         c.globalAlpha = 1;
 
+        // Task 1: clean graph by default — labels only when you engage a node
+        // (hover/select + its neighbors), a chat answer highlights it, it matches
+        // the search, or you've zoomed well in.
         const showLabel =
-          (isHl) || (!dim && (isFocus || (focusSet && focusSet.has(n.id)) || labelEvery || n.r > 7 ||
+          isHl || (!dim && (isFocus || (focusSet && focusSet.has(n.id)) || labelEvery ||
           (q && n.title.toLowerCase().includes(q))));
         if (showLabel) {
           c.font = `${isFocus ? "600 " : ""}${11 / cam.scale}px ui-sans-serif, system-ui, -apple-system, sans-serif`;
@@ -315,6 +392,8 @@ export default function VaultExplorer() {
     const onUp = (e: PointerEvent) => {
       if (dragNode) { dragNode.fx = undefined; dragNode.fy = undefined; }
       if (moved < 5) {
+        // Task 5: any manual click restores the full graph (never leave it stuck-dimmed)
+        highlightRef.current = new Set();
         const n = hit(e.clientX, e.clientY);
         setSelId(n ? n.id : null);
         if (n) setAskOpen(false); // reveal the reading pane for the clicked node
@@ -380,12 +459,32 @@ export default function VaultExplorer() {
     }
   }, []);
 
-  // citation chip in chat → open that note (and reveal the reading pane)
+  // citation chip in chat → open that note (and reveal the reading pane).
+  // Task 5: don't set an exclusive single-node highlight — clear it so the graph
+  // stays fully visible; the node just gets focus/selection.
   const openFromChat = useCallback((id: string) => {
-    highlightRef.current = new Set([id]);
+    highlightRef.current = new Set();
     setAskOpen(false);
     openNote(id);
   }, [openNote]);
+
+  // Task 3: drag the ask panel's left edge to widen it (up to ~60vw)
+  const onResizeDown = useCallback((e: React.PointerEvent) => {
+    e.preventDefault();
+    const startX = e.clientX;
+    const startW = askWidth;
+    const move = (ev: PointerEvent) => {
+      const dx = startX - ev.clientX; // drag left → wider
+      const max = Math.round(window.innerWidth * 0.6);
+      setAskWidth(Math.min(Math.max(startW + dx, 360), max));
+    };
+    const up = () => {
+      window.removeEventListener("pointermove", move);
+      window.removeEventListener("pointerup", up);
+    };
+    window.addEventListener("pointermove", move);
+    window.addEventListener("pointerup", up);
+  }, [askWidth]);
 
   // intercept clicks on wiki-links inside the rendered note
   const onNoteClick = (e: React.MouseEvent) => {
@@ -463,6 +562,39 @@ export default function VaultExplorer() {
         <div ref={wrapRef} className="relative min-w-0 flex-1">
           <canvas ref={canvasRef} className="vault-canvas" />
 
+          {/* theme filter chips — dim everything except matching notes */}
+          {loaded && (
+            <div className="absolute left-3 right-3 top-3 z-10 flex flex-wrap justify-center gap-1.5">
+              {THEMES.map((th, i) => {
+                const on = activeTheme === i;
+                return (
+                  <button
+                    key={th.label}
+                    onClick={() => setActiveTheme(on ? null : i)}
+                    className="rounded-full border px-3 py-1 text-[11.5px] font-medium transition-colors"
+                    style={{
+                      borderColor: on ? t.accent : t.line,
+                      background: on ? "var(--color-accent-soft)" : "rgba(255,255,255,0.9)",
+                      color: on ? t.accent : t.ink2,
+                      backdropFilter: "blur(6px)",
+                    }}
+                  >
+                    {th.label}
+                  </button>
+                );
+              })}
+              {activeTheme != null && (
+                <button
+                  onClick={() => setActiveTheme(null)}
+                  className="rounded-full border px-3 py-1 text-[11.5px]"
+                  style={{ borderColor: t.line, background: "rgba(255,255,255,0.9)", color: t.fgMute, backdropFilter: "blur(6px)" }}
+                >
+                  Clear
+                </button>
+              )}
+            </div>
+          )}
+
           {!loaded && !err && (
             <div className="absolute inset-0 grid place-items-center">
               <span className="font-mono text-[12px]" style={{ color: t.fgMute }}>
@@ -513,7 +645,7 @@ export default function VaultExplorer() {
           {/* hint */}
           {loaded && !selId && (
             <div
-              className="pointer-events-none absolute right-4 top-4 max-w-[230px] rounded-xl border px-3 py-2 text-[12px]"
+              className="pointer-events-none absolute bottom-4 right-4 max-w-[230px] rounded-xl border px-3 py-2 text-[12px]"
               style={{ borderColor: t.line, background: "rgba(255,255,255,0.9)", color: t.fgDim }}
             >
               Scroll to zoom · drag to pan · drag a node to move it · <b>click a node</b> to read it.
@@ -524,9 +656,20 @@ export default function VaultExplorer() {
         {/* ask panel — mounted once opened so chat history persists */}
         {askMounted && (
           <aside
-            className={(askOpen ? "flex" : "hidden") + " w-full max-w-full flex-col border-l sm:w-[440px]"}
-            style={{ borderColor: t.line, background: t.bg }}
+            className={(askOpen ? "flex" : "hidden") + " relative w-full max-w-full flex-col border-l"}
+            style={{ borderColor: t.line, background: t.bg, width: askWidth }}
           >
+            {/* drag handle — widen the panel toward the graph */}
+            <div
+              onPointerDown={onResizeDown}
+              title="Drag to resize"
+              className="absolute -left-1 top-0 z-20 hidden h-full w-2 cursor-col-resize sm:block"
+            >
+              <div
+                className="mx-auto h-full w-px transition-colors hover:w-0.5"
+                style={{ background: t.line }}
+              />
+            </div>
             <div
               className="flex items-center justify-between gap-3 border-b px-5 py-3.5"
               style={{ borderColor: t.line, background: "rgba(255,255,255,0.7)" }}

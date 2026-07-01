@@ -12,6 +12,17 @@ const TYPE_COLOR: Record<string, string> = {
 };
 const colorOf = (ty: string) => TYPE_COLOR[ty] ?? TYPE_COLOR.other;
 
+// Safety net: the model is told not to, but strip stray Markdown so answers
+// render as clean plain text (keeps "- " bullets). Leaves single "*" alone.
+function tidyMarkdown(s: string): string {
+  return s
+    .replace(/^\s{0,3}#{1,6}\s+/gm, "") // leading headers: ##, ###, …
+    .replace(/\*\*(.+?)\*\*/g, "$1")    // bold **text**
+    .replace(/\*\*/g, "")               // any leftover ** markers
+    .replace(/__(.+?)__/g, "$1")        // bold __text__
+    .trim();
+}
+
 const SUGGESTIONS = [
   "What's the bear case in one paragraph?",
   "How exposed is Bloom to the ITC?",
@@ -109,7 +120,7 @@ export default function AskChat({
                     : { background: t.surface, border: `1px solid ${t.line}`, color: t.ink2 }
                 }
               >
-                <div className="whitespace-pre-wrap">{m.content}</div>
+                <div className="whitespace-pre-wrap">{m.role === "assistant" ? tidyMarkdown(m.content) : m.content}</div>
                 {m.cited && m.cited.length > 0 && (
                   <div className="mt-3 border-t pt-2.5" style={{ borderColor: t.line }}>
                     <div className="mb-1.5 font-mono text-[9.5px] uppercase tracking-[0.14em]" style={{ color: t.fgMute }}>

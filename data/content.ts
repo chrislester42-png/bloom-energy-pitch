@@ -90,7 +90,7 @@ export const competition = {
       name: "Gas turbines",
       role: "The real alternative",
       point: "The standard way to make on-site power (a \"combined-cycle gas turbine,\" or CCGT) takes 3–5+ years to order a turbine and get hooked up. Bloom installs in 90–120 days, now goes head-to-head with turbines on the biggest projects, and matches grid prices in most US markets.",
-      caveat: "If the turbine backlog and grid-connection waits clear up, Bloom's speed advantage shrinks — the core long-term risk.",
+      caveat: "The core long-term risk — but relief isn't near: gas-turbine supply is largely sold out through ~2029–2030, so Bloom's speed edge holds for several more years before the real pivot.",
       source: "SemiAnalysis / Q1 2026 call",
     },
     {
@@ -131,7 +131,7 @@ export const financials = {
     { value: "$2.02B", label: "FY2025 revenue (+37% YoY)", source: "FY2025 10-K" },
     { value: "$3.4–3.8B", label: "2026 revenue guidance (~+80%)", source: "Q1 2026 release" },
     { value: "$143M", label: "Q1 2026 adj. EBITDA (~6× YoY)", source: "Q1 2026 release" },
-    { value: "~$20B", label: "total backlog ($6B product, ~$14B service)", source: "FY2025 10-K" },
+    { value: "~$100M", label: "to add each additional gigawatt of factory capacity — today's plants scale toward 5 GW without building a new one, so growth is capital-light", source: "Q1 2026 call" },
   ] as Fact[],
 };
 
@@ -150,6 +150,7 @@ export const catalysts = {
     { value: "6 vs 1", label: "big-cloud and AI-cloud customers, up from just one a year earlier", source: "Q4 2025 call" },
     { value: "2 GW", label: "of annual factory capacity by end-2026 — and the plants can stretch to 5 GW", source: "Utility Dive" },
     { value: "800V DC", label: "the new power standard AI server racks are moving to — Bloom's boxes already put it out directly", source: "Q1 2026 call" },
+    { value: "~$20B", label: "of signed backlog behind the anchors above — roughly $6B in equipment plus ~$14B of long-term service", source: "FY2025 10-K" },
   ] as Fact[],
 };
 
@@ -167,15 +168,15 @@ export const risks = {
   items: [
     {
       claim: "Half the revenue isn't arm's-length",
-      detail: "Strip out the affiliate channel and Q1 2026's reported 130% growth is ~17%: $377.8M arm's-length (+16.9%) vs $373.3M into the Brookfield/SK JVs — which carry their own equity-method drag.",
+      detail: "Strip out the affiliate channel and Q1 2026's reported 130% growth is ~17%: $377.8M arm's-length (+16.9%) vs $373.3M into the Brookfield/SK JVs. Bloom effectively helps finance the buyer of about half its own output, calls those sales \"arm's-length,\" yet doesn't disclose the margin split — so an outsider can't fully verify the quality of that revenue.",
       rebuttal: "Hyperscale customers went 1 → 6 in a year; more than half of data-center backlog is now non-Oracle — so the arm's-length engine is broadening.",
       source: "Q1 2026 release (derived)",
     },
     {
       claim: "~80× book, >600× EV/EBITDA",
-      detail: "At a ~$79B cap the stock prices in flawless execution. One bear PT sits at $149.93 (~-43%).",
-      rebuttal: "Forward EBITDA guidance ($650–800M) compresses the multiple fast — if the backlog converts.",
-      source: "24/7 Wall St",
+      detail: "At a ~$79B cap the stock prices in flawless execution (one bear PT sits at $149.93, ~-43%). And the headline ~$20B backlog is mostly framework and pipeline — only about $441M is firm, booked orders (GAAP RPO) today; the rest converts only as purchase orders actually land.",
+      rebuttal: "Forward EBITDA guidance ($650–800M) compresses the multiple fast — if that pipeline converts to real orders.",
+      source: "24/7 Wall St / Q1 2026 10-Q",
     },
     {
       claim: "$4B accumulated deficit",
@@ -186,7 +187,7 @@ export const risks = {
     {
       claim: "Degradation & dilution",
       detail: "Hindenburg (2019) flagged stack life vs warranty; a $2.5B convertible adds dilution risk.",
-      rebuttal: "Trillion-cell-hour digital twin now drives predictive maintenance behind the margin turn.",
+      rebuttal: "A steady 24/7 AI load is gentler on the cells than the on/off cycling that drives most fuel-cell wear — and the service segment has now been profitable six straight quarters, so the annuity is proving out. The trillion-cell-hour digital twin drives the predictive maintenance behind that turn.",
       source: "Hindenburg / Q1 2026 release",
     },
   ] as Risk[],
