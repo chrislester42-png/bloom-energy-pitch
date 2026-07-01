@@ -75,7 +75,9 @@ export default async (req, context) => {
   if (req.method !== "POST") {
     return new Response(JSON.stringify({ ok: false, reason: "method" }), { status: 405, headers });
   }
-  const key = (process.env.ANTHROPIC_API_KEY || "").trim(); // trim stray whitespace/newline
+  // accept common env-var names so the key works however it was labelled
+  const key = (process.env.CLAUDE_API || process.env.ANTHROPIC_API_KEY ||
+               process.env.CLAUDE_API_KEY || process.env.ANTHROPIC_KEY || "").trim();
   if (!key) {
     return new Response(JSON.stringify({ ok: false, reason: "no-key" }), { status: 200, headers });
   }
