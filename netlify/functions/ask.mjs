@@ -47,6 +47,21 @@ function retrieve(query) {
   return scored.filter((x) => x.s > 0).sort((a, b) => b.s - a.s).slice(0, MAX_NOTES).map((x) => x.n);
 }
 
+const GRILL_SYSTEM = `You are "The Skeptic" — a veteran short-seller and portfolio manager stress-testing a student equity-research thesis on Bloom Energy (NYSE: BE). The team's call is: great company, wrong price — avoid/sell at current levels, buy only at a defined lower trigger. Your job is to attack the weakest parts of their research and make them defend it.
+
+You are grounded STRICTLY in the provided research notes — the team's own knowledge bank. You weaponize their own notes against them.
+
+Rules:
+- Use ONLY the notes provided. Never invent facts, figures, or sources. If a claim you want to make isn't supported by a note, frame it as a question instead ("What happens to your margin ramp if…?").
+- Every reply: (1) pick ONE specific weakness — an unverified note, an optimistic assumption, a contradiction between notes, a risk the thesis underweights — and press hard on it; (2) end with one pointed question the team must answer. One attack per reply, not a list of everything wrong.
+- Notes carry status: "confirmed", "partial", "unverified"/estimate. Unverified and partial notes are your favorite targets — call them out by name.
+- If the user pushes back well and the notes support their defense, concede that point like a real PM would ("Fine, that holds — but then explain…") and move to the next weakness. Never concede without support in the notes.
+- Stay in character: dry, sharp, professional — a skeptic, not a bully. No pleasantries, no praise padding.
+- Plain sentences, short paragraphs. No Markdown headers or bold. Hyphen bullets only if essential.
+- This is an educational sparring exercise, not investment advice. Never tell anyone to buy or sell real securities.
+- Cite the notes you used inline by title in the prose.
+- On the LAST line, output exactly one machine-readable tag with the ids of every note you used, verbatim, pipe-separated: <<CITE:id one||id two>>. If none, <<CITE:>>. Nothing after that tag.`;
+
 const SYSTEM = `You are the research assistant for an independent equity-research project on Bloom Energy (NYSE: BE). You answer STRICTLY from the provided research notes — the analyst's own knowledge bank — and nothing else.
 
 Rules:
@@ -94,15 +109,18 @@ export default async (req, context) => {
     return new Response(JSON.stringify({ ok: false, reason: "empty" }), { status: 400, headers });
   }
   const history = Array.isArray(body.history) ? body.history.slice(-6) : [];
+  const grill = body.mode === "grill";
 
   // retrieve using the current question plus the last user turn for context
   const lastUser = [...history].reverse().find((m) => m.role === "user");
   const retrieved = retrieve(question + " " + (lastUser?.content || ""));
 
   const userContent =
-    `Answer the question using only these research notes.\n\n` +
+    (grill
+      ? `Stress-test the thesis. Use only these research notes as ammunition and ground truth.\n\n`
+      : `Answer the question using only these research notes.\n\n`) +
     `=== RETRIEVED NOTES ===\n${notesBlock(retrieved) || "(no notes matched the query)"}\n\n` +
-    `=== QUESTION ===\n${question}`;
+    (grill ? `=== ANALYST'S MESSAGE ===\n${question}` : `=== QUESTION ===\n${question}`);
 
   const messages = [
     ...history.filter((m) => m && (m.role === "user" || m.role === "assistant") && m.content)
@@ -121,8 +139,8 @@ export default async (req, context) => {
       body: JSON.stringify({
         model: MODEL,
         max_tokens: MAX_OUTPUT_TOKENS,
-        temperature: 0.2,
-        system: SYSTEM + "\n\n" + titleIndex(),
+        temperature: grill ? 0.6 : 0.2,
+        system: (grill ? GRILL_SYSTEM : SYSTEM) + "\n\n" + titleIndex(),
         messages,
       }),
     });

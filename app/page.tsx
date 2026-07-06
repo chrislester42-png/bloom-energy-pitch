@@ -12,6 +12,8 @@ import {
 } from "@/components/Sections";
 import { Financials } from "@/components/Financials";
 import { TheCall } from "@/components/TheCall";
+import { MonteCarlo } from "@/components/MonteCarlo";
+import { BuyTrigger } from "@/components/BuyTrigger";
 import { LivePriceProvider } from "@/components/LivePrice";
 import { t } from "@/components/tokens";
 
@@ -21,6 +23,7 @@ export default function Home() {
     <main className="relative">
       <Nav />
       <Hero />
+      <BuyTrigger />
       <Thesis />
       <WhyNow />
       <WhatBloomIs />
@@ -30,6 +33,7 @@ export default function Home() {
       <Catalysts />
       <Risks />
       <TheCall />
+      <MonteCarlo />
       <Sources />
 
       <footer

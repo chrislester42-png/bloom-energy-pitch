@@ -30,6 +30,15 @@ const SUGGESTIONS = [
   "Why is Bloom faster than a gas turbine?",
 ];
 
+const GRILL_SUGGESTIONS = [
+  "Attack our margin assumptions.",
+  "What's the weakest note in our vault?",
+  "Steelman the case for buying at today's price.",
+  "Grill our bear-case exit multiple.",
+];
+
+type Mode = "research" | "grill";
+
 export default function AskChat({
   onCite,
   onOpenNote,
@@ -42,6 +51,8 @@ export default function AskChat({
   const [msgs, setMsgs] = useState<Msg[]>([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
+  const [mode, setMode] = useState<Mode>("research");
+  const grill = mode === "grill";
   const scrollRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -59,7 +70,7 @@ export default function AskChat({
       const r = await fetch("/.netlify/functions/ask", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ question, history }),
+        body: JSON.stringify({ question, history, mode }),
       });
       const d = await r.json().catch(() => ({ ok: false, reason: "bad-json" }));
       let content: string;
@@ -86,16 +97,48 @@ export default function AskChat({
 
   return (
     <div className="flex h-full min-h-0 flex-col">
+      {/* mode toggle */}
+      <div className="flex items-center gap-2 border-b px-4 py-2.5" style={{ borderColor: t.line }}>
+        {(["research", "grill"] as Mode[]).map((m) => {
+          const on = mode === m;
+          return (
+            <button
+              key={m}
+              onClick={() => { if (mode !== m) { setMode(m); setMsgs([]); } }}
+              className="rounded-full border px-3 py-1 font-mono text-[10.5px] uppercase tracking-[0.12em] transition-colors"
+              style={{
+                borderColor: on ? (m === "grill" ? "var(--color-hot, #dc2626)" : t.accent) : t.line,
+                color: on ? (m === "grill" ? "var(--color-hot, #dc2626)" : t.accent) : t.fgMute,
+                background: on ? (m === "grill" ? "rgba(220,38,38,0.07)" : "var(--color-accent-soft, #e6f3ea)") : "transparent",
+              }}
+            >
+              {m === "grill" ? "Grill the thesis" : "Ask the research"}
+            </button>
+          );
+        })}
+        {grill && (
+          <span className="ml-auto hidden text-[11px] sm:block" style={{ color: t.fgMute }}>
+            A skeptical PM attacks our own research. Defend it.
+          </span>
+        )}
+      </div>
+
       {/* messages */}
       <div ref={scrollRef} className="min-h-0 flex-1 overflow-y-auto px-4 py-4">
         {msgs.length === 0 && (
           <div className="flex h-full flex-col items-start justify-center gap-3">
             <p className="text-[14px] leading-relaxed" style={{ color: t.fgDim }}>
-              Ask anything about Bloom Energy. I answer <b>only</b> from this project&apos;s research vault —
-              and I&apos;ll tell you when something isn&apos;t in it yet.
+              {grill ? (
+                <>You&apos;re talking to <b>The Skeptic</b> — a short-seller armed with our own research vault.
+                It finds the weakest note, presses on it, and asks the question we&apos;d get from a real
+                investment committee. Push back.</>
+              ) : (
+                <>Ask anything about Bloom Energy. I answer <b>only</b> from this project&apos;s research vault —
+                and I&apos;ll tell you when something isn&apos;t in it yet.</>
+              )}
             </p>
             <div className="flex flex-wrap gap-2">
-              {SUGGESTIONS.map((s) => (
+              {(grill ? GRILL_SUGGESTIONS : SUGGESTIONS).map((s) => (
                 <button
                   key={s}
                   onClick={() => ask(s)}
@@ -154,7 +197,7 @@ export default function AskChat({
           {loading && (
             <div className="flex items-center gap-1.5 px-1" style={{ color: t.fgMute }}>
               <span className="h-1.5 w-1.5 animate-pulse rounded-full" style={{ background: t.accent }} />
-              <span className="text-[12.5px]">Reading the research…</span>
+              <span className="text-[12.5px]">{grill ? "Sharpening the knife…" : "Reading the research…"}</span>
             </div>
           )}
         </div>
@@ -169,7 +212,7 @@ export default function AskChat({
         <input
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          placeholder={compact ? "Ask the research…" : "Ask anything about Bloom Energy…"}
+          placeholder={grill ? "Defend the thesis…" : compact ? "Ask the research…" : "Ask anything about Bloom Energy…"}
           className="h-10 min-w-0 flex-1 rounded-full border px-4 text-[14px] outline-none"
           style={{ borderColor: t.line, background: t.surface, color: t.ink }}
         />
@@ -179,7 +222,7 @@ export default function AskChat({
           className="inline-flex h-10 shrink-0 items-center rounded-full px-4 text-[13px] font-medium text-white disabled:opacity-40"
           style={{ background: t.inkGrad }}
         >
-          Ask
+          {grill ? "Defend" : "Ask"}
         </button>
       </form>
       <div className="px-4 pb-2 text-[10.5px]" style={{ color: t.fgMute }}>
