@@ -10,30 +10,40 @@ import {
   Risks,
   Sources,
 } from "@/components/Sections";
+import { ReportHeader } from "@/components/ReportHeader";
+import { RecentNews } from "@/components/RecentNews";
 import { Financials } from "@/components/Financials";
+import { Valuation } from "@/components/Valuation";
 import { TheCall } from "@/components/TheCall";
 import { MonteCarlo } from "@/components/MonteCarlo";
 import { BuyTrigger } from "@/components/BuyTrigger";
 import { LivePriceProvider } from "@/components/LivePrice";
 import { t } from "@/components/tokens";
 
+// Section order mirrors a standard equity research report:
+// cover → rating/stock data → thesis → company overview → recent news →
+// industry → competition → moat → financial performance → catalysts →
+// valuation → risks → recommendation → sources.
 export default function Home() {
   return (
     <LivePriceProvider>
     <main className="relative">
       <Nav />
       <Hero />
-      <BuyTrigger />
+      <ReportHeader />
       <Thesis />
-      <WhyNow />
       <WhatBloomIs />
-      <Moat />
+      <RecentNews />
+      <WhyNow />
       <Competition />
+      <Moat />
       <Financials />
       <Catalysts />
-      <Risks />
-      <TheCall />
+      <Valuation />
       <MonteCarlo />
+      <Risks />
+      <BuyTrigger />
+      <TheCall />
       <Sources />
 
       <footer

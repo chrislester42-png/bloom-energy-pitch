@@ -26,19 +26,21 @@ export const thesis = {
   call:
     "Constructive but disciplined: own the inflection, respect the price. The position sizes to how much of the backlog you believe converts at margin — and how much you trust revenue that's still half related-party.",
   toc: [
-    { n: "01", label: "Why now", href: "#why-now" },
-    { n: "02", label: "What Bloom is", href: "#what" },
-    { n: "03", label: "The moat", href: "#moat" },
+    { n: "01", label: "What Bloom is", href: "#what" },
+    { n: "02", label: "Recent news", href: "#news" },
+    { n: "03", label: "Why now", href: "#why-now" },
     { n: "04", label: "The field", href: "#competition" },
-    { n: "05", label: "Financials", href: "#financials" },
-    { n: "06", label: "Catalysts", href: "#catalysts" },
-    { n: "07", label: "The risks", href: "#risks" },
-    { n: "08", label: "The call", href: "#the-call" },
+    { n: "05", label: "The moat", href: "#moat" },
+    { n: "06", label: "Financials", href: "#financials" },
+    { n: "07", label: "Catalysts", href: "#catalysts" },
+    { n: "08", label: "Valuation", href: "#valuation" },
+    { n: "09", label: "The risks", href: "#risks" },
+    { n: "10", label: "The call", href: "#the-call" },
   ],
 };
 
 export const whyNow = {
-  eyebrow: "01 · Why now",
+  eyebrow: "03 · Why now",
   headline: "AI's power crunch has no easy fix.",
   dek: "The cloud giants (Amazon, Google, Microsoft) have the money; what they can't get fast is electricity. Power, not chips, is the real bottleneck for AI.",
   facts: [
@@ -50,7 +52,7 @@ export const whyNow = {
 };
 
 export const whatBloomIs = {
-  eyebrow: "02 · What Bloom is",
+  eyebrow: "01 · What Bloom is",
   headline: "Shippable power blocks, online in months.",
   dek: "Bloom makes fuel cells — boxes that turn natural gas into electricity through a chemical reaction instead of burning it — installed right next to the building that needs power. No smokestack, and no multi-year wait for the utility grid.",
   facts: [
@@ -61,8 +63,73 @@ export const whatBloomIs = {
   ] as Fact[],
 };
 
+export interface NewsItem {
+  date: string; // display date
+  tag: "Deal" | "Earnings" | "Analyst" | "Product";
+  title: string;
+  blurb: string;
+  source: string;
+}
+
+export const recentNews = {
+  eyebrow: "02 · Recent news",
+  headline: "Twelve months that changed the story.",
+  dek: "Press releases, earnings, and the contracts behind the backlog — newest first. This is the tape an analyst refreshes the model against.",
+  items: [
+    {
+      date: "May 2026",
+      tag: "Deal",
+      title: "Nebius signs guaranteed ~$2.6B agreement",
+      blurb: "250 MW for the AI neo-cloud — a guaranteed offtake, not a framework, and Bloom's first anchor outside the hyperscale majors.",
+      source: "Nebius agreement",
+    },
+    {
+      date: "Apr 28, 2026",
+      tag: "Earnings",
+      title: "Record Q1 2026; FY guidance raised",
+      blurb: "First sustained profit after 17 years: $143M adj. EBITDA (~6× YoY) and 2026 revenue guided to $3.4–3.8B — an ~80% step-up.",
+      source: "Q1 2026 release",
+    },
+    {
+      date: "Apr 2026",
+      tag: "Deal",
+      title: "Oracle expands to up to 2.8 GW (~$8–9B lifetime)",
+      blurb: "Project Jupiter switched from gas turbines to Bloom — the largest fuel-cell commitment ever, and a head-to-head win against the incumbent technology.",
+      source: "Bloom–Oracle PR",
+    },
+    {
+      date: "Feb 5, 2026",
+      tag: "Earnings",
+      title: "FY2025: revenue $2.02B, +37%",
+      blurb: "Full-year gross margin reached ~29% and the service segment turned profitable — the inflection the bulls had been waiting for.",
+      source: "Q4 2025 call / FY2025 10-K",
+    },
+    {
+      date: "Nov 2025",
+      tag: "Deal",
+      title: "AEP orders 1 GW (~$2.65B)",
+      blurb: "The largest commercial fuel-cell procurement at signing — utility-scale units powering AWS data centers before the meter.",
+      source: "Bloom–AEP PR",
+    },
+    {
+      date: "Oct 13, 2025",
+      tag: "Deal",
+      title: "Brookfield launches $5B AI-infrastructure partnership",
+      blurb: "Bloom named preferred on-site power provider across Brookfield's $1T portfolio, with an initial 1 GW commitment.",
+      source: "Brookfield PR",
+    },
+    {
+      date: "Jul 2025",
+      tag: "Analyst",
+      title: "JPMorgan upgrades on fuel-cell tax credit",
+      blurb: "The restored 30% investment tax credit for fuel cells under OBBBA cuts Bloom's effective cost ~25% — sell-side turns constructive.",
+      source: "Benzinga",
+    },
+  ] as NewsItem[],
+};
+
 export const moat = {
-  eyebrow: "03 · The moat",
+  eyebrow: "05 · The moat",
   headline: "A 17-year head start nobody can buy.",
   dek: "Time, data, and a service annuity compound into a lead competitors can't shortcut.",
   facts: [
@@ -82,7 +149,7 @@ export interface FieldRow {
 }
 
 export const competition = {
-  eyebrow: "04 · The field",
+  eyebrow: "04 · The field",  // industry & market positioning
   headline: "Built for speed today — the real debate is durability.",
   dek: "Bloom wins the AI-power land grab on speed and density. The honest question isn't who it beats now, but what happens when the bottleneck clears.",
   rows: [
@@ -124,7 +191,7 @@ export const competition = {
 };
 
 export const financials = {
-  eyebrow: "05 · Financials",
+  eyebrow: "06 · Financials",
   headline: "The inflection is finally on the P&L.",
   dek: "After 17 years of losses, Q1 2026 was the first sustained profit — and 2026 guidance implies an ~80% revenue step-up.",
   facts: [
@@ -136,7 +203,7 @@ export const financials = {
 };
 
 export const catalysts = {
-  eyebrow: "06 · Catalysts",
+  eyebrow: "07 · Catalysts",
   headline: "A backlog of gigawatt-scale anchors.",
   dek: "The deals are signed, the logos are real, and factory capacity is being built to meet them. (One gigawatt — GW — is enough to power roughly 750,000 homes.)",
   deals: [
@@ -162,7 +229,7 @@ export interface Risk {
 }
 
 export const risks = {
-  eyebrow: "07 · The risks",
+  eyebrow: "09 · The risks",
   headline: "Priced for perfection — and leaning on related parties.",
   dek: "We're not naive. Here's the bear case, and the honest counter to each point.",
   items: [
@@ -193,8 +260,15 @@ export const risks = {
   ] as Risk[],
 };
 
+export const valuation = {
+  eyebrow: "08 · Valuation",
+  headline: "What is it worth — and what does the price assume?",
+  dek: "Two lenses on the same cash-flow engine. The DCF asks what Bloom is worth under your assumptions; the reverse DCF asks what the market's price already assumes. Every slider is live — the model is the argument.",
+  note: "Defaults reproduce the team workbook (perpetuity $8.95 / EBITDA-exit $32.07 / blend $20.51 at the workbook's 21% WACC and capital structure). Educational model, not investment advice.",
+};
+
 export const theCall = {
-  eyebrow: "08 · The call",
+  eyebrow: "10 · The call",
   headline: "A real franchise at an unforgiving price.",
   dek: "Bloom crossed a genuine inflection — but today's price already pays for the bull case. Drag the assumptions and decide what you have to believe.",
   conclusion:

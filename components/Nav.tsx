@@ -7,8 +7,9 @@ import { PriceTicker } from "./LivePrice";
 
 const links = [
   ["Thesis", "#thesis"],
+  ["News", "#news"],
   ["Financials", "#financials"],
-  ["Catalysts", "#catalysts"],
+  ["Valuation", "#valuation"],
   ["The call", "#the-call"],
   ["Knowledge Bank", "/vault"],
 ];
@@ -66,7 +67,7 @@ export default function Nav() {
             <PriceTicker />
           </div>
           <a
-            href="#deck"
+            href="#the-call"
             className="inline-flex h-10 items-center justify-center rounded-full px-5 text-[13.5px] font-medium text-white transition-transform hover:-translate-y-[1px] active:translate-y-[1px]"
             style={{ background: t.inkGrad }}
           >

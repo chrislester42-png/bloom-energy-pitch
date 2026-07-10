@@ -146,14 +146,14 @@ export default function Hero() {
             className="mt-9 flex flex-wrap items-center gap-3.5"
           >
             <a
-              href="#deck"
+              href="#thesis"
               className="inline-flex h-12 items-center justify-center rounded-full px-6 text-[15px] font-medium text-white shadow-[0_12px_28px_-8px_rgba(10,10,10,0.4)] transition-all hover:-translate-y-[1px] hover:shadow-[0_16px_36px_-8px_rgba(10,10,10,0.5)] active:translate-y-[1px]"
               style={{ background: t.inkGrad }}
             >
               Explore the thesis
             </a>
             <a
-              href="#deck"
+              href="#valuation"
               className="group inline-flex h-12 items-center gap-2 rounded-full px-5 text-[14.5px] font-medium transition-all hover:-translate-y-[1px]"
               style={{
                 color: t.accent,

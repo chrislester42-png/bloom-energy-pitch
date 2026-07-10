@@ -160,7 +160,7 @@ export function MonteCarlo() {
   return (
     <Section id="monte-carlo" tone="deep">
       <SectionHeader
-        eyebrow="Pricing the distribution"
+        eyebrow="08 · Valuation — the distribution"
         headline="20,000 futures, one chart."
         dek={`Point estimates hide the argument. We draw ${HORIZON_YEARS}-year growth, mature EBITDA margin and exit multiple from ranges (correlated — good worlds are good everywhere), value each future, and ask where today's price sits inside the whole distribution.`}
       />

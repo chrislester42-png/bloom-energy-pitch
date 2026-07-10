@@ -73,9 +73,9 @@ export function Thesis() {
             className="mb-4 font-mono text-[10px] uppercase tracking-[0.18em]"
             style={{ color: t.fgMute }}
           >
-            The argument, in eight steps
+            The report, in ten steps
           </div>
-          <div className="grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-line bg-line sm:grid-cols-4">
+          <div className="grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-line bg-line sm:grid-cols-5">
             {thesis.toc.map((s) => (
               <a
                 key={s.n}
