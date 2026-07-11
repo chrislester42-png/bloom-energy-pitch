@@ -26,10 +26,13 @@ interface Params {
   rho: number;    // 0..1 correlation to shared factor
 }
 
+// Modes anchor on OUR base case (FY2030: $9.2B rev · 16% margin · 12×),
+// with tails spanning roughly bear→beyond-bull — consistent with TheCall
+// and the valuation lab's scenario table.
 const DEFAULTS: Params = {
-  revCagr:  { min: 0.10, mode: 0.32, max: 0.60 },
-  margin:   { min: 0.06, mode: 0.13, max: 0.22 },
-  multiple: { min: 10,   mode: 22,   max: 40 },
+  revCagr:  { min: 0.10, mode: 0.354, max: 0.60 },
+  margin:   { min: 0.06, mode: 0.16,  max: 0.25 },
+  multiple: { min: 6,    mode: 12,    max: 30 },
   rho: 0.6,
 };
 

@@ -14,7 +14,7 @@ export const thesis = {
   statement:
     "Bloom is the only company that can drop clean, gigawatt-scale power next to an AI data center in months instead of years — and after 17 years of losses it just crossed into sustained profit with a ~$20B backlog behind it. The debate isn't whether it's a real franchise; it's whether today's price already pays for everything that has to go right.",
   bull: [
-    "Signed hyperscale demand — Oracle, AEP, Brookfield — into an AI power crunch the grid can't fix in time.",
+    "Signed hyperscale demand — Oracle, AEP, a Brookfield framework now at $25B — into an AI power crunch the grid can't fix in time.",
     "A 17-year head start, a 100% service attach rate, and a trillion-cell-hour data moat competitors can't shortcut.",
     "The margin inflection is finally on the P&L: first sustained profit, service segment turning, ~80% revenue step-up guided.",
   ],
@@ -76,6 +76,20 @@ export const recentNews = {
   headline: "Twelve months that changed the story.",
   dek: "Press releases, earnings, and the contracts behind the backlog — newest first. This is the tape an analyst refreshes the model against.",
   items: [
+    {
+      date: "Jul 8–9, 2026",
+      tag: "Analyst",
+      title: "Hunterbrook short report — and Bloom's same-day rebuttal",
+      blurb: "A short seller alleges China-linked scandium sourcing and re-hammers backlog vs firm orders; Bloom's 8-K calls it \"false and misleading\" and claims supply visibility for 25 GW/yr. The stock fell ~6%, then recovered on the rebuttal.",
+      source: "Hunterbrook / Bloom 8-K",
+    },
+    {
+      date: "Jun 30, 2026",
+      tag: "Deal",
+      title: "Brookfield expands partnership fivefold: $5B → $25B",
+      blurb: "The financing framework for Bloom-powered AI projects grows 5× in under nine months, drawn from Brookfield's $100B AI Infrastructure Fund. A framework, not firm orders — but the capital behind the pipeline is now much deeper.",
+      source: "Brookfield–Bloom PR",
+    },
     {
       date: "May 2026",
       tag: "Deal",
@@ -209,7 +223,7 @@ export const catalysts = {
   deals: [
     { partner: "Oracle", terms: "up to 2.8 GW · ~$8–9B lifetime", note: "Project Jupiter switched from gas turbines to Bloom", source: "Bloom-Oracle PR" },
     { partner: "AEP", terms: "1 GW · ~$2.65B", note: "powering AWS on-site, before the utility meter", source: "Bloom-AEP PR" },
-    { partner: "Brookfield", terms: "$5B · 1 GW", note: "preferred provider across $1T portfolio", source: "Brookfield PR" },
+    { partner: "Brookfield", terms: "$25B framework · 1 GW initial", note: "expanded 5× from $5B in June 2026; preferred provider across $1T portfolio", source: "Brookfield PR (Jun 2026)" },
     { partner: "SK ecoplant", terms: "500 MW · $4.5B JV", note: "400 MW already deployed", source: "SK PR" },
     { partner: "Nebius", terms: "~$2.6B · 250 MW", note: "neo-cloud, guaranteed (May 2026)", source: "Nebius agreement" },
   ],
@@ -235,13 +249,13 @@ export const risks = {
   items: [
     {
       claim: "Half the revenue isn't arm's-length",
-      detail: "Strip out the affiliate channel and Q1 2026's reported 130% growth is ~17%: $377.8M arm's-length (+16.9%) vs $373.3M into the Brookfield/SK JVs. Bloom effectively helps finance the buyer of about half its own output, calls those sales \"arm's-length,\" yet doesn't disclose the margin split — so an outsider can't fully verify the quality of that revenue.",
+      detail: "Strip out the affiliate channel and Q1 2026's reported 130% growth is ~17%: $377.8M arm's-length (+16.9%) vs $373.3M into the Brookfield/SK JVs. Bloom effectively helps finance the buyer of about half its own output, calls those sales \"arm's-length,\" yet doesn't disclose the margin split — and the June 2026 expansion just put 5× more capital ($25B) behind that same financed channel.",
       rebuttal: "Hyperscale customers went 1 → 6 in a year; more than half of data-center backlog is now non-Oracle — so the arm's-length engine is broadening.",
-      source: "Q1 2026 release (derived)",
+      source: "Q1 2026 release / Brookfield PR (derived)",
     },
     {
       claim: "~80× book, >600× EV/EBITDA",
-      detail: "At a ~$79B cap the stock prices in flawless execution (one bear PT sits at $149.93, ~-43%). And the headline ~$20B backlog is mostly framework and pipeline — only about $441M is firm, booked orders (GAAP RPO) today; the rest converts only as purchase orders actually land.",
+      detail: "At a ~$79B cap the stock prices in flawless execution (one bear PT sits at $149.93, ~-43%). And the headline ~$20B backlog is mostly framework and pipeline — firm, booked orders (GAAP RPO) are only ~$441M of product and install (~$493M including service) as of Q1 2026; the rest converts only as purchase orders actually land.",
       rebuttal: "Forward EBITDA guidance ($650–800M) compresses the multiple fast — if that pipeline converts to real orders.",
       source: "24/7 Wall St / Q1 2026 10-Q",
     },
@@ -252,19 +266,19 @@ export const risks = {
       source: "FY2025 10-K",
     },
     {
-      claim: "Degradation & dilution",
-      detail: "Hindenburg (2019) flagged stack life vs warranty; a $2.5B convertible adds dilution risk.",
-      rebuttal: "A steady 24/7 AI load is gentler on the cells than the on/off cycling that drives most fuel-cell wear — and the service segment has now been profitable six straight quarters, so the annuity is proving out. The trillion-cell-hour digital twin drives the predictive maintenance behind that turn.",
-      source: "Hindenburg / Q1 2026 release",
+      claim: "Shorts are circling: degradation, dilution — now scandium",
+      detail: "Hindenburg (2019) flagged stack life vs warranty; a $2.5B convertible adds dilution risk. In July 2026 Hunterbrook alleged China-linked scandium sourcing (a supplier claiming to be Bloom's largest, plus trade data) and noted 5 GW of production would need ~220 of ~240 projected global tons of scandium oxide a year.",
+      rebuttal: "Bloom's 8-K rejects the claims: sourcing is diversified across countries via proprietary tailings recovery (titanium-processing waste, >half processed outside China), with claimed visibility to 25 GW/yr. On stack life, a steady 24/7 AI load is gentler than cycling, and the service segment has been profitable six straight quarters. The supplier list stays confidential — so the exposure can't be independently verified either way.",
+      source: "Hunterbrook / Bloom 8-K (Jul 2026)",
     },
   ] as Risk[],
 };
 
 export const valuation = {
   eyebrow: "08 · Valuation",
-  headline: "What is it worth — and what does the price assume?",
-  dek: "Two lenses on the same cash-flow engine. The DCF asks what Bloom is worth under your assumptions; the reverse DCF asks what the market's price already assumes. Every slider is live — the model is the argument.",
-  note: "Defaults reproduce the team workbook (perpetuity $8.95 / EBITDA-exit $32.07 / blend $20.51 at the workbook's 21% WACC and capital structure). Educational model, not investment advice.",
+  headline: "What does the price assume?",
+  dek: "Our price targets come from a reverse DCF: instead of asking what Bloom is worth, we ask what the market's price already pays for — then set the entry price where even the full bull case still earns our hurdle return. Defaults are our model's assumptions; drag them and see what has to be true.",
+  note: "Model-derived and provisional — educational research, not investment advice. The full lab (group DCF, per-year forecast table, scenario weighting) is one click deeper.",
 };
 
 export const theCall = {
@@ -281,9 +295,17 @@ export const theCall = {
 export const market = {
   capProvisional: 88.24e9, // ~$88B (FactSet, Q1 2026)
   asOf: "Q1 2026",
-  source: "FactSet",
+  source: "TipRanks, Jul 2026",
   bearPT: 149.93, // 24/7 Wall St bear case
-  consensusPT: 282.16, // FactSet consensus mean target
+  consensusPT: 287.05, // TipRanks 21-analyst mean, Jul 6 2026 (9 buy / 10 hold / 0 sell)
+  // Individual firm targets, July 2026 — for the "street view" strip.
+  streetPTs: [
+    { firm: "UBS", pt: 350, note: "highest visible target", asOf: "Jul 2026" },
+    { firm: "Susquehanna", pt: 298, note: "raised from $293", asOf: "Jul 2026" },
+    { firm: "Consensus", pt: 287.05, note: "21 analysts · 9 buy / 10 hold / 0 sell", asOf: "Jul 2026" },
+    { firm: "Jefferies", pt: 246, note: "raised from $207 — rating: Hold", asOf: "Jul 2026" },
+    { firm: "24/7 Wall St", pt: 149.93, note: "published bear case (a publication, not a bank)", asOf: "May 2026" },
+  ],
 };
 
 export interface SourceRow {
@@ -299,6 +321,9 @@ export const sources: SourceRow[] = [
   { title: "Bloom–Oracle Expansion (up to 2.8 GW)", publisher: "Bloom Energy", url: "https://investor.bloomenergy.com/press-releases/press-release-details/2026/Bloom-Energy-and-Oracle-Expand-Strategic-Partnership-to-Deploy-up-to-2-8-GW-to-Accelerate-AI-Infrastructure-Build-Out/default.aspx" },
   { title: "Bloom–AEP 1 GW Procurement", publisher: "Bloom Energy", url: "https://www.bloomenergy.com/news/bloom-energy-announces-gigawatt-fuel-cell-procurement-agreement-with-aep-to-power-ai-data-centers/" },
   { title: "Brookfield–Bloom $5B Partnership", publisher: "Bloom Energy", url: "https://www.bloomenergy.com/news/brookfield-and-bloom-energy-announce-5-billion-strategic-ai-infrastructure-partnership/" },
+  { title: "Brookfield–Bloom $25B Expansion (Jun 2026)", publisher: "Business Wire", url: "https://www.businesswire.com/news/home/20260630023022/en/Brookfield-and-Bloom-Energy-Expand-AI-Infrastructure-Partnership-to-%2425-Billion-Fivefold-Increase-to-Build-and-Finance-Rapid-Power-for-AI-Infrastructure" },
+  { title: "Hunterbrook Short Report (Jul 2026)", publisher: "Hunterbrook Media", url: "https://newsletter.hntrbrk.com/p/blooms-big-lie" },
+  { title: "Bloom 8-K Rebuttal & Scandium Explainer", publisher: "Bloom Energy", url: "https://www.bloomenergy.com/blog/demystifying-scandium-oxide-why-it-matters-in-bloom-fuel-cells/" },
   { title: "Bloom–SK ecoplant Partnership", publisher: "Bloom Energy", url: "https://www.bloomenergy.com/news/bloom-energy-and-sk-ecoplant-expand-highly-successful-power-generation-partnership-and-invest-to-establish-market-leadership-in-the-hydrogen-economy/" },
   { title: "Hindenburg 2019 Short Report", publisher: "Hindenburg Research", url: "https://hindenburgresearch.com/bloom-energy-a-clean-energy-darling-wilting-to-its-demise/" },
   { title: "JPMorgan Upgrade (fuel-cell ITC)", publisher: "Benzinga", url: "https://www.benzinga.com/analyst-stock-ratings/analyst-color/25/07/46326883/fuel-cell-tax-perk-could-supercharge-bloom-energy-in-2026-says-jpmorgan" },

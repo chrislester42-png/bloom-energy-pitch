@@ -1,19 +1,24 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { ArrowRight } from "@phosphor-icons/react";
 import { Section, SectionHeader, Reveal } from "./ui";
 import { t } from "./tokens";
 import { valuation } from "@/data/content";
 import { useLivePrice } from "./LivePrice";
 
 /**
- * Valuation — the report's valuation section, fully interactive.
- * Ports the two standalone labs into the site:
- *   Tab 1 · The DCF        (mirror of the group workbook: 5-yr UFCF,
- *                            Gordon + EBITDA-exit terminal, 50/50 blend)
- *   Tab 2 · Reverse DCF    (what the price implies · hurdle-rate entry
- *                            price · probability-weighted scenarios)
- * Same engine and defaults as valuation-lab.html / reverse-dcf-lab.html.
+ * Valuation — two exports:
+ *
+ *   <Valuation />     · the MAIN-PAGE section: reverse DCF only, three
+ *                       sliders, presentation-friendly. Links to /valuation.
+ *   <ValuationLab />  · the FULL lab (used by app/valuation/page.tsx):
+ *                       both tabs — the group DCF mirror and the complete
+ *                       reverse-DCF / entry-price / scenario tool.
+ *
+ * Every slider shows the value our model actually uses ("ours: …"), so a
+ * viewer can tell our assumptions from their experiments.
+ * Engine and defaults mirror valuation-lab.html / reverse-dcf-lab.html.
  */
 
 // ---------- shared engine constants ----------------------------------------
@@ -30,6 +35,7 @@ const P1 = (n: number) => `${n.toFixed(1)}%`;
 // ---------- small UI atoms --------------------------------------------------
 function Slider({
   label,
+  ours,
   value,
   fmt,
   min,
@@ -38,6 +44,8 @@ function Slider({
   onChange,
 }: {
   label: string;
+  /** what OUR model uses, e.g. "our calculated WACC: 21.0%" */
+  ours?: string;
   value: number;
   fmt: (n: number) => string;
   min: number;
@@ -47,7 +55,7 @@ function Slider({
 }) {
   return (
     <div>
-      <div className="mb-1 flex items-baseline justify-between">
+      <div className="mb-0.5 flex items-baseline justify-between">
         <span className="text-[12.5px]" style={{ color: t.fgDim }}>
           {label}
         </span>
@@ -58,6 +66,14 @@ function Slider({
           {fmt(value)}
         </span>
       </div>
+      {ours && (
+        <div
+          className="mb-1 font-mono text-[10px] uppercase tracking-[0.08em]"
+          style={{ color: t.fgMute }}
+        >
+          {ours}
+        </div>
+      )}
       <input
         type="range"
         min={min}
@@ -74,14 +90,9 @@ function Slider({
 
 function Row({ k, v, strong }: { k: string; v: string; strong?: boolean }) {
   return (
-    <div
-      className="flex items-center justify-between border-b border-line py-1.5 text-[13px]"
-    >
+    <div className="flex items-center justify-between border-b border-line py-1.5 text-[13px]">
       <span style={{ color: t.fgDim, fontWeight: strong ? 600 : 400 }}>{k}</span>
-      <span
-        className="font-mono font-semibold tabular-nums"
-        style={{ color: t.ink }}
-      >
+      <span className="font-mono font-semibold tabular-nums" style={{ color: t.ink }}>
         {v}
       </span>
     </div>
@@ -132,7 +143,237 @@ const TH =
   "px-2 py-1.5 text-right font-mono text-[10px] font-medium uppercase tracking-[0.08em]";
 const TD = "px-2 py-1.5 text-right font-mono text-[12px] tabular-nums";
 
-// ---------- Tab 1 · The DCF -------------------------------------------------
+// ---------- reverse-DCF engine (shared) --------------------------------------
+const FCFM_RAMP = [-1.31, 1.98, 4.75, 6.7, 8.01];
+const G_TERM = 3.5,
+  EX_MULT = 13.5,
+  EB_M = 15.82;
+
+// our model's reverse-DCF assumptions (FactSet Q1'26 capital structure)
+export const OURS = {
+  rw: 10.5, // market-level discount rate
+  bRev: 15, // super-bull FY2030 revenue, $B
+  bM: 22, // mature EBITDA margin, %
+  bX: 16, // mature EV/EBITDA
+  hr: 12, // hurdle IRR, %
+  netDebt: 456, // $M
+  shares: 319.7, // M
+};
+
+interface Scen {
+  name: string;
+  p: number;
+  rev: number;
+  m: number;
+  x: number;
+}
+
+const SCEN_DEFAULTS: Scen[] = [
+  { name: "Bull — AI power land-grab won", p: 25, rev: 15, m: 22, x: 16 },
+  { name: "Base — strong industrial grower", p: 50, rev: 9.2, m: 16, x: 12 },
+  { name: "Bear — capex digestion / competition", p: 25, rev: 5, m: 10, x: 8 },
+];
+
+function blendConstG(g5: number, w: number, netDebt: number, shares: number) {
+  const wacc = w / 100,
+    g = G_TERM / 100,
+    nd = netDebt * 1e6,
+    sh = shares * 1e6;
+  let rev = BASE_REV,
+    pv1 = 0,
+    u = 0;
+  for (let i = 0; i < 5; i++) {
+    rev *= 1 + g5 / 100;
+    u = rev * (FCFM_RAMP[i] / 100);
+    const cf = i === 0 ? u * 0.5 : u;
+    pv1 += cf / Math.pow(1 + wacc, i + 0.5);
+  }
+  const perp =
+    (pv1 + (u * (1 + g)) / (wacc - g) / Math.pow(1 + wacc, YRS) - nd) / sh;
+  const eb =
+    (pv1 + (rev * (EB_M / 100) * EX_MULT) / Math.pow(1 + wacc, YRS) - nd) / sh;
+  return { ps: (perp + eb) / 2, rev2030: rev };
+}
+
+function solveImpliedGrowth(price: number, rw: number, netDebt: number, shares: number) {
+  let lo = 0,
+    hi = 400;
+  if (blendConstG(hi, rw, netDebt, shares).ps < price) return null;
+  for (let i = 0; i < 70; i++) {
+    const m = (lo + hi) / 2;
+    if (blendConstG(m, rw, netDebt, shares).ps < price) lo = m;
+    else hi = m;
+  }
+  const g = (lo + hi) / 2;
+  return { g, rev: blendConstG(g, rw, netDebt, shares).rev2030 };
+}
+
+const fwdPs = (revB: number, mPct: number, mult: number, netDebt: number, shares: number) =>
+  (revB * 1e9 * (mPct / 100) * mult - netDebt * 1e6) / (shares * 1e6);
+
+// ============================================================================
+// MAIN-PAGE SECTION — compact reverse DCF, three sliders
+// ============================================================================
+export function Valuation() {
+  const { ok, price } = useLivePrice();
+  const p = ok && price != null ? price : 300;
+
+  const [rw, setRw] = useState(OURS.rw);
+  const [bRev, setBRev] = useState(OURS.bRev);
+  const [hr, setHr] = useState(OURS.hr);
+
+  const imp = useMemo(
+    () => solveImpliedGrowth(p, rw, OURS.netDebt, OURS.shares),
+    [p, rw],
+  );
+  const ps30 = fwdPs(bRev, OURS.bM, OURS.bX, OURS.netDebt, OURS.shares);
+  const entry = ps30 / Math.pow(1 + hr / 100, YRS);
+  const irrM = (Math.pow(ps30 / p, 1 / YRS) - 1) * 100;
+  const down = (1 - entry / p) * 100;
+  const irrOk = irrM >= hr;
+
+  return (
+    <Section id="valuation" tone="surface">
+      <SectionHeader {...valuation} />
+
+      {/* verdict strip */}
+      <Reveal i={2}>
+        <div className="mt-10 flex flex-wrap gap-3">
+          {(
+            [
+              [ok ? "Market price (live)" : "Market price (reference)", PS(p), "what buyers pay today", "bad"],
+              ["Implied growth at that price", imp ? `${imp.g.toFixed(0)}%/yr` : ">400%/yr", "5 straight years, reverse DCF", "bad"],
+              ["Our buy trigger", PS(entry), `bull case at a ${hr.toFixed(0)}% hurdle`, "head"],
+              ["IRR if bought today", `${irrM >= 0 ? "+" : ""}${irrM.toFixed(1)}%`, "to FY2030, conceding the bull case", irrOk ? "head" : "bad"],
+            ] as const
+          ).map(([k, v, sub, toneCls]) => (
+            <div
+              key={k}
+              className="min-w-[150px] flex-1 rounded-xl border px-4 py-3"
+              style={{
+                borderColor: toneCls === "head" ? t.accent : "var(--color-hot, #dc2626)",
+                background: toneCls === "head" ? "var(--color-accent-soft)" : "rgba(220,38,38,0.06)",
+              }}
+            >
+              <div className="text-[11.5px]" style={{ color: t.fgDim }}>
+                {k}
+              </div>
+              <div className="text-[24px] font-semibold tabular-nums tracking-tight" style={{ color: t.ink }}>
+                {v}
+              </div>
+              <div className="text-[10.5px]" style={{ color: t.fgMute }}>
+                {sub}
+              </div>
+            </div>
+          ))}
+        </div>
+      </Reveal>
+
+      <div className="mt-6 grid grid-cols-1 gap-5 lg:grid-cols-2">
+        {/* three sliders */}
+        <Reveal i={3}>
+          <div className="rounded-2xl border border-line p-6" style={{ background: t.surface }}>
+            <h3 className="text-[15px] font-semibold" style={{ color: t.ink }}>
+              The three numbers that matter
+            </h3>
+            <p className="mb-4 font-mono text-[10px] uppercase tracking-[0.14em]" style={{ color: t.fgMute }}>
+              defaults are our model&apos;s assumptions
+            </p>
+            <Slider
+              label="Bull-case FY2030 revenue (concede the whole bull story)"
+              ours={`ours: $${OURS.bRev}B — our super-bull case (7.4× today)`}
+              value={bRev}
+              fmt={(n) => `$${n.toFixed(1)}B`}
+              min={4}
+              max={40}
+              step={0.5}
+              onChange={setBRev}
+            />
+            <Slider
+              label="Required IRR (your hurdle rate)"
+              ours={`ours: ${OURS.hr}% — what we demand to hold a story stock`}
+              value={hr}
+              fmt={P1}
+              min={8}
+              max={25}
+              step={0.5}
+              onChange={setHr}
+            />
+            <Slider
+              label="Market-level discount rate (for the implied-growth solve)"
+              ours={`ours: ${OURS.rw}% — a market rate, not our 21.0% company WACC`}
+              value={rw}
+              fmt={P1}
+              min={7}
+              max={16}
+              step={0.1}
+              onChange={setRw}
+            />
+            <p className="mt-1 text-[12px] leading-relaxed" style={{ color: t.fgMute }}>
+              Held fixed here (edit them in the full lab): {OURS.bM}% mature EBITDA
+              margin, {OURS.bX}× mature EV/EBITDA, ${OURS.netDebt}M net debt,{" "}
+              {OURS.shares}M diluted shares (FactSet Q1&apos;26).
+            </p>
+          </div>
+        </Reveal>
+
+        {/* outputs */}
+        <Reveal i={4}>
+          <div className="rounded-2xl border border-line p-6" style={{ background: t.surface }}>
+            <h3 className="text-[15px] font-semibold" style={{ color: t.ink }}>
+              What the model says
+            </h3>
+            <p className="mb-4 font-mono text-[10px] uppercase tracking-[0.14em]" style={{ color: t.fgMute }}>
+              reverse DCF · entry price
+            </p>
+            <Row k="Growth the market is prepaying for" v={imp ? `${P1(imp.g)} /yr × 5 yrs` : "—"} />
+            <Row k="Implied FY2030 revenue" v={imp ? `${B(imp.rev)} (${(imp.rev / BASE_REV).toFixed(0)}× today)` : "—"} />
+            <Row k="Bull-case FY2030 value / share" v={PS(ps30)} />
+            <Row k="Entry price today (buy trigger)" v={PS(entry)} strong />
+            <Row k="Fall needed to reach the trigger" v={`${Math.max(0, down).toFixed(0)}%`} />
+            <div
+              className="mt-4 rounded-xl border-l-[3px] px-4 py-3 text-[13px] leading-relaxed"
+              style={{ borderColor: "#d97706", background: "#fdf6ec", color: t.ink2 }}
+            >
+              <b>
+                Sell / avoid at {PS(p)} — buy below {PS(entry)}.
+              </b>{" "}
+              Even granting ${bRev.toFixed(0)}B of FY2030 revenue, a buyer today
+              earns {irrM.toFixed(1)}%/yr against a {hr.toFixed(0)}% hurdle.
+            </div>
+          </div>
+        </Reveal>
+      </div>
+
+      {/* deep-dive link */}
+      <Reveal>
+        <div className="mt-8 flex flex-wrap items-center justify-between gap-4">
+          <p className="text-[12.5px]" style={{ color: t.fgMute }}>
+            {valuation.note}
+          </p>
+          <a
+            href="/valuation"
+            className="group inline-flex h-11 items-center gap-2 rounded-full px-5 text-[14px] font-medium transition-all hover:-translate-y-[1px]"
+            style={{
+              color: t.accent,
+              border: `1px solid ${t.lineStrong}`,
+              background: "rgba(255,255,255,0.7)",
+            }}
+          >
+            Want to look further? Open the full valuation lab
+            <ArrowRight size={14} weight="bold" className="transition-transform group-hover:translate-x-0.5" />
+          </a>
+        </div>
+      </Reveal>
+    </Section>
+  );
+}
+
+// ============================================================================
+// FULL LAB — /valuation page (both tabs, every assumption editable)
+// ============================================================================
+
+// ---------- Tab 1 · The group DCF -------------------------------------------
 const DCF_DEFAULTS = {
   wacc: 21.03,
   gTerm: 3.5,
@@ -211,9 +452,7 @@ function impliedWacc(S: DcfState): number | null {
 }
 
 function DcfTab() {
-  const [S, setS] = useState<DcfState>(() =>
-    JSON.parse(JSON.stringify(DCF_DEFAULTS)),
-  );
+  const [S, setS] = useState<DcfState>(() => JSON.parse(JSON.stringify(DCF_DEFAULTS)));
   const set = (k: keyof DcfState) => (v: number) => setS((p) => ({ ...p, [k]: v }));
   const setArr = (k: "growth" | "fcfM", i: number) => (v: number) =>
     setS((p) => {
@@ -229,10 +468,7 @@ function DcfTab() {
   return (
     <div>
       {/* headline comparison */}
-      <div
-        className="rounded-2xl border border-line p-6"
-        style={{ background: t.surface }}
-      >
+      <div className="rounded-2xl border border-line p-6" style={{ background: t.surface }}>
         <div className="flex flex-wrap gap-3">
           {(
             [
@@ -252,10 +488,7 @@ function DcfTab() {
               <div className="text-[11.5px]" style={{ color: t.fgDim }}>
                 {k}
               </div>
-              <div
-                className="text-[26px] font-semibold tabular-nums tracking-tight"
-                style={{ color: t.ink }}
-              >
+              <div className="text-[26px] font-semibold tabular-nums tracking-tight" style={{ color: t.ink }}>
                 {PS(v)}
               </div>
               <UpPill ps={v} price={S.price} />
@@ -265,31 +498,25 @@ function DcfTab() {
         <p className="mt-3 text-[12.5px] leading-relaxed" style={{ color: t.fgMute }}>
           The perpetuity leg is the pure discounted-cash-flow answer; the blended
           figure is lifted by the EBITDA-exit leg (a multiple, not discounting).
-          Two independent methods, one honest range.
+          Defaults reproduce the team workbook: $8.95 / $32.07 / $20.51.
         </p>
       </div>
 
       <div className="mt-5 grid grid-cols-1 gap-5 lg:grid-cols-2">
         {/* global assumptions */}
-        <div
-          className="rounded-2xl border border-line p-6"
-          style={{ background: t.surface }}
-        >
+        <div className="rounded-2xl border border-line p-6" style={{ background: t.surface }}>
           <h3 className="text-[15px] font-semibold" style={{ color: t.ink }}>
             Global assumptions
           </h3>
-          <p
-            className="mb-4 font-mono text-[10px] uppercase tracking-[0.14em]"
-            style={{ color: t.fgMute }}
-          >
+          <p className="mb-4 font-mono text-[10px] uppercase tracking-[0.14em]" style={{ color: t.fgMute }}>
             shared across both terminal methods
           </p>
-          <Slider label="Discount rate (WACC)" value={S.wacc} fmt={P1} min={6} max={30} step={0.01} onChange={set("wacc")} />
-          <Slider label="Terminal growth (perpetual)" value={S.gTerm} fmt={P1} min={1} max={6} step={0.1} onChange={set("gTerm")} />
-          <Slider label="Terminal EBITDA exit multiple" value={S.exMult} fmt={(n) => `${n.toFixed(1)}×`} min={5} max={30} step={0.5} onChange={set("exMult")} />
-          <Slider label="FY2030 EBITDA margin (exit leg)" value={S.ebM} fmt={P1} min={8} max={24} step={0.1} onChange={set("ebM")} />
-          <Slider label="Blend — perpetuity vs EBITDA" value={S.blend} fmt={(n) => `${n}% / ${100 - n}%`} min={0} max={100} step={5} onChange={set("blend")} />
-          <Slider label="Reference share price (for upside)" value={S.price} fmt={PS} min={20} max={400} step={0.5} onChange={set("price")} />
+          <Slider label="Discount rate (WACC)" ours="ours: 21.03% — our calculated company WACC" value={S.wacc} fmt={P1} min={6} max={30} step={0.01} onChange={set("wacc")} />
+          <Slider label="Terminal growth (perpetual)" ours="ours: 3.5% — long-run nominal GDP-ish" value={S.gTerm} fmt={P1} min={1} max={6} step={0.1} onChange={set("gTerm")} />
+          <Slider label="Terminal EBITDA exit multiple" ours="ours: 13.5× — mature industrial multiple" value={S.exMult} fmt={(n) => `${n.toFixed(1)}×`} min={5} max={30} step={0.5} onChange={set("exMult")} />
+          <Slider label="FY2030 EBITDA margin (exit leg)" ours="ours: 15.8% — workbook FY30 margin" value={S.ebM} fmt={P1} min={8} max={24} step={0.1} onChange={set("ebM")} />
+          <Slider label="Blend — perpetuity vs EBITDA" ours="ours: 50/50 — workbook final-valuation block" value={S.blend} fmt={(n) => `${n}% / ${100 - n}%`} min={0} max={100} step={5} onChange={set("blend")} />
+          <Slider label="Reference share price (for upside)" ours="workbook reference: $257.98" value={S.price} fmt={PS} min={20} max={400} step={0.5} onChange={set("price")} />
           <div className="mt-1 flex flex-wrap items-center gap-4">
             <label className="flex items-center gap-2 text-[12px]" style={{ color: t.fgDim }}>
               Net debt $M
@@ -304,7 +531,7 @@ function DcfTab() {
               className="rounded-full border border-line px-4 py-1.5 text-[12px] font-medium transition-colors hover:bg-sunken"
               style={{ color: t.fgDim, background: t.surface }}
             >
-              Reset to workbook defaults
+              Reset to our model
             </button>
           </div>
           <p className="mt-3 text-[12px] leading-relaxed" style={{ color: t.fgMute }}>
@@ -320,18 +547,12 @@ function DcfTab() {
         </div>
 
         {/* forecast table */}
-        <div
-          className="rounded-2xl border border-line p-6"
-          style={{ background: t.surface }}
-        >
+        <div className="rounded-2xl border border-line p-6" style={{ background: t.surface }}>
           <h3 className="text-[15px] font-semibold" style={{ color: t.ink }}>
             Forecast — edit growth &amp; FCF margin per year
           </h3>
-          <p
-            className="mb-4 font-mono text-[10px] uppercase tracking-[0.14em]"
-            style={{ color: t.fgMute }}
-          >
-            FY2026–FY2030 · the table is the model
+          <p className="mb-4 font-mono text-[10px] uppercase tracking-[0.14em]" style={{ color: t.fgMute }}>
+            FY2026–FY2030 · ours: 70/45/30/22/18% growth · −1.3→8.0% UFCF ramp
           </p>
           {/* revenue / FCF bars */}
           <div className="mb-4 flex h-[110px] items-end gap-2">
@@ -346,10 +567,7 @@ function DcfTab() {
                   >
                     <div
                       className="absolute bottom-0 w-full rounded-t-md"
-                      style={{
-                        height: `${(fh / (bh + 4)) * 100}%`,
-                        background: t.accentGrad,
-                      }}
+                      style={{ height: `${(fh / (bh + 4)) * 100}%`, background: t.accentGrad }}
                     />
                   </div>
                   <div className="mt-1 font-mono text-[9.5px]" style={{ color: t.fgMute }}>
@@ -408,93 +626,38 @@ function DcfTab() {
   );
 }
 
-// ---------- Tab 2 · Reverse DCF & entry price -------------------------------
-const FCFM_RAMP = [-1.31, 1.98, 4.75, 6.7, 8.01];
-const G_TERM = 3.5,
-  EX_MULT = 13.5,
-  EB_M = 15.82;
-
-interface Scen {
-  name: string;
-  p: number;
-  rev: number;
-  m: number;
-  x: number;
-}
-
-const REV_DEFAULTS = {
-  rw: 10.5,
-  bRev: 15,
-  bM: 22,
-  bX: 16,
-  hr: 12,
-  netDebt: 456, // $M (FactSet Q1'26)
-  shares: 319.7, // M
-  scen: [
-    { name: "Bull — AI power land-grab won", p: 25, rev: 15, m: 22, x: 16 },
-    { name: "Base — strong industrial grower", p: 50, rev: 9.2, m: 16, x: 12 },
-    { name: "Bear — capex digestion / competition", p: 25, rev: 5, m: 10, x: 8 },
-  ] as Scen[],
-};
-
-function blendConstG(g5: number, w: number, netDebt: number, shares: number) {
-  const wacc = w / 100,
-    g = G_TERM / 100,
-    nd = netDebt * 1e6,
-    sh = shares * 1e6;
-  let rev = BASE_REV,
-    pv1 = 0,
-    u = 0;
-  for (let i = 0; i < 5; i++) {
-    rev *= 1 + g5 / 100;
-    u = rev * (FCFM_RAMP[i] / 100);
-    const cf = i === 0 ? u * 0.5 : u;
-    pv1 += cf / Math.pow(1 + wacc, i + 0.5);
-  }
-  const perp =
-    (pv1 + (u * (1 + g)) / (wacc - g) / Math.pow(1 + wacc, YRS) - nd) / sh;
-  const eb =
-    (pv1 + ((rev * (EB_M / 100) * EX_MULT) / Math.pow(1 + wacc, YRS)) - nd) / sh;
-  return { ps: (perp + eb) / 2, rev2030: rev };
-}
-
+// ---------- Tab 2 · Reverse DCF & entry price (full) --------------------------
 function ReverseTab({ livePrice }: { livePrice: number }) {
   const [S, setS] = useState(() => ({
-    ...JSON.parse(JSON.stringify(REV_DEFAULTS)),
     price: livePrice,
+    rw: OURS.rw,
+    bRev: OURS.bRev,
+    bM: OURS.bM,
+    bX: OURS.bX,
+    hr: OURS.hr,
+    netDebt: OURS.netDebt,
+    shares: OURS.shares,
+    scen: JSON.parse(JSON.stringify(SCEN_DEFAULTS)) as Scen[],
   }));
   const set = (k: string) => (v: number) => setS((p: typeof S) => ({ ...p, [k]: v }));
   const setScen = (i: number, k: keyof Scen) => (v: number) =>
-    setS((p: typeof S) => {
-      const scen = p.scen.map((r: Scen, j: number) =>
-        j === i ? { ...r, [k]: v } : r,
-      );
-      return { ...p, scen };
-    });
+    setS((p: typeof S) => ({
+      ...p,
+      scen: p.scen.map((r: Scen, j: number) => (j === i ? { ...r, [k]: v } : r)),
+    }));
 
-  const imp = useMemo(() => {
-    let lo = 0,
-      hi = 400;
-    if (blendConstG(hi, S.rw, S.netDebt, S.shares).ps < S.price) return null;
-    for (let i = 0; i < 70; i++) {
-      const m = (lo + hi) / 2;
-      if (blendConstG(m, S.rw, S.netDebt, S.shares).ps < S.price) lo = m;
-      else hi = m;
-    }
-    const g = (lo + hi) / 2;
-    return { g, rev: blendConstG(g, S.rw, S.netDebt, S.shares).rev2030 };
-  }, [S]);
+  const imp = useMemo(
+    () => solveImpliedGrowth(S.price, S.rw, S.netDebt, S.shares),
+    [S.price, S.rw, S.netDebt, S.shares],
+  );
 
-  const fwd = (revB: number, mPct: number, mult: number) =>
-    (revB * 1e9 * (mPct / 100) * mult - S.netDebt * 1e6) / (S.shares * 1e6);
-
-  const ps30 = fwd(S.bRev, S.bM, S.bX);
+  const ps30 = fwdPs(S.bRev, S.bM, S.bX, S.netDebt, S.shares);
   const entry = ps30 / Math.pow(1 + S.hr / 100, YRS);
   const irrM = (Math.pow(ps30 / S.price, 1 / YRS) - 1) * 100;
   const down = (1 - entry / S.price) * 100;
 
   const scenRows = S.scen.map((r: Scen) => {
-    const p30 = fwd(r.rev, r.m, r.x);
+    const p30 = fwdPs(r.rev, r.m, r.x, S.netDebt, S.shares);
     const pv = p30 / Math.pow(1 + S.rw / 100, YRS);
     return { ...r, p30, pv, wt: (pv * r.p) / 100 };
   });
@@ -505,10 +668,7 @@ function ReverseTab({ livePrice }: { livePrice: number }) {
   return (
     <div>
       {/* verdict strip */}
-      <div
-        className="rounded-2xl border border-line p-6"
-        style={{ background: t.surface }}
-      >
+      <div className="rounded-2xl border border-line p-6" style={{ background: t.surface }}>
         <div className="flex flex-wrap gap-3">
           {(
             [
@@ -535,10 +695,7 @@ function ReverseTab({ livePrice }: { livePrice: number }) {
               <div className="text-[11.5px]" style={{ color: t.fgDim }}>
                 {k}
               </div>
-              <div
-                className="text-[24px] font-semibold tabular-nums tracking-tight"
-                style={{ color: t.ink }}
-              >
+              <div className="text-[24px] font-semibold tabular-nums tracking-tight" style={{ color: t.ink }}>
                 {v}
               </div>
               <div className="text-[10.5px]" style={{ color: t.fgMute }}>
@@ -549,20 +706,16 @@ function ReverseTab({ livePrice }: { livePrice: number }) {
         </div>
         <div
           className="mt-4 rounded-xl border-l-[3px] px-4 py-3 text-[13px] leading-relaxed"
-          style={{
-            borderColor: "#d97706",
-            background: "#fdf6ec",
-            color: t.ink2,
-          }}
+          style={{ borderColor: "#d97706", background: "#fdf6ec", color: t.ink2 }}
         >
           <b>
             Sell / avoid at {PS(S.price)} — buy below {PS(entry)}.
           </b>{" "}
-          Even conceding the full bull case (FY2030 revenue of $
-          {S.bRev.toFixed(0)}B — {((S.bRev * 1e9) / BASE_REV).toFixed(1)}× today —
-          at {S.bM.toFixed(0)}% EBITDA margins and a {S.bX.toFixed(0)}× mature
-          multiple), a buyer today earns {irrM.toFixed(1)}%/yr. The stock must fall
-          ~{down.toFixed(0)}% before it pays a {S.hr.toFixed(0)}% hurdle.{" "}
+          Even conceding the full bull case (FY2030 revenue of ${S.bRev.toFixed(0)}B
+          — {((S.bRev * 1e9) / BASE_REV).toFixed(1)}× today — at {S.bM.toFixed(0)}%
+          EBITDA margins and a {S.bX.toFixed(0)}× mature multiple), a buyer today
+          earns {irrM.toFixed(1)}%/yr. The stock must fall ~{down.toFixed(0)}%
+          before it pays a {S.hr.toFixed(0)}% hurdle.{" "}
           {imp
             ? `Meanwhile the market price implies ${imp.g.toFixed(0)}%/yr revenue growth for five straight years (${B(imp.rev)} by FY2030).`
             : ""}
@@ -571,27 +724,21 @@ function ReverseTab({ livePrice }: { livePrice: number }) {
 
       <div className="mt-5 grid grid-cols-1 gap-5 lg:grid-cols-2">
         {/* reverse DCF */}
-        <div
-          className="rounded-2xl border border-line p-6"
-          style={{ background: t.surface }}
-        >
+        <div className="rounded-2xl border border-line p-6" style={{ background: t.surface }}>
           <h3 className="text-[15px] font-semibold" style={{ color: t.ink }}>
             1 · Reverse DCF — what does the price imply?
           </h3>
-          <p
-            className="mb-4 font-mono text-[10px] uppercase tracking-[0.14em]"
-            style={{ color: t.fgMute }}
-          >
+          <p className="mb-4 font-mono text-[10px] uppercase tracking-[0.14em]" style={{ color: t.fgMute }}>
             expectations investing: invert the model
           </p>
-          <Slider label="Market price" value={S.price} fmt={PS} min={20} max={400} step={0.5} onChange={set("price")} />
-          <Slider label="Reasonable discount rate (the market's, not the 21% WACC)" value={S.rw} fmt={P1} min={7} max={16} step={0.1} onChange={set("rw")} />
+          <Slider label="Market price" ours="defaults to the live quote" value={S.price} fmt={PS} min={20} max={400} step={0.5} onChange={set("price")} />
+          <Slider label="Reasonable discount rate" ours={`ours: ${OURS.rw}% — the market's rate, not our 21.0% company WACC`} value={S.rw} fmt={P1} min={7} max={16} step={0.1} onChange={set("rw")} />
           <div className="mt-2">
             <Row k="Implied revenue growth, next 5 yrs (constant)" v={imp ? `${P1(imp.g)} /yr` : "—"} />
             <Row k="Implied FY2030 revenue" v={imp ? B(imp.rev) : "—"} />
             <Row k="× today's revenue ($2.02B)" v={imp ? `${(imp.rev / BASE_REV).toFixed(0)}×` : "—"} />
-            <Row k="Your team's bull path gets to" v="$9.34B" />
-            <Row k="Gap: market vs your bull case" v={imp ? `${(imp.rev / 9.34e9).toFixed(1)}×` : "—"} />
+            <Row k="Our team's bull path gets to" v="$9.34B" />
+            <Row k="Gap: market vs our bull case" v={imp ? `${(imp.rev / 9.34e9).toFixed(1)}×` : "—"} />
           </div>
           <p className="mt-3 text-[12px] leading-relaxed" style={{ color: t.fgMute }}>
             Method: hold the workbook&apos;s UFCF-margin ramp and 50/50 terminal
@@ -602,23 +749,17 @@ function ReverseTab({ livePrice }: { livePrice: number }) {
         </div>
 
         {/* entry price */}
-        <div
-          className="rounded-2xl border border-line p-6"
-          style={{ background: t.surface }}
-        >
+        <div className="rounded-2xl border border-line p-6" style={{ background: t.surface }}>
           <h3 className="text-[15px] font-semibold" style={{ color: t.ink }}>
             2 · Entry price — when does it become a buy?
           </h3>
-          <p
-            className="mb-4 font-mono text-[10px] uppercase tracking-[0.14em]"
-            style={{ color: t.fgMute }}
-          >
+          <p className="mb-4 font-mono text-[10px] uppercase tracking-[0.14em]" style={{ color: t.fgMute }}>
             value FY2030 forward, discount back at your hurdle
           </p>
-          <Slider label="Bull-case FY2030 revenue" value={S.bRev} fmt={(n) => `$${n.toFixed(1)}B`} min={4} max={40} step={0.5} onChange={set("bRev")} />
-          <Slider label="Mature EBITDA margin (FY2030)" value={S.bM} fmt={P1} min={8} max={30} step={0.5} onChange={set("bM")} />
-          <Slider label="Mature EV/EBITDA multiple" value={S.bX} fmt={(n) => `${n.toFixed(1)}×`} min={6} max={25} step={0.5} onChange={set("bX")} />
-          <Slider label="Required IRR (hurdle)" value={S.hr} fmt={P1} min={8} max={25} step={0.5} onChange={set("hr")} />
+          <Slider label="Bull-case FY2030 revenue" ours={`ours: $${OURS.bRev}B — our super-bull case`} value={S.bRev} fmt={(n) => `$${n.toFixed(1)}B`} min={4} max={40} step={0.5} onChange={set("bRev")} />
+          <Slider label="Mature EBITDA margin (FY2030)" ours={`ours: ${OURS.bM}% — mature industrial-tech leader`} value={S.bM} fmt={P1} min={8} max={30} step={0.5} onChange={set("bM")} />
+          <Slider label="Mature EV/EBITDA multiple" ours={`ours: ${OURS.bX}× — post-entry, competed-down multiple`} value={S.bX} fmt={(n) => `${n.toFixed(1)}×`} min={6} max={25} step={0.5} onChange={set("bX")} />
+          <Slider label="Required IRR (hurdle)" ours={`ours: ${OURS.hr}% — our demanded annual return`} value={S.hr} fmt={P1} min={8} max={25} step={0.5} onChange={set("hr")} />
           <div className="mt-2">
             <Row k="FY2030 EBITDA" v={B(S.bRev * 1e9 * (S.bM / 100))} />
             <Row k="FY2030 value / share" v={PS(ps30)} />
@@ -635,18 +776,12 @@ function ReverseTab({ livePrice }: { livePrice: number }) {
       </div>
 
       {/* scenarios */}
-      <div
-        className="mt-5 rounded-2xl border border-line p-6"
-        style={{ background: t.surface }}
-      >
+      <div className="mt-5 rounded-2xl border border-line p-6" style={{ background: t.surface }}>
         <h3 className="text-[15px] font-semibold" style={{ color: t.ink }}>
           3 · Scenario-weighted value
         </h3>
-        <p
-          className="mb-3 font-mono text-[10px] uppercase tracking-[0.14em]"
-          style={{ color: t.fgMute }}
-        >
-          edit any cell · probabilities auto-checked · PV at the panel-1 discount rate
+        <p className="mb-3 font-mono text-[10px] uppercase tracking-[0.14em]" style={{ color: t.fgMute }}>
+          edit any cell · probabilities auto-checked · ours: 25/50/25 bull-base-bear
         </p>
         <div className="overflow-x-auto">
           <table className="w-full border-collapse text-[12px]">
@@ -683,10 +818,7 @@ function ReverseTab({ livePrice }: { livePrice: number }) {
                 <td className={`${TD} text-left font-semibold`} style={{ color: t.ink }}>
                   Probability-weighted value
                 </td>
-                <td
-                  className={TD}
-                  style={{ color: probSum === 100 ? t.fgMute : "var(--color-hot, #dc2626)" }}
-                >
+                <td className={TD} style={{ color: probSum === 100 ? t.fgMute : "var(--color-hot, #dc2626)" }}>
                   {probSum}%
                 </td>
                 <td colSpan={5} />
@@ -709,46 +841,50 @@ function ReverseTab({ livePrice }: { livePrice: number }) {
   );
 }
 
-// ---------- the section -----------------------------------------------------
-export function Valuation() {
+/** Full lab — rendered by app/valuation/page.tsx. */
+export function ValuationLab() {
   const { ok, price } = useLivePrice();
   const p = ok && price != null ? price : 300;
   const [tab, setTab] = useState<0 | 1>(0);
 
   return (
-    <Section id="valuation" tone="surface">
-      <SectionHeader {...valuation} />
+    <div className="mx-auto max-w-7xl px-5 py-16 sm:px-8">
+      <p className="font-mono text-[11px] uppercase tracking-[0.2em]" style={{ color: t.accent }}>
+        The valuation lab · every assumption editable
+      </p>
+      <h1 className="mt-3 text-3xl font-semibold tracking-tight sm:text-4xl" style={{ color: t.ink }}>
+        Break the model. Please.
+      </h1>
+      <p className="mt-4 max-w-3xl text-[16px] leading-relaxed" style={{ color: t.fgDim }}>
+        The reverse DCF drives our price targets; the group DCF is the workbook it
+        inverts. Every slider shows the value our model uses (&quot;ours: …&quot;) —
+        drag anything and see what has to be true for a different answer.
+      </p>
 
-      <Reveal i={2}>
-        <div className="mt-10 inline-flex overflow-hidden rounded-full border border-line">
-          {["The DCF", "Reverse DCF & entry price"].map((label, i) => {
-            const on = tab === i;
-            return (
-              <button
-                key={label}
-                onClick={() => setTab(i as 0 | 1)}
-                className="px-5 py-2.5 text-[13.5px] font-medium transition-colors"
-                style={{
-                  background: on ? "var(--color-accent-soft)" : t.surface,
-                  color: on ? t.accent : t.fgDim,
-                }}
-              >
-                {label}
-              </button>
-            );
-          })}
-        </div>
-      </Reveal>
-
-      <div className="mt-6">
-        {tab === 0 ? <DcfTab /> : <ReverseTab livePrice={p} />}
+      <div className="mt-8 inline-flex overflow-hidden rounded-full border border-line">
+        {["Reverse DCF & entry price (our PT engine)", "The group DCF"].map((label, i) => {
+          const on = tab === i;
+          return (
+            <button
+              key={label}
+              onClick={() => setTab(i as 0 | 1)}
+              className="px-5 py-2.5 text-[13.5px] font-medium transition-colors"
+              style={{
+                background: on ? "var(--color-accent-soft)" : t.surface,
+                color: on ? t.accent : t.fgDim,
+              }}
+            >
+              {label}
+            </button>
+          );
+        })}
       </div>
 
-      <Reveal>
-        <p className="mt-5 text-[12.5px]" style={{ color: t.fgMute }}>
-          {valuation.note}
-        </p>
-      </Reveal>
-    </Section>
+      <div className="mt-6">{tab === 0 ? <ReverseTab livePrice={p} /> : <DcfTab />}</div>
+
+      <p className="mt-6 text-[12.5px]" style={{ color: t.fgMute }}>
+        {valuation.note}
+      </p>
+    </div>
   );
 }

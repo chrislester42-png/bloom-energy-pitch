@@ -11,6 +11,7 @@ import {
   Sources,
 } from "@/components/Sections";
 import { ReportHeader } from "@/components/ReportHeader";
+import { EconLens } from "@/components/EconLens";
 import { RecentNews } from "@/components/RecentNews";
 import { Financials } from "@/components/Financials";
 import { Valuation } from "@/components/Valuation";
@@ -35,6 +36,7 @@ export default function Home() {
       <WhatBloomIs />
       <RecentNews />
       <WhyNow />
+      <EconLens />
       <Competition />
       <Moat />
       <Financials />
