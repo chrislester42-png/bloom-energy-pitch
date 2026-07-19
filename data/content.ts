@@ -277,8 +277,8 @@ export const risks = {
 export const valuation = {
   eyebrow: "08 · Valuation",
   headline: "What does the price assume?",
-  dek: "Our price targets come from a reverse DCF: instead of asking what Bloom is worth, we ask what the market's price already pays for — then set the entry price where even the full bull case still earns our hurdle return. Defaults are our model's assumptions; drag them and see what has to be true.",
-  note: "Model-derived and provisional — educational research, not investment advice. The full lab (group DCF, per-year forecast table, scenario weighting) is one click deeper.",
+  dek: "Our price targets come from a reverse DCF: instead of asking what Bloom is worth, we ask what the market's price already pays for — then set the entry price where even the full bull case still earns our hurdle return. Defaults are our completed model's assumptions; drag them and see what has to be true.",
+  note: "Model-derived from the completed v5 workbook — educational research, not investment advice. The full lab (group DCF, per-year forecast table, scenario weighting, and the workbook's own rate–growth frontier) is one click deeper.",
 };
 
 export const theCall = {
@@ -287,7 +287,7 @@ export const theCall = {
   dek: "Bloom crossed a genuine inflection — but today's price already pays for the bull case. Drag the assumptions and decide what you have to believe.",
   conclusion:
     "Great company, demanding valuation. The position sizes to how much of the ~$20B backlog you believe converts at margin — and how much you trust revenue that's still half related-party. We land constructive but disciplined: own the inflection, respect the price.",
-  note: "Scenario outputs are model-derived and provisional — they move with the assumptions and will be refined as the model work continues.",
+  note: "Scenario outputs derive from the completed v5 workbook (audited build, Jul 2026); the reverse-DCF frontier in the valuation lab is the formal version of this argument.",
 };
 
 // Market reference — fallback when the live quote hasn't loaded.

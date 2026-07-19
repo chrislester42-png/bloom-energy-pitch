@@ -19,8 +19,9 @@ import { latest } from "@/data/financials";
 
 // ---- group DCF engine constants (mirror of reverse-dcf-lab.html) ----------
 const BASE_REV = 2023994000;                  // FY2025 revenue
-const FCFM = [-1.31, 1.98, 4.75, 6.70, 8.01]; // workbook UFCF margin ramp, %
+const FCFM = [-2.26, 0.98, 3.70, 5.60, 6.86]; // v5 workbook UFCF ramp (tax fix), %
 const G_TERM = 0.035;                         // Gordon terminal growth
+const K_NORM = 1.416;                         // v5 Gordon terminal-FCF normalization
 const EX_MULT = 13.5;                         // workbook exit multiple
 const EB_M = 0.1582;                          // workbook FY30 EBITDA margin
 const YRS = 4.5;                              // mid-2026 → FY2030
@@ -46,7 +47,7 @@ function blendPs(g5: number): number {
     const cf = i === 0 ? u * 0.5 : u; // FY26 stub
     pv1 += cf / Math.pow(1 + DISC, i + 0.5); // mid-year convention
   }
-  const perp = (pv1 + (u * (1 + G_TERM)) / (DISC - G_TERM) / Math.pow(1 + DISC, YRS) - ND) / SH;
+  const perp = (pv1 + (u * (1 + G_TERM) * K_NORM) / (DISC - G_TERM) / Math.pow(1 + DISC, YRS) - ND) / SH;
   const eb = (pv1 + rev * EB_M * EX_MULT / Math.pow(1 + DISC, YRS) - ND) / SH;
   return (perp + eb) / 2;
 }

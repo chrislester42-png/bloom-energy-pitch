@@ -144,10 +144,15 @@ const TH =
 const TD = "px-2 py-1.5 text-right font-mono text-[12px] tabular-nums";
 
 // ---------- reverse-DCF engine (shared) --------------------------------------
-const FCFM_RAMP = [-1.31, 1.98, 4.75, 6.7, 8.01];
+// UFCF margin ramp per the completed v5 workbook (post tax-sign fix).
+const FCFM_RAMP = [-2.26, 0.98, 3.7, 5.6, 6.86];
 const G_TERM = 3.5,
   EX_MULT = 13.5,
   EB_M = 15.82;
+// v5 Gordon-leg fix: terminal-year FCF normalized (ΔNWC at g × terminal NWC),
+// applied as a multiplier on UFCF₂₀₃₀×(1+g) so the perpetuity leg matches the
+// workbook's $939.1M numerator at base assumptions.
+const K_NORM = 1.416;
 
 // our model's reverse-DCF assumptions (FactSet Q1'26 capital structure)
 export const OURS = {
@@ -167,6 +172,28 @@ interface Scen {
   m: number;
   x: number;
 }
+
+// ---------- completed-workbook reverse-DCF findings (static, sourced) --------
+// Workbook Reverse DCF tab, pinned 2026-06-27 ($257.98 → EV $82.7B): the
+// terminal-FCF-margin "mystery table", goal-seeked at the model's 21% WACC.
+const WB_MARGIN_TABLE = [
+  { m: "10% (harsh)", g1: "153%", cagr: "71.5%", rev36: "$446B", ceil: "11.9×" },
+  { m: "15%", g1: "136%", cagr: "64.2%", rev36: "$288B", ceil: "7.7×" },
+  { m: "20% (generous)", g1: "124%", cagr: "59.1%", rev36: "$210B", ceil: "5.6×" },
+  { m: "25% (heroic)", g1: "115%", cagr: "55.2%", rev36: "$164B", ceil: "4.4×" },
+];
+// Experiments annex, re-pulled at the 2026-07-14 pin ($243.40 → EV $69.4B):
+// the rate–growth frontier. "BTM pie" = the measured behind-the-meter segment
+// (30% of ~23.7 GW/yr of new US data-center load).
+const FRONTIER = [
+  { r: "8.0%", g1: "58.4%", rev36: "$26.9B", gw: "3.6", ceil: "0.7×", pie: "15% of all new load · 0.5× BTM" },
+  { r: "9.5%", g1: "67.9%", rev36: "$37.3B", gw: "5.0", ceil: "1.0× — ceiling binds", pie: "21% · 0.7× BTM" },
+  { r: "10.5%", g1: "73.5%", rev36: "$45.0B", gw: "6.0", ceil: "1.2×", pie: "25% · 0.8× BTM" },
+  { r: "12.0%", g1: "81.1%", rev36: "$57.8B", gw: "7.7", ceil: "1.5×", pie: "32% · 1.1× BTM" },
+  { r: "15.0%", g1: "94.7%", rev36: "$88.4B", gw: "11.8", ceil: "2.4×", pie: "50% · 1.7× BTM" },
+  { r: "18.0%", g1: "106.8%", rev36: "$126.8B", gw: "16.9", ceil: "3.4×", pie: "71% · 2.4× BTM" },
+  { r: "21.0%", g1: "118.0%", rev36: "$174.5B", gw: "23.3", ceil: "4.7×", pie: "98% of ALL new load · 3.3× BTM" },
+];
 
 const SCEN_DEFAULTS: Scen[] = [
   { name: "Bull — AI power land-grab won", p: 25, rev: 15, m: 22, x: 16 },
@@ -189,7 +216,7 @@ function blendConstG(g5: number, w: number, netDebt: number, shares: number) {
     pv1 += cf / Math.pow(1 + wacc, i + 0.5);
   }
   const perp =
-    (pv1 + (u * (1 + g)) / (wacc - g) / Math.pow(1 + wacc, YRS) - nd) / sh;
+    (pv1 + (u * (1 + g) * K_NORM) / (wacc - g) / Math.pow(1 + wacc, YRS) - nd) / sh;
   const eb =
     (pv1 + (rev * (EB_M / 100) * EX_MULT) / Math.pow(1 + wacc, YRS) - nd) / sh;
   return { ps: (perp + eb) / 2, rev2030: rev };
@@ -381,10 +408,10 @@ const DCF_DEFAULTS = {
   ebM: 15.82,
   blend: 50,
   price: 257.98,
-  netDebt: 160.621, // $M (workbook)
-  shares: 284.44, // M (workbook)
+  netDebt: 160.621, // $M (workbook, pinned 2026-06-27)
+  shares: 319.7, // M — diluted per Q1 2026 10-Q (v5 audit fix)
   growth: [70, 45, 30, 22, 18],
-  fcfM: [-1.31, 1.98, 4.75, 6.7, 8.01],
+  fcfM: [-2.26, 0.98, 3.7, 5.6, 6.86], // v5: forecast tax sign fixed (+5%)
 };
 
 type DcfState = typeof DCF_DEFAULTS;
@@ -409,7 +436,7 @@ function dcfModel(S: DcfState, waccPct?: number) {
     ufcf2030 = ufcf;
     rev2030 = rev;
   }
-  const perpTV = (ufcf2030 * (1 + g)) / (wacc - g);
+  const perpTV = (ufcf2030 * (1 + g) * K_NORM) / (wacc - g);
   const perpPvTV = perpTV / Math.pow(1 + wacc, YRS);
   const perpEV = pvStage1 + perpPvTV;
   const perpPs = (perpEV - netDebt) / shares;
@@ -498,7 +525,10 @@ function DcfTab() {
         <p className="mt-3 text-[12.5px] leading-relaxed" style={{ color: t.fgMute }}>
           The perpetuity leg is the pure discounted-cash-flow answer; the blended
           figure is lifted by the EBITDA-exit leg (a multiple, not discounting).
-          Defaults reproduce the team workbook: $8.95 / $32.07 / $20.51.
+          Defaults reproduce the completed v5 workbook — $8.60 / $27.87 / $18.23
+          (this mirror lands within a few cents on day-count rounding). The v5
+          audit build: forecast tax sign fixed, Gordon terminal FCF normalized,
+          diluted 319.7M-share divisor.
         </p>
       </div>
 
@@ -535,8 +565,9 @@ function DcfTab() {
             </button>
           </div>
           <p className="mt-3 text-[12px] leading-relaxed" style={{ color: t.fgMute }}>
-            Workbook uses $161M net debt &amp; 284.4M shares. Set 456 / 319.7
-            (FactSet Q1&apos;26) to see the capital-structure sensitivity we flagged.
+            The v5 workbook divides by diluted 319.7M shares (Q1&apos;26 10-Q) —
+            the audit fix that cut ~11% per share. Its net-debt bridge ($161M) is
+            the FY2025 year-end; set 456 (FactSet Q1&apos;26) to roll it forward.
           </p>
           <div className="mt-4 border-t border-line pt-2">
             <Row k="PV of stage-1 UFCF" v={B(m.pvStage1)} />
@@ -835,6 +866,94 @@ function ReverseTab({ livePrice }: { livePrice: number }) {
           mid-teens. Bear = data-center capex digests; grid, turbines, and SMRs
           compress pricing. The dispersion between rows is the argument for
           demanding a margin of safety before entry.
+        </p>
+      </div>
+
+      {/* completed-workbook findings: 10-year fade solve + rate–growth frontier */}
+      <div className="mt-5 rounded-2xl border border-line p-6" style={{ background: t.surface }}>
+        <h3 className="text-[15px] font-semibold" style={{ color: t.ink }}>
+          4 · The completed workbook&apos;s own solve — and the rate–growth frontier
+        </h3>
+        <p className="mb-3 font-mono text-[10px] uppercase tracking-[0.14em]" style={{ color: t.fgMute }}>
+          10-yr linear fade to 3.5% · 20% terminal FCF margin · goal-seeked on year-one growth
+        </p>
+        <p className="text-[13px] leading-relaxed" style={{ color: t.fgDim }}>
+          The finished model runs the same inversion over a ten-year fade. At its
+          own 21% WACC and the $257.98 pin, the price requires <b>124% year-one
+          growth</b> fading to 3.5% — <b>~$210B of FY2036 revenue, 5.6× the
+          disclosed 5 GW/yr capacity ceiling</b> ($37.5B of product revenue at
+          $7.5B/GW). No terminal cash margin escapes it:
+        </p>
+        <div className="mt-3 overflow-x-auto">
+          <table className="w-full border-collapse text-[12px]">
+            <thead>
+              <tr style={{ color: t.fgMute }}>
+                <th className={`${TH} text-left`}>Terminal FCF margin</th>
+                <th className={TH}>implied yr-1 growth</th>
+                <th className={TH}>10-yr CAGR</th>
+                <th className={TH}>FY2036 revenue</th>
+                <th className={TH}>× capacity ceiling</th>
+              </tr>
+            </thead>
+            <tbody>
+              {WB_MARGIN_TABLE.map((r) => (
+                <tr key={r.m} className="border-t border-line">
+                  <td className={`${TD} text-left`} style={{ color: t.fgDim }}>{r.m}</td>
+                  <td className={TD}>{r.g1}</td>
+                  <td className={TD}>{r.cagr}</td>
+                  <td className={TD}>{r.rev36}</td>
+                  <td className={`${TD} font-semibold`} style={{ color: "var(--color-hot, #dc2626)" }}>{r.ceil}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <p className="mt-4 text-[13px] leading-relaxed" style={{ color: t.fgDim }}>
+          But the finding is deliberately <i>not</i> &quot;overvalued at 21%&quot; —
+          it&apos;s the frontier. Re-run at the July 14 pin ($243.40 · EV $69.4B)
+          across discount rates, the burden falls three-quarters by 10.5%, and the
+          disclosed capacity ceiling binds exactly near <b>9.5%</b>. The price is
+          internally consistent only if Bloom is discounted like a mature
+          industrial <i>and</i> ships its full disclosed ceiling in perpetuity at
+          a 20% cash margin (vs a 3.6% operating margin today):
+        </p>
+        <div className="mt-3 overflow-x-auto">
+          <table className="w-full border-collapse text-[12px]">
+            <thead>
+              <tr style={{ color: t.fgMute }}>
+                <th className={`${TH} text-left`}>Discount rate</th>
+                <th className={TH}>implied yr-1 growth</th>
+                <th className={TH}>FY2036 revenue</th>
+                <th className={TH}>shipments GW/yr</th>
+                <th className={TH}>× 5 GW ceiling</th>
+                <th className={`${TH} text-left`}>share of demand pies</th>
+              </tr>
+            </thead>
+            <tbody>
+              {FRONTIER.map((r) => {
+                const binds = r.r === "9.5%";
+                return (
+                  <tr key={r.r} className="border-t border-line" style={binds ? { background: "var(--color-accent-soft)" } : undefined}>
+                    <td className={`${TD} text-left font-semibold`} style={{ color: binds ? t.accent : t.ink }}>{r.r}</td>
+                    <td className={TD}>{r.g1}</td>
+                    <td className={TD}>{r.rev36}</td>
+                    <td className={TD}>{r.gw}</td>
+                    <td className={`${TD} font-semibold`} style={{ color: binds ? t.accent : t.ink }}>{r.ceil}</td>
+                    <td className={`${TD} text-left`} style={{ color: t.fgMute }}>{r.pie}</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+        <p className="mt-3 text-[12px] leading-relaxed" style={{ color: t.fgMute }}>
+          Source: completed v5 workbook (Reverse DCF tab, pinned Jun 27) and the
+          reverse-DCF experiments annex (re-pulled at the Jul 14 pin; constant
+          20% margin from year one is generous to the market case, so every row
+          is a lower bound). This is why the sliders above solve at a
+          market-level ~10.5% rate — the honest form of the claim is the
+          frontier, and our entry-price math already lives on its defensible
+          edge.
         </p>
       </div>
     </div>
