@@ -4,6 +4,8 @@ import { ArrowUpRight } from "@phosphor-icons/react";
 import { Section, SectionHeader, FactGrid, Reveal, SourceChip } from "./ui";
 import { LogoWall } from "./LogoWall";
 import { t } from "./tokens";
+import { triggerPrice } from "./BuyTrigger";
+import { useLivePrice } from "./LivePrice";
 import {
   thesis,
   whyNow,
@@ -16,6 +18,9 @@ import {
 } from "@/data/content";
 
 export function Thesis() {
+  const { ok, price } = useLivePrice();
+  const p = ok && price != null ? price : 300;
+  const trig = triggerPrice();
   return (
     <Section id="thesis" tone="deep">
       <div className="grid grid-cols-1 gap-12 lg:grid-cols-12">
@@ -47,8 +52,15 @@ export function Thesis() {
               className="mt-7 rounded-xl border-l-2 px-5 py-4"
               style={{ borderColor: t.accent, background: "var(--color-accent-soft)" }}
             >
-              <p className="text-[15px] leading-relaxed" style={{ color: t.ink2 }}>
-                <span style={{ color: t.accent, fontWeight: 600 }}>The call · </span>
+              <p className="text-[17px] font-semibold leading-snug" style={{ color: t.ink }}>
+                <span style={{ color: t.accent }}>The call · </span>
+                <span style={{ color: "var(--color-hot, #dc2626)" }}>
+                  Sell / avoid at today&apos;s ${p.toFixed(0)}
+                </span>{" "}
+                — <span style={{ color: t.accent }}>buy below ${trig.toFixed(0)}</span>,
+                our conservative entry price.
+              </p>
+              <p className="mt-2 text-[15px] leading-relaxed" style={{ color: t.ink2 }}>
                 {thesis.call}
               </p>
             </div>

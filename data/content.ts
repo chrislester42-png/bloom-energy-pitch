@@ -23,8 +23,10 @@ export const thesis = {
     "About half of revenue is related-party (SK + Brookfield JVs); quality-of-revenue is a fair question.",
     "Install gross margin is still negative, and ~91% of the fleet runs on natural gas at gas-turbine emissions parity.",
   ],
+  // The explicit stance, stated up front. The Thesis component prefixes this
+  // with the live two-sided rating ("Sell / avoid at $X — buy below $Y").
   call:
-    "Constructive but disciplined: own the inflection, respect the price. The position sizes to how much of the backlog you believe converts at margin — and how much you trust revenue that's still half related-party.",
+    "We like the company and won't pay this price for it. At today's level a buyer earns a negative-to-low return even if the full bull case plays out; below the trigger, the same bull case pays our 12% hurdle. Between those prices we simply wait.",
   toc: [
     { n: "01", label: "What Bloom is", href: "#what" },
     { n: "02", label: "Recent news", href: "#news" },
