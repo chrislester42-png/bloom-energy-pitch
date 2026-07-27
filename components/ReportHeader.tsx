@@ -191,7 +191,12 @@ export function ReportHeader() {
             <a href="#the-call" className="underline underline-offset-2" style={{ color: t.accent }}>
               The call
             </a>
-            . Educational research, not investment advice.
+            ; a printable{" "}
+            <a href="/tearsheet" className="underline underline-offset-2" style={{ color: t.accent }}>
+              one-page tear sheet
+            </a>{" "}
+            regenerates from these live numbers. Educational research, not
+            investment advice.
           </p>
         </Reveal>
       </div>
