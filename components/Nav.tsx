@@ -11,6 +11,7 @@ const links = [
   ["Financials", "#financials"],
   ["Valuation", "#valuation"],
   ["The call", "#the-call"],
+  ["Process", "/process"],
   ["Knowledge Bank", "/vault"],
 ];
 

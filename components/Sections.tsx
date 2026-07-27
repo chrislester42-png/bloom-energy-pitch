@@ -1,7 +1,7 @@
 "use client";
 
 import { ArrowUpRight } from "@phosphor-icons/react";
-import { Section, SectionHeader, FactGrid, Reveal, SourceChip } from "./ui";
+import { Section, SectionHeader, FactGrid, Reveal, SourceChip, TierLegend } from "./ui";
 import { LogoWall } from "./LogoWall";
 import { t } from "./tokens";
 import { triggerPrice } from "./BuyTrigger";
@@ -357,6 +357,9 @@ export function Sources() {
         headline="Every number traces to a primary filing."
         dek="Built on a sourced research vault — filings, transcripts, and deal releases. The audit trail is the point."
       />
+      <Reveal i={2}>
+        <div className="mt-6"><TierLegend /></div>
+      </Reveal>
       <div className="mt-12 grid grid-cols-1 gap-px overflow-hidden rounded-2xl border border-line bg-line md:grid-cols-2">
         {sources.map((s) => (
           <a

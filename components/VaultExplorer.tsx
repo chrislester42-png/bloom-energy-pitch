@@ -443,6 +443,19 @@ export default function VaultExplorer() {
     focusNode(id);
   }, [focusNode]);
 
+  // Deep link: /vault#note=<encoded id> opens that note directly — the tier
+  // badges / source chips on the main page link here ("show the receipt").
+  useEffect(() => {
+    if (!loaded) return;
+    const openFromHash = () => {
+      const m = window.location.hash.match(/^#note=(.+)$/);
+      if (m) openNote(decodeURIComponent(m[1]));
+    };
+    openFromHash();
+    window.addEventListener("hashchange", openFromHash);
+    return () => window.removeEventListener("hashchange", openFromHash);
+  }, [loaded, openNote]);
+
   // chat answered → light up the cited notes in the graph and frame them
   const handleCite = useCallback((ids: string[]) => {
     highlightRef.current = new Set(ids.filter((id) => byIdRef.current.has(id)));

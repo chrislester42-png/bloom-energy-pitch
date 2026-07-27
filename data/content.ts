@@ -6,6 +6,11 @@ export interface Fact {
   value: string;
   label: string;
   source: string; // primary source (for the citation chip)
+  /** Evidence tier, per the research's discipline:
+   *  R = reported primary · D = derived from primaries · E = estimate / third party */
+  tier?: "R" | "D" | "E";
+  /** Vault note id backing this figure — the chip deep-links to /vault#note=<id> */
+  note?: string;
 }
 
 export const thesis = {
@@ -46,10 +51,10 @@ export const whyNow = {
   headline: "AI's power crunch has no easy fix.",
   dek: "The cloud giants (Amazon, Google, Microsoft) have the money; what they can't get fast is electricity. Power, not chips, is the real bottleneck for AI.",
   facts: [
-    { value: "82 → 153 GW", label: "how much power US data centers will need, 2025→2028 — nearly doubling (1 GW ≈ 750,000 homes)", source: "McKinsey" },
-    { value: "~$375B", label: "Amazon + Google's planned 2026 spending on AI", source: "Q4 2025 call" },
-    { value: "90 days vs 3–5 yrs", label: "how fast Bloom installs vs the wait for a gas turbine", source: "SemiAnalysis / Utility Dive" },
-    { value: "$50B → 3×", label: "Brookfield AI spend, tripling in 3 yrs", source: "Q3 2025 call" },
+    { value: "82 → 153 GW", label: "how much power US data centers will need, 2025→2028 — nearly doubling (1 GW ≈ 750,000 homes)", source: "McKinsey", tier: "E", note: "02 Atomic Notes/McKinsey US data center demand 82 to 153 GW" },
+    { value: "~$375B", label: "Amazon + Google's planned 2026 spending on AI", source: "Q4 2025 call", tier: "E", note: "02 Atomic Notes/Amazon Google AI capex $375B+ for 2026" },
+    { value: "90 days vs 3–5 yrs", label: "how fast Bloom installs vs the wait for a gas turbine", source: "SemiAnalysis / Utility Dive", tier: "E", note: "02 Atomic Notes/Speed to power vs gas turbine queue" },
+    { value: "$50B → 3×", label: "Brookfield AI spend, tripling in 3 yrs", source: "Q3 2025 call", tier: "R", note: "02 Atomic Notes/Brookfield $50B AI already tripling next 3 years" },
   ] as Fact[],
 };
 
@@ -58,10 +63,10 @@ export const whatBloomIs = {
   headline: "Shippable power blocks, online in months.",
   dek: "Bloom makes fuel cells — boxes that turn natural gas into electricity through a chemical reaction instead of burning it — installed right next to the building that needs power. No smokestack, and no multi-year wait for the utility grid.",
   facts: [
-    { value: "325 kW", label: "one shippable building block; about 300 of them make a 100-megawatt site — enough to power a small city or an AI data center", source: "Heat Capture datasheet" },
-    { value: "54% → >90%", label: "share of the gas's energy that becomes electricity — rising past 90% once the leftover heat (above 350°C) is captured for cooling or heating instead of wasted", source: "Heat Capture brochure" },
-    { value: "100 MW", label: "of power per acre of land — about twice what a gas-turbine plant fits in the same space", source: "Check-in memo" },
-    { value: ">800°C", label: "how hot the cells run — hot enough to skip the costly precious-metal catalysts other fuel cells need", source: "Server brochure / DOE" },
+    { value: "325 kW", label: "one shippable building block; about 300 of them make a 100-megawatt site — enough to power a small city or an AI data center", source: "Heat Capture datasheet", tier: "R", note: "02 Atomic Notes/325 kW base block is shippable unit" },
+    { value: "54% → >90%", label: "share of the gas's energy that becomes electricity — rising past 90% once the leftover heat (above 350°C) is captured for cooling or heating instead of wasted", source: "Heat Capture brochure", tier: "R", note: "02 Atomic Notes/Heat Capture CHP raises total efficiency above 90 percent" },
+    { value: "100 MW", label: "of power per acre of land — about twice what a gas-turbine plant fits in the same space", source: "Check-in memo", tier: "R", note: "02 Atomic Notes/100 MW per acre power density" },
+    { value: ">800°C", label: "how hot the cells run — hot enough to skip the costly precious-metal catalysts other fuel cells need", source: "Server brochure / DOE", tier: "R", note: "02 Atomic Notes/SOFC operates above 800C" },
   ] as Fact[],
 };
 
@@ -149,10 +154,10 @@ export const moat = {
   headline: "A 17-year head start nobody can buy.",
   dek: "Time, data, and a service annuity compound into a lead competitors can't shortcut.",
   facts: [
-    { value: "~17 yrs", label: "lead in this fuel-cell tech (called SOFC); ~1.8 GW already installed — roughly a mid-size city's worth of power", source: "Doosan-Ceres SOP / 10-K" },
-    { value: "100%", label: "service attach rate — every box sold also signs a long-term service contract", source: "Q1 2026 call" },
-    { value: "1T+ cell-hrs", label: "over a trillion hours of run-data; 6 billion sensor readings a day train a digital model of each unit to predict maintenance before it fails", source: "Q4 2025 call" },
-    { value: "~$127M", label: "recurring service revenue per deployed GW — the annuity compounds with the fleet", source: "FY2025 (derived)" },
+    { value: "~17 yrs", label: "lead in this fuel-cell tech (called SOFC); ~1.8 GW already installed — roughly a mid-size city's worth of power", source: "Doosan-Ceres SOP / 10-K", tier: "D", note: "02 Atomic Notes/Bloom 17-year SOFC head start" },
+    { value: "100%", label: "service attach rate — every box sold also signs a long-term service contract", source: "Q1 2026 call", tier: "R", note: "02 Atomic Notes/100 percent attach rate service to product" },
+    { value: "1T+ cell-hrs", label: "over a trillion hours of run-data; 6 billion sensor readings a day train a digital model of each unit to predict maintenance before it fails", source: "Q4 2025 call", tier: "R", note: "02 Atomic Notes/Trillion cell hours 6 billion data points per day" },
+    { value: "~$127M", label: "recurring service revenue per deployed GW — the annuity compounds with the fleet", source: "FY2025 (derived)", tier: "D", note: "02 Atomic Notes/Service annuity 127M per GW-year" },
   ] as Fact[],
 };
 
@@ -199,10 +204,10 @@ export const competition = {
     },
   ] as FieldRow[],
   facts: [
-    { value: "~$121/MWh", label: "the all-in cost to make one unit of power (a megawatt-hour); about $95 after a federal tax credit. Cheaper than a backup generator, still pricier than the grid", source: "Driver Tree (derived)" },
-    { value: "90–120 days", label: "to install and switch on — versus 3–5+ years for a gas turbine", source: "SemiAnalysis" },
-    { value: "100 MW/acre", label: "power packed into an acre of land — about double a gas-turbine plant", source: "Heat Capture datasheet" },
-    { value: "679–839", label: "pounds of CO₂ per unit of power on gas — about the same carbon as a regular gas power plant", source: "NG-SOFC emissions note" },
+    { value: "~$121/MWh", label: "the all-in cost to make one unit of power (a megawatt-hour); about $95 after a federal tax credit. Cheaper than a backup generator, still pricier than the grid", source: "Driver Tree (derived)", tier: "D", note: "02 Atomic Notes/All-in cost 121 per MWh fuel slice small" },
+    { value: "90–120 days", label: "to install and switch on — versus 3–5+ years for a gas turbine", source: "SemiAnalysis", tier: "E", note: "02 Atomic Notes/Speed to power vs gas turbine queue" },
+    { value: "100 MW/acre", label: "power packed into an acre of land — about double a gas-turbine plant", source: "Heat Capture datasheet", tier: "R", note: "02 Atomic Notes/100 MW per acre power density" },
+    { value: "679–839", label: "pounds of CO₂ per unit of power on gas — about the same carbon as a regular gas power plant", source: "NG-SOFC emissions note", tier: "D", note: "02 Atomic Notes/Bloom NG-SOFC emissions at gas turbine parity" },
   ] as Fact[],
 };
 
@@ -211,10 +216,10 @@ export const financials = {
   headline: "The inflection is finally on the P&L.",
   dek: "After 17 years of losses, Q1 2026 was the first sustained profit — and 2026 guidance implies an ~80% revenue step-up.",
   facts: [
-    { value: "$2.02B", label: "FY2025 revenue (+37% YoY)", source: "FY2025 10-K" },
-    { value: "$3.4–3.8B", label: "2026 revenue guidance (~+80%)", source: "Q1 2026 release" },
-    { value: "$143M", label: "Q1 2026 adj. EBITDA (~6× YoY)", source: "Q1 2026 release" },
-    { value: "~$100M", label: "to add each additional gigawatt of factory capacity — today's plants scale toward 5 GW without building a new one, so growth is capital-light", source: "Q1 2026 call" },
+    { value: "$2.02B", label: "FY2025 revenue (+37% YoY)", source: "FY2025 10-K", tier: "R", note: "02 Atomic Notes/Bloom FY2025 revenue $2.02B +37%" },
+    { value: "$3.4–3.8B", label: "2026 revenue guidance (~+80%)", source: "Q1 2026 release", tier: "R", note: "02 Atomic Notes/2026 guidance revenue $3.4-3.8B" },
+    { value: "$143M", label: "Q1 2026 adj. EBITDA (~6× YoY)", source: "Q1 2026 release", tier: "R", note: "02 Atomic Notes/Q1 2026 adjusted EBITDA $143M" },
+    { value: "~$100M", label: "to add each additional gigawatt of factory capacity — today's plants scale toward 5 GW without building a new one, so growth is capital-light", source: "Q1 2026 call", tier: "R", note: "02 Atomic Notes/Q1 2026 capacity revised to 5 GW current footprint" },
   ] as Fact[],
 };
 
@@ -230,10 +235,10 @@ export const catalysts = {
     { partner: "Nebius", terms: "~$2.6B · 250 MW", note: "neo-cloud, guaranteed (May 2026)", source: "Nebius agreement" },
   ],
   facts: [
-    { value: "6 vs 1", label: "big-cloud and AI-cloud customers, up from just one a year earlier", source: "Q4 2025 call" },
-    { value: "2 GW", label: "of annual factory capacity by end-2026 — and the plants can stretch to 5 GW", source: "Utility Dive" },
-    { value: "800V DC", label: "the new power standard AI server racks are moving to — Bloom's boxes already put it out directly", source: "Q1 2026 call" },
-    { value: "~$20B", label: "of signed backlog behind the anchors above — roughly $6B in equipment plus ~$14B of long-term service", source: "FY2025 10-K" },
+    { value: "6 vs 1", label: "big-cloud and AI-cloud customers, up from just one a year earlier", source: "Q4 2025 call", tier: "R", note: "02 Atomic Notes/Hyperscale customer count 6 vs 1 year earlier" },
+    { value: "2 GW", label: "of annual factory capacity by end-2026 — and the plants can stretch to 5 GW", source: "Utility Dive", tier: "R", note: "02 Atomic Notes/Bloom 2GW capacity by YE2026" },
+    { value: "800V DC", label: "the new power standard AI server racks are moving to — Bloom's boxes already put it out directly", source: "Q1 2026 call", tier: "R", note: "02 Atomic Notes/Bloom only solution natively producing 800V DC today" },
+    { value: "~$20B", label: "of signed backlog behind the anchors above — roughly $6B in equipment plus ~$14B of long-term service", source: "FY2025 10-K", tier: "R", note: "02 Atomic Notes/Bloom $20B total backlog" },
   ] as Fact[],
 };
 
