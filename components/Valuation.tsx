@@ -401,6 +401,32 @@ export function Valuation() {
 // ============================================================================
 
 // ---------- Tab 1 · The group DCF -------------------------------------------
+// CAPM layer — mirrors the workbook's WACC tab exactly:
+//   cost of equity = rf + β × MRP;  WACC = E/V·CoE + D/V·kd·(1−tax)
+// At β 3.7703 this reproduces the model's 21.03% WACC.
+const CAPM = {
+  rf: 4.3, // risk-free, % (workbook)
+  mrp: 4.6, // market risk premium, % (workbook)
+  eW: 0.9656, // market-value equity weight
+  dW: 0.0344, // debt weight
+  kd: 5.0, // cost of debt, %
+  tax: 0.216, // TTM tax rate (workbook)
+};
+const betaToWacc = (b: number) =>
+  CAPM.eW * (CAPM.rf + b * CAPM.mrp) + CAPM.dW * CAPM.kd * (1 - CAPM.tax);
+const waccToBeta = (w: number) =>
+  ((w - CAPM.dW * CAPM.kd * (1 - CAPM.tax)) / CAPM.eW - CAPM.rf) / CAPM.mrp;
+
+// The beta dispute, made explicit: the same stock, four reported betas —
+// window and method choices move the discount rate by >11 points.
+const BETA_PRESETS = [
+  { label: "Ours", beta: 3.77, basis: "our 60-mo monthly regression (workbook β 3.7703 — the model default)" },
+  { label: "Kshana", beta: 3.93, basis: "1-year beta, Kshana (Jul 2026)" },
+  { label: "Yahoo", beta: 3.74, basis: "5-year monthly, Yahoo Finance" },
+  { label: "FactSet", beta: 2.02, basis: "3-year adjusted beta (shrunk toward 1), FactSet" },
+  { label: "Bottom-up", beta: 1.25, basis: "unlevered peer build-up, ~1.1–1.4 (macro analysis) — lands at the rate where the reverse-DCF frontier says the 5 GW ceiling binds" },
+];
+
 const DCF_DEFAULTS = {
   wacc: 21.03,
   gTerm: 3.5,
@@ -541,7 +567,71 @@ function DcfTab() {
           <p className="mb-4 font-mono text-[10px] uppercase tracking-[0.14em]" style={{ color: t.fgMute }}>
             shared across both terminal methods
           </p>
-          <Slider label="Discount rate (WACC)" ours="ours: 21.03% — our calculated company WACC" value={S.wacc} fmt={P1} min={6} max={30} step={0.01} onChange={set("wacc")} />
+
+          {/* beta → cost of equity → WACC — the contested input, made explicit */}
+          <div
+            className="mb-4 rounded-xl border px-4 py-3"
+            style={{ borderColor: t.lineStrong, background: t.sunken }}
+          >
+            <div className="flex items-baseline justify-between">
+              <span className="text-[12.5px] font-medium" style={{ color: t.ink }}>
+                Beta — the number everyone reports differently
+              </span>
+              <span className="font-mono text-[12px] tabular-nums" style={{ color: t.fgDim }}>
+                β {waccToBeta(S.wacc).toFixed(2)} → CoE{" "}
+                {(CAPM.rf + waccToBeta(S.wacc) * CAPM.mrp).toFixed(1)}% → WACC{" "}
+                <b style={{ color: t.accent }}>{S.wacc.toFixed(2)}%</b>
+              </span>
+            </div>
+            <input
+              type="range"
+              min={0.8}
+              max={6}
+              step={0.01}
+              value={Math.min(6, Math.max(0.8, waccToBeta(S.wacc)))}
+              onChange={(e) => set("wacc")(betaToWacc(parseFloat(e.target.value)))}
+              className="mt-2 w-full"
+              style={{ accentColor: "var(--color-accent)" }}
+            />
+            <div className="mt-2 flex flex-wrap gap-1.5">
+              {BETA_PRESETS.map((p) => {
+                const w = betaToWacc(p.beta);
+                const on = Math.abs(S.wacc - w) < 0.02;
+                const px = dcfModel(S, w).blendPs;
+                return (
+                  <button
+                    key={p.label}
+                    title={p.basis}
+                    onClick={() => set("wacc")(w)}
+                    className="rounded-full border px-3 py-1.5 text-[11.5px] font-medium transition-colors"
+                    style={{
+                      borderColor: on ? t.accent : t.line,
+                      background: on ? "var(--color-accent-soft)" : t.surface,
+                      color: on ? t.accent : t.fgDim,
+                    }}
+                  >
+                    {p.label} β{p.beta.toFixed(2)}
+                    <span className="ml-1.5 font-mono tabular-nums" style={{ color: t.fgMute }}>
+                      → {w.toFixed(1)}% · {PS(Math.max(0, px))}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+            <p className="mt-2 text-[11.5px] leading-relaxed" style={{ color: t.fgMute }}>
+              Same stock, four reported betas — the differences are window and
+              method (1-yr vs 3-yr vs 5-yr; monthly vs weekly; FactSet shrinks
+              toward 1; the bottom-up build ignores BE&apos;s own trading
+              history entirely). Because Bloom is ~96.6% equity at market value,
+              beta passes through to the discount rate almost one-for-one: CoE =
+              4.3% + β × 4.6% (workbook inputs), and the choice moves the
+              blended value by ~3×. Hover a chip for its source. This is the
+              debate the rate–growth frontier (reverse-DCF tab) settles
+              empirically.
+            </p>
+          </div>
+
+          <Slider label="Discount rate (WACC) — synced with beta above" ours="ours: 21.03% — β 3.7703, our 60-mo regression" value={S.wacc} fmt={P1} min={6} max={30} step={0.01} onChange={set("wacc")} />
           <Slider label="Terminal growth (perpetual)" ours="ours: 3.5% — long-run nominal GDP-ish" value={S.gTerm} fmt={P1} min={1} max={6} step={0.1} onChange={set("gTerm")} />
           <Slider label="Terminal EBITDA exit multiple" ours="ours: 13.5× — mature industrial multiple" value={S.exMult} fmt={(n) => `${n.toFixed(1)}×`} min={5} max={30} step={0.5} onChange={set("exMult")} />
           <Slider label="FY2030 EBITDA margin (exit leg)" ours="ours: 15.8% — workbook FY30 margin" value={S.ebM} fmt={P1} min={8} max={24} step={0.1} onChange={set("ebM")} />
