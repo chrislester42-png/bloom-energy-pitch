@@ -162,34 +162,48 @@ export function SourceChip({
 
 /** Bordered fact grid — divide lines, not boxes (anti-card). */
 export function FactGrid({ facts }: { facts: Fact[] }) {
+  const hasTiers = facts.some((f) => f.tier);
   return (
-    <div className="overflow-hidden rounded-2xl border border-line bg-line">
-      <div className="grid grid-cols-1 gap-px sm:grid-cols-2 lg:grid-cols-4">
-        {facts.map((f, i) => (
-          <Reveal key={f.label} i={i}>
-            <div
-              className="h-full px-6 py-7"
-              style={{ background: t.surface }}
-            >
+    <div>
+      <div className="overflow-hidden rounded-2xl border border-line bg-line">
+        <div className="grid grid-cols-1 gap-px sm:grid-cols-2 lg:grid-cols-4">
+          {facts.map((f, i) => (
+            <Reveal key={f.label} i={i}>
               <div
-                className="text-2xl font-semibold tabular-nums tracking-tight sm:text-[28px]"
-                style={{ color: t.ink }}
+                className="h-full px-6 py-7"
+                style={{ background: t.surface }}
               >
-                {f.value}
+                <div
+                  className="text-2xl font-semibold tabular-nums tracking-tight sm:text-[28px]"
+                  style={{ color: t.ink }}
+                >
+                  {f.value}
+                </div>
+                <div
+                  className="mt-2 text-[13.5px] leading-snug"
+                  style={{ color: t.fgDim }}
+                >
+                  {f.label}
+                </div>
+                <div className="mt-3">
+                  <SourceChip tier={f.tier} note={f.note}>{f.source}</SourceChip>
+                </div>
               </div>
-              <div
-                className="mt-2 text-[13.5px] leading-snug"
-                style={{ color: t.fgDim }}
-              >
-                {f.label}
-              </div>
-              <div className="mt-3">
-                <SourceChip tier={f.tier} note={f.note}>{f.source}</SourceChip>
-              </div>
-            </div>
-          </Reveal>
-        ))}
+            </Reveal>
+          ))}
+        </div>
       </div>
+      {hasTiers && (
+        <p
+          className="mt-2.5 flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-[9.5px] uppercase tracking-[0.1em]"
+          style={{ color: t.fgMute }}
+        >
+          <span className="inline-flex items-center gap-1"><TierBadge tier="R" /> reported primary</span>
+          <span className="inline-flex items-center gap-1"><TierBadge tier="D" /> derived by us</span>
+          <span className="inline-flex items-center gap-1"><TierBadge tier="E" /> estimate / third party</span>
+          <span>· click a chip to open the note behind it</span>
+        </p>
+      )}
     </div>
   );
 }
