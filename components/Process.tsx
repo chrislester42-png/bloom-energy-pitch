@@ -37,6 +37,9 @@ const DECISIONS = [
 ];
 
 const FLAGS = [
+  { flag: "Two-sided call — formal review (triggered by the Q2 2026 print)", status: "OPEN — falsifiers №1 and №2 triggered on Jul 28 (see Scorecard: 2/8 in pre-registered ranges, all misses bullish). Per the rule fixed in advance, the model re-runs on the raised $3.9–4.2B guidance before the call is restated." },
+  { flag: "Related-party revenue: substance vs classification", status: "OPEN — Q2 related-party revenue fell to $2.8M from ~$373M in Q1. Whether Brookfield-financed purchases ended or moved outside the GAAP label is decided by the Q2 10-Q's related-party note; we grade it in public either way." },
+  { flag: "Q2 2026 earnings-call transcript", status: "OPEN — call held 5pm ET Jul 28; capacity, backlog, and Jupiter commentary to be ingested into the vault when the transcript posts." },
   { flag: "Project Jupiter fuel-pipeline block", status: "RESOLVED — confirmed on primary: NM land commissioner denied Energy Transfer's reconsideration Jul 14, 2026 (second rejection); 30-day appeal window; state air-quality hearing on the fuel cells set for October." },
   { flag: "Hyperscaler capex figures (press-compiled)", status: "OPEN — tie out to 10-Qs at the next model session." },
   { flag: "HY OAS beyond the verified 5/12 print", status: "OPEN — 2.69% (7/10) is aggregator-sourced; confirm at the final pin re-pull." },
@@ -139,7 +142,7 @@ export function Process() {
 
       <Card
         title="Open flags — what we haven't verified yet, said out loud"
-        sub="Each flag names its next action · status as of Jul 27, 2026"
+        sub="Each flag names its next action · status as of Jul 28, 2026 (post-Q2 print)"
       >
         <div className="grid grid-cols-1 gap-px overflow-hidden rounded-xl border border-line bg-line">
           {FLAGS.map((f) => {
@@ -176,7 +179,12 @@ export function Process() {
         </ol>
         <p className="mt-4 text-[13px] leading-relaxed" style={{ color: t.fgMute }}>
           If these show up, the two-sided call changes — that is the point of
-          writing them down first. Q2 2026 results (Jul 28) are the first test.
+          writing them down first. Q2 2026 (Jul 28) was the first test, and{" "}
+          <b>falsifiers №1 and №2 triggered</b>: ~184% ex-affiliate growth and
+          $226M of operating cash flow with related-party revenue near zero.
+          The call is under formal review — scored in public on the{" "}
+          <a href="/scorecard" className="underline underline-offset-2" style={{ color: t.accent }}>Scorecard</a>,
+          not quietly patched.
         </p>
       </Card>
 

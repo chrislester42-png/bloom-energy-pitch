@@ -21,11 +21,11 @@ export const thesis = {
   bull: [
     "Signed hyperscale demand — Oracle, AEP, a Brookfield framework now at $25B — into an AI power crunch the grid can't fix in time.",
     "A 17-year head start, a 100% service attach rate, and a trillion-cell-hour data moat competitors can't shortcut.",
-    "The margin inflection is finally on the P&L: first sustained profit, service segment turning, ~80% revenue step-up guided.",
+    "The inflection is no longer a forecast: Q2 2026 was the first billion-dollar quarter (+165%), with $226M of operating cash flow and revenue guided to roughly double this year.",
   ],
   bear: [
-    "Priced for perfection — ~80× book, >600× EV/EBITDA — with little room for a stumble.",
-    "About half of revenue is related-party (SK + Brookfield JVs); quality-of-revenue is a fair question.",
+    "Still priced for perfection: even after July's ~40% drawdown, ~60× the company's own raised EPS guide — with the bull path already conceded in the price.",
+    "The ~$20B backlog is mostly framework (firm RPO ~$0.5B) — and whether the related-party channel truly ended in Q2 (down to $2.8M from ~$373M) or was reclassified awaits the 10-Q.",
     "Install gross margin is still negative, and ~91% of the fleet runs on natural gas at gas-turbine emissions parity.",
   ],
   // The explicit stance, stated up front. The Thesis component prefixes this
@@ -83,6 +83,27 @@ export const recentNews = {
   headline: "Twelve months that changed the story.",
   dek: "Press releases, earnings, and the contracts behind the backlog — newest first. This is the tape an analyst refreshes the model against.",
   items: [
+    {
+      date: "Jul 28, 2026",
+      tag: "Earnings",
+      title: "Record Q2: first billion-dollar quarter; guidance raised to $3.9–4.2B",
+      blurb: "Revenue $1,065M (+165%), non-GAAP EPS $0.78 vs ~$0.36 expected, $226M operating cash flow — and related-party revenue collapsed to $2.8M from ~$373M in Q1. Two of our pre-registered falsifiers triggered; our call is under formal review (see the Scorecard).",
+      source: "Q2 2026 release",
+    },
+    {
+      date: "Jul 16, 2026",
+      tag: "Deal",
+      title: "Oaktree + IDF commit $1.7B to Bloom-powered Nebius AI buildout",
+      blurb: "Third-party project capital — Morgan Stanley as tax equity, MUFG senior debt — financing Bloom deployments for Nebius's cloud, part of a >$2.6B IDF portfolio. Institutional money underwriting the arm's-length channel.",
+      source: "IDF/Oaktree PR",
+    },
+    {
+      date: "Jul 14–16, 2026",
+      tag: "Analyst",
+      title: "New Mexico blocks Project Jupiter's gas pipeline — twice",
+      blurb: "The land commissioner denied Energy Transfer's reconsideration for the pipeline feeding Jupiter's 2.45 GW site; Oracle had already dropped turbines for 100% Bloom. Fuel cells still need the pipe — October air-permit hearing is the next gate.",
+      source: "Source NM / state filings",
+    },
     {
       date: "Jul 8–9, 2026",
       tag: "Analyst",
@@ -214,12 +235,12 @@ export const competition = {
 export const financials = {
   eyebrow: "06 · Financials",
   headline: "The inflection is finally on the P&L.",
-  dek: "After 17 years of losses, Q1 2026 was the first sustained profit — and 2026 guidance implies an ~80% revenue step-up.",
+  dek: "After 17 years of losses, 2026 delivered the proof: a record first half, the first billion-dollar quarter, and revenue guided to roughly double.",
   facts: [
-    { value: "$2.02B", label: "FY2025 revenue (+37% YoY)", source: "FY2025 10-K", tier: "R", note: "02 Atomic Notes/Bloom FY2025 revenue $2.02B +37%" },
-    { value: "$3.4–3.8B", label: "2026 revenue guidance (~+80%)", source: "Q1 2026 release", tier: "R", note: "02 Atomic Notes/2026 guidance revenue $3.4-3.8B" },
-    { value: "$143M", label: "Q1 2026 adj. EBITDA (~6× YoY)", source: "Q1 2026 release", tier: "R", note: "02 Atomic Notes/Q1 2026 adjusted EBITDA $143M" },
-    { value: "~$100M", label: "to add each additional gigawatt of factory capacity — today's plants scale toward 5 GW without building a new one, so growth is capital-light", source: "Q1 2026 call", tier: "R", note: "02 Atomic Notes/Q1 2026 capacity revised to 5 GW current footprint" },
+    { value: "$1.07B", label: "Q2 2026 revenue (+165% YoY) — the first billion-dollar quarter; $0.78 non-GAAP EPS, $226M operating cash flow", source: "Q2 2026 release", tier: "R", note: "02 Atomic Notes/Q2 2026 revenue 1.07B up 165 percent" },
+    { value: "$3.9–4.2B", label: "2026 revenue guidance, raised Jul 28 (~2× FY2025); non-GAAP EPS guided $2.55–2.85", source: "Q2 2026 release", tier: "R", note: "02 Atomic Notes/FY2026 guidance raised to 3.9-4.2B" },
+    { value: "$253M", label: "Q2 2026 adj. EBITDA — more in one quarter than all of FY2025; product gross margin held 37.2%", source: "Q2 2026 release", tier: "R", note: "02 Atomic Notes/Q2 2026 EPS and profitability records" },
+    { value: "~$100M", label: "to add each additional gigawatt of factory capacity — capex ran just 4.8% of revenue in Q2, so growth stays capital-light", source: "Q1 2026 call / Q2 release", tier: "R", note: "02 Atomic Notes/Q2 2026 cash flow 226M capex 4.8 percent" },
   ] as Fact[],
 };
 
@@ -255,16 +276,16 @@ export const risks = {
   dek: "We're not naive. Here's the bear case, and the honest counter to each point.",
   items: [
     {
-      claim: "Half the revenue isn't arm's-length",
-      detail: "Strip out the affiliate channel and Q1 2026's reported 130% growth is ~17%: $377.8M arm's-length (+16.9%) vs $373.3M into the Brookfield/SK JVs. Bloom effectively helps finance the buyer of about half its own output, calls those sales \"arm's-length,\" yet doesn't disclose the margin split — and the June 2026 expansion just put 5× more capital ($25B) behind that same financed channel.",
-      rebuttal: "Hyperscale customers went 1 → 6 in a year; more than half of data-center backlog is now non-Oracle — so the arm's-length engine is broadening.",
-      source: "Q1 2026 release / Brookfield PR (derived)",
+      claim: "The related-party question changed shape in Q2 — it didn't disappear",
+      detail: "In Q1 2026, ~50% of revenue ($373M) flowed to related parties, and stripping it left ~17% arm's-length growth. Then Q2 reported related-party revenue of just $2.8M while total revenue hit $1.07B. Either the arm's-length engine genuinely carried a record quarter — or Brookfield-financed projects moved outside the GAAP related-party label (the SK de-designation precedent) and the concentration persists under a different name. The margin split by buyer still isn't disclosed.",
+      rebuttal: "Taken at face value, Q2 is the bulls' answer: ~184% ex-affiliate growth, $226M of operating cash flow with no affiliate collections to lean on, and 6 hyperscale customers vs 1 a year ago. Our falsifier №1 triggered on exactly this — the 10-Q's related-party note is the arbiter, and we've committed to grading it in public.",
+      source: "Q2 2026 release (footnote 1) / Q1 2026 release",
     },
     {
-      claim: "~80× book, >600× EV/EBITDA",
-      detail: "At a ~$79B cap the stock prices in flawless execution (one bear PT sits at $149.93, ~-43%). And the headline ~$20B backlog is mostly framework and pipeline — firm, booked orders (GAAP RPO) are only ~$441M of product and install (~$493M including service) as of Q1 2026; the rest converts only as purchase orders actually land.",
-      rebuttal: "Forward EBITDA guidance ($650–800M) compresses the multiple fast — if that pipeline converts to real orders.",
-      source: "24/7 Wall St / Q1 2026 10-Q",
+      claim: "Still priced past its own raised guidance",
+      detail: "Even after July's ~40% drawdown to ~$163, the stock trades ~60× the midpoint of management's own raised FY2026 EPS guide ($2.55–2.85) — a multiple that assumes the doubling continues for years. And the headline ~$20B backlog is mostly framework and pipeline — firm, booked orders (GAAP RPO) were only ~$441M of product and install (~$493M including service) as of Q1 2026; the rest converts only as purchase orders actually land.",
+      rebuttal: "The raise to $800–900M of non-GAAP operating income compresses the multiple faster than we modeled — this is the strongest quarter the bulls have ever had, and our model re-run has to take it seriously.",
+      source: "Q2 2026 release / Q1 2026 10-Q",
     },
     {
       claim: "$4B accumulated deficit",
@@ -285,7 +306,7 @@ export const valuation = {
   eyebrow: "08 · Valuation",
   headline: "What does the price assume?",
   dek: "Our price targets come from a reverse DCF: instead of asking what Bloom is worth, we ask what the market's price already pays for — then set the entry price where even the full bull case still earns our hurdle return. Defaults are our completed model's assumptions; drag them and see what has to be true.",
-  note: "Model-derived from the completed v5 workbook — educational research, not investment advice. The full lab (group DCF, per-year forecast table, scenario weighting, and the workbook's own rate–growth frontier) is one click deeper.",
+  note: "UNDER REVIEW after the Q2 2026 print (Jul 28): revenue guidance was raised to $3.9–4.2B — above the workbook's FY2026 assumption — and two of our pre-registered falsifiers triggered (see Scorecard). Defaults below are the pre-print v5 model until the re-run lands; we show our stale numbers rather than silently editing them. Educational research, not investment advice.",
 };
 
 export const theCall = {
@@ -322,6 +343,9 @@ export interface SourceRow {
 }
 
 export const sources: SourceRow[] = [
+  { title: "Q2 2026 Earnings Release (record quarter, guidance raised)", publisher: "Bloom Energy IR", url: "https://investor.bloomenergy.com/press-releases/press-release-details/2026/Bloom-Energy-Reports-Record-Second-Quarter-2026-Financial-Results-and-Raises-Full-Year-2026-Guidance/default.aspx" },
+  { title: "IDF & Oaktree $1.7B Project Investment (Nebius build-out)", publisher: "PR Newswire", url: "https://www.prnewswire.com/news-releases/industrial-development-funding-and-oaktree-announce-1-7-billion-project-investment-in-bloom-energy-fuel-cells-for-nebius-ai-infrastructure-build-out-302827566.html" },
+  { title: "NM Land Commissioner Blocks Jupiter Pipeline", publisher: "Source New Mexico", url: "https://sourcenm.com/2026/07/16/new-mexico-land-commissioner-blocks-project-jupiter-related-pipeline-from-building-on-state-land/" },
   { title: "Bloom Energy FY2025 10-K", publisher: "SEC EDGAR", url: "https://www.sec.gov/Archives/edgar/data/0001664703/000162828026006516/be-20251231.htm" },
   { title: "Bloom Energy Q1 2026 10-Q", publisher: "SEC EDGAR", url: "https://www.sec.gov/Archives/edgar/data/0001664703/000162828026028021/be-20260331.htm" },
   { title: "Q1 2026 Earnings Release", publisher: "Bloom Energy IR", url: "https://investor.bloomenergy.com/press-releases/press-release-details/2026/Bloom-Energy-Reports-Record-First-Quarter-2026-Results-and-Raises-Full-Year-2026-Guidance/default.aspx" },
