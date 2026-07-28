@@ -5,12 +5,15 @@ import { motion } from "framer-motion";
 import { t, sectionEase } from "./tokens";
 import { PriceTicker } from "./LivePrice";
 
+// Section links are rooted ("/#thesis") so they work from subpages
+// (/scorecard, /process, /vault, /tearsheet) — a bare "#thesis" only
+// resolves on the homepage itself.
 const links = [
-  ["Thesis", "#thesis"],
-  ["News", "#news"],
-  ["Financials", "#financials"],
-  ["Valuation", "#valuation"],
-  ["The call", "#the-call"],
+  ["Thesis", "/#thesis"],
+  ["News", "/#news"],
+  ["Financials", "/#financials"],
+  ["Valuation", "/#valuation"],
+  ["The call", "/#the-call"],
   ["Scorecard", "/scorecard"],
   ["Process", "/process"],
   ["Knowledge Bank", "/vault"],
@@ -43,7 +46,7 @@ export default function Nav() {
       }}
     >
       <nav className="mx-auto flex h-16 max-w-7xl items-center justify-between px-5 sm:px-8">
-        <a href="#top" className="flex items-center gap-2.5">
+        <a href="/" className="flex items-center gap-2.5">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/logos/bloom.png" alt="Bloom Energy" style={{ height: 20, width: "auto" }} />
           <span className="font-mono text-[11px] tracking-[0.1em]" style={{ color: t.fgMute }}>
