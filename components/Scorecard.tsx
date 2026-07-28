@@ -39,7 +39,7 @@ export function Scorecard() {
   const hits = scorecard.filter((r) => r.verdict === "hit").length;
 
   return (
-    <div className="mx-auto max-w-6xl px-5 py-16 sm:px-8">
+    <div className="mx-auto max-w-7xl px-5 py-16 sm:px-8">
       <p className="font-mono text-[11px] uppercase tracking-[0.2em]" style={{ color: t.accent }}>
         The earnings scorecard · pre-registered
       </p>
@@ -80,7 +80,14 @@ export function Scorecard() {
       </div>
 
       <div className="mt-8 overflow-x-auto rounded-2xl border border-line" style={{ background: t.surface }}>
-        <table className="w-full border-collapse">
+        <table className="w-full min-w-[960px] table-fixed border-collapse">
+          <colgroup>
+            <col style={{ width: "17%" }} />
+            <col style={{ width: "15%" }} />
+            <col style={{ width: "38%" }} />
+            <col style={{ width: "21%" }} />
+            <col style={{ width: "9%" }} />
+          </colgroup>
           <thead>
             <tr style={{ color: t.fgMute, background: t.sunken }}>
               <th className={TH}>Metric</th>
@@ -93,14 +100,14 @@ export function Scorecard() {
           <tbody>
             {scorecard.map((r) => (
               <tr key={r.metric} className="border-t border-line align-top">
-                <td className="w-[200px] px-3.5 py-3.5">
+                <td className="px-3.5 py-3.5">
                   <div className="text-[14px] font-semibold leading-snug" style={{ color: t.ink }}>{r.metric}</div>
                   <div className="mt-1 font-mono text-[10.5px]" style={{ color: t.fgMute }}>{r.street}</div>
                 </td>
-                <td className="whitespace-nowrap px-3.5 py-3.5 font-mono text-[13.5px] font-semibold" style={{ color: t.accent }}>
+                <td className="px-3.5 py-3.5 font-mono text-[13.5px] font-semibold leading-snug" style={{ color: t.accent }}>
                   {r.range}
                 </td>
-                <td className="max-w-[360px] px-3.5 py-3.5 text-[12.5px] leading-snug" style={{ color: t.fgDim }}>
+                <td className="px-3.5 py-3.5 text-[13px] leading-relaxed" style={{ color: t.fgDim }}>
                   {r.falsifier && (
                     <span className="mr-1.5 font-mono text-[9.5px] font-semibold uppercase tracking-[0.08em]" style={{ color: "#92400e" }}>
                       Falsifier №{r.falsifier} —
@@ -108,7 +115,7 @@ export function Scorecard() {
                   )}
                   {r.why}
                 </td>
-                <td className="whitespace-nowrap px-3.5 py-3.5 font-mono text-[13px]" style={{ color: r.reported ? t.ink : t.fgMute }}>
+                <td className="px-3.5 py-3.5 font-mono text-[13px] leading-snug" style={{ color: r.reported ? t.ink : t.fgMute }}>
                   {r.reported ?? "—"}
                 </td>
                 <td className="px-3.5 py-3.5"><Pill verdict={r.verdict} /></td>
