@@ -87,7 +87,7 @@ export const recentNews = {
       date: "Jul 28, 2026",
       tag: "Earnings",
       title: "Record Q2: first billion-dollar quarter; guidance raised to $3.9–4.2B",
-      blurb: "Revenue $1,065M (+165%), non-GAAP EPS $0.78 vs ~$0.36 expected, $226M operating cash flow, and related-party revenue collapsed to $2.8M from ~$373M in Q1. Two of our pre-registered falsifiers triggered; our call is under formal review (see the Scorecard).",
+      blurb: "Revenue $1,065M (+165%), non-GAAP EPS $0.78 vs ~$0.36 expected, $226M operating cash flow, and related-party revenue collapsed to $2.8M from ~$373M in Q1: the call revealed the financing layer rotated to independent institutions (IDF/Oaktree). Management says backlog is growing faster than revenue. Two of our pre-set tripwires triggered; our call is under formal review (see the Scorecard).",
       source: "Q2 2026 release",
     },
     {
