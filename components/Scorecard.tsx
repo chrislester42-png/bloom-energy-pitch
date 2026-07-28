@@ -110,7 +110,7 @@ export function Scorecard() {
                 <td className="px-3.5 py-3.5 text-[13px] leading-relaxed" style={{ color: t.fgDim }}>
                   {r.falsifier && (
                     <span className="mr-1.5 font-mono text-[9.5px] font-semibold uppercase tracking-[0.08em]" style={{ color: "#92400e" }}>
-                      Falsifier №{r.falsifier} —
+                      Tripwire №{r.falsifier} —
                     </span>
                   )}
                   {r.why}
@@ -128,11 +128,12 @@ export function Scorecard() {
       <p className="mt-5 max-w-4xl text-[13px] leading-relaxed" style={{ color: t.fgMute }}>
         Grading rule, fixed in advance: a row is a <b>hit</b> if the reported
         figure lands inside the range, a <b>miss</b> otherwise — no partial
-        credit, no re-interpretation. If two or more falsifier rows break
-        against us, the two-sided call gets formally revisited on the{" "}
+        credit, no re-interpretation. If two or more tripwire rows break
+        against us, the call gets formally revisited on the{" "}
         <a href="/process" className="underline underline-offset-2" style={{ color: t.accent }}>Process</a>{" "}
-        page, in writing. Falsifier numbers refer to the five commitments
-        published there. Educational research, not investment advice.
+        page, in writing. Tripwire numbers refer to the five commitments
+        published there (the formal term is &quot;falsifiers&quot;).
+        Educational research, not investment advice.
       </p>
 
       {postPrintVerdict && (

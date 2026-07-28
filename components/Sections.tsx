@@ -6,6 +6,7 @@ import { LogoWall } from "./LogoWall";
 import { t } from "./tokens";
 import { triggerPrice } from "./BuyTrigger";
 import { useLivePrice } from "./LivePrice";
+import { Term, Glossary } from "./Term";
 import {
   thesis,
   whyNow,
@@ -44,7 +45,13 @@ export function Thesis() {
           </Reveal>
           <Reveal i={2}>
             <p className="mt-6 text-[18px] leading-relaxed" style={{ color: t.ink2 }}>
-              {thesis.statement}
+              Bloom is the only company that can put city-sized amounts of
+              clean power next to an AI data center in months instead of years.
+              After 17 years of losses it&apos;s now solidly profitable, with about
+              $20B of future business lined up (its{" "}
+              <Term k="backlog">backlog</Term>). The question isn&apos;t whether
+              Bloom is a great company. It&apos;s whether today&apos;s stock price
+              already assumes everything goes perfectly.
             </p>
           </Reveal>
           <Reveal i={3}>
@@ -359,6 +366,9 @@ export function Sources() {
       />
       <Reveal i={2}>
         <div className="mt-6"><TierLegend /></div>
+      </Reveal>
+      <Reveal i={3}>
+        <Glossary />
       </Reveal>
       <div className="mt-12 grid grid-cols-1 gap-px overflow-hidden rounded-2xl border border-line bg-line md:grid-cols-2">
         {sources.map((s) => (

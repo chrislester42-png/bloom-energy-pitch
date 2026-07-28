@@ -11,6 +11,7 @@ import {
   Sources,
 } from "@/components/Sections";
 import { ReportHeader } from "@/components/ReportHeader";
+import { ThirtySecond } from "@/components/ThirtySecond";
 import { EconLens } from "@/components/EconLens";
 import { RecentNews } from "@/components/RecentNews";
 import { Financials } from "@/components/Financials";
@@ -32,6 +33,7 @@ export default function Home() {
       <Nav />
       <Hero />
       <ReportHeader />
+      <ThirtySecond />
       <Thesis />
       <WhatBloomIs />
       <RecentNews />

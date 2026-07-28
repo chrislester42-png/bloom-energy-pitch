@@ -17,21 +17,21 @@ export const thesis = {
   eyebrow: "00 · The thesis",
   headline: "A real franchise, at an unforgiving price.",
   statement:
-    "Bloom is the only company that can drop clean, gigawatt-scale power next to an AI data center in months instead of years — and after 17 years of losses it just crossed into sustained profit with a ~$20B backlog behind it. The debate isn't whether it's a real franchise; it's whether today's price already pays for everything that has to go right.",
+    "Bloom is the only company that can put city-sized amounts of clean power next to an AI data center in months instead of years. After 17 years of losses it's now solidly profitable, with about $20B of future business lined up. The question isn't whether Bloom is a great company. It's whether today's stock price already assumes everything goes perfectly.",
   bull: [
-    "Signed hyperscale demand — Oracle, AEP, a Brookfield framework now at $25B — into an AI power crunch the grid can't fix in time.",
-    "A 17-year head start, a 100% service attach rate, and a trillion-cell-hour data moat competitors can't shortcut.",
-    "The inflection is no longer a forecast: Q2 2026 was the first billion-dollar quarter (+165%), with $226M of operating cash flow and revenue guided to roughly double this year.",
+    "The biggest names in AI — Oracle, the utility powering Amazon's data centers, Brookfield's $25B fund — have signed up, because the power grid can't hook them up fast enough.",
+    "A 17-year technology head start, and every box sold comes with a long-term service contract — like selling the printer and the ink.",
+    "The growth is no longer a promise: last quarter was Bloom's first billion-dollar quarter (+165%), it generated $226M of real cash, and revenue should roughly double this year.",
   ],
   bear: [
-    "Still priced for perfection: even after July's ~40% drawdown, ~60× the company's own raised EPS guide — with the bull path already conceded in the price.",
-    "The ~$20B backlog is mostly framework (firm RPO ~$0.5B) — and whether the related-party channel truly ended in Q2 (down to $2.8M from ~$373M) or was reclassified awaits the 10-Q.",
-    "Install gross margin is still negative, and ~91% of the fleet runs on natural gas at gas-turbine emissions parity.",
+    "Still priced for near-perfection: even after July's 40% fall, the stock costs ~60× the earnings management itself forecasts for this year.",
+    "Of the \"$20B of future business,\" only about $0.5B is firm signed orders — the rest are plans and frameworks. And whether last quarter's sales were truly independent, or the same funded partners under a new label, awaits the next SEC filing.",
+    "Installing the boxes still loses money, and 9 out of 10 run on natural gas — about the same carbon footprint as a gas power plant.",
   ],
   // The explicit stance, stated up front. The Thesis component prefixes this
   // with the live two-sided rating ("Sell / avoid at $X — buy below $Y").
   call:
-    "We like the company and won't pay this price for it. At today's level a buyer earns a negative-to-low return even if the full bull case plays out; below the trigger, the same bull case pays our 12% hurdle. Between those prices we simply wait.",
+    "We like the company and won't pay this price for it. At today's level a buyer earns a poor return even if the whole success story plays out; below the trigger, that same story pays our 12% minimum. Between those two prices, we simply wait.",
   toc: [
     { n: "01", label: "What Bloom is", href: "#what" },
     { n: "02", label: "Recent news", href: "#news" },
@@ -81,7 +81,7 @@ export interface NewsItem {
 export const recentNews = {
   eyebrow: "02 · Recent news",
   headline: "Twelve months that changed the story.",
-  dek: "Press releases, earnings, and the contracts behind the backlog — newest first. This is the tape an analyst refreshes the model against.",
+  dek: "Press releases, earnings, and the contracts behind the numbers — newest first. These are the events we update our math against.",
   items: [
     {
       date: "Jul 28, 2026",
@@ -173,7 +173,7 @@ export const recentNews = {
 export const moat = {
   eyebrow: "05 · The moat",
   headline: "A 17-year head start nobody can buy.",
-  dek: "Time, data, and a service annuity compound into a lead competitors can't shortcut.",
+  dek: "Time, running data, and repeat service contracts — advantages a competitor can't buy or copy quickly.",
   facts: [
     { value: "~17 yrs", label: "lead in this fuel-cell tech (called SOFC); ~1.8 GW already installed — roughly a mid-size city's worth of power", source: "Doosan-Ceres SOP / 10-K", tier: "D", note: "02 Atomic Notes/Bloom 17-year SOFC head start" },
     { value: "100%", label: "service attach rate — every box sold also signs a long-term service contract", source: "Q1 2026 call", tier: "R", note: "02 Atomic Notes/100 percent attach rate service to product" },
@@ -276,27 +276,27 @@ export const risks = {
   dek: "We're not naive. Here's the bear case, and the honest counter to each point.",
   items: [
     {
-      claim: "The related-party question changed shape in Q2 — it didn't disappear",
-      detail: "In Q1 2026, ~50% of revenue ($373M) flowed to related parties, and stripping it left ~17% arm's-length growth. Then Q2 reported related-party revenue of just $2.8M while total revenue hit $1.07B. Either the arm's-length engine genuinely carried a record quarter — or Brookfield-financed projects moved outside the GAAP related-party label (the SK de-designation precedent) and the concentration persists under a different name. The margin split by buyer still isn't disclosed.",
-      rebuttal: "Taken at face value, Q2 is the bulls' answer: ~184% ex-affiliate growth, $226M of operating cash flow with no affiliate collections to lean on, and 6 hyperscale customers vs 1 a year ago. Our falsifier №1 triggered on exactly this — the 10-Q's related-party note is the arbiter, and we've committed to grading it in public.",
+      claim: "Who's really buying? The question changed shape in Q2 — it didn't disappear",
+      detail: "Until last quarter, about half of Bloom's sales went to partners Bloom helped fund — like selling cars to a dealership you co-own. The sales are real, but the price and urgency deserve scrutiny, and Bloom doesn't disclose how profitable those sales are versus normal ones. Then in Q2 that number suddenly fell to almost nothing ($2.8M, from ~$373M) while total sales exploded. Either truly independent customers took over — or the same buyers are now simply labeled differently under accounting rules.",
+      rebuttal: "Taken at face value, Q2 is the bulls' answer: sales to independent customers nearly tripled, $226M of real cash came in without funded partners supplying it, and Bloom now serves 6 big cloud companies versus 1 a year ago. This tripped tripwire №1 of our own thesis — the next SEC filing settles which reading is right, and we've committed to grading it in public either way.",
       source: "Q2 2026 release (footnote 1) / Q1 2026 release",
     },
     {
-      claim: "Still priced past its own raised guidance",
-      detail: "Even after July's ~40% drawdown to ~$163, the stock trades ~60× the midpoint of management's own raised FY2026 EPS guide ($2.55–2.85) — a multiple that assumes the doubling continues for years. And the headline ~$20B backlog is mostly framework and pipeline — firm, booked orders (GAAP RPO) were only ~$441M of product and install (~$493M including service) as of Q1 2026; the rest converts only as purchase orders actually land.",
-      rebuttal: "The raise to $800–900M of non-GAAP operating income compresses the multiple faster than we modeled — this is the strongest quarter the bulls have ever had, and our model re-run has to take it seriously.",
+      claim: "Still priced as if the doubling never stops",
+      detail: "Even after July's 40% fall to ~$163, the stock costs about 60× the earnings management itself expects this year — a price that only works if revenue keeps doubling for years. And of the headline \"$20B of future business,\" only ~$0.5B was firm, legally booked orders as of the last filing; the rest turns into revenue only if and when purchase orders actually land.",
+      rebuttal: "The fair counter: management just raised its own profit forecast to $800–900M, which shrinks that multiple faster than we modeled. This was the strongest quarter the bulls have ever had, and our model re-run has to take it seriously.",
       source: "Q2 2026 release / Q1 2026 10-Q",
     },
     {
-      claim: "$4B accumulated deficit",
-      detail: "Seventeen years without sustainably earning its cost of capital. Q1 2026 was the first sustained profit.",
-      rebuttal: "The service segment just inflected to 13% GAAP margin — the annuity is starting to pay.",
-      source: "FY2025 10-K",
+      claim: "It burned $4 billion getting here",
+      detail: "Bloom lost money for seventeen straight years — $4B in total — before 2026's profits arrived. A track record like that earns skepticism about whether the good quarters last.",
+      rebuttal: "The turn looks structural, not lucky: the service business (the recurring \"ink\" revenue) is now profitable and growing, and the last two quarters generated real cash, not just accounting profit.",
+      source: "FY2025 10-K / Q2 2026 release",
     },
     {
-      claim: "Shorts are circling: degradation, dilution — now scandium",
-      detail: "Hindenburg (2019) flagged stack life vs warranty; a $2.5B convertible adds dilution risk. In July 2026 Hunterbrook alleged China-linked scandium sourcing (a supplier claiming to be Bloom's largest, plus trade data) and noted 5 GW of production would need ~220 of ~240 projected global tons of scandium oxide a year.",
-      rebuttal: "Bloom's 8-K rejects the claims: sourcing is diversified across countries via proprietary tailings recovery (titanium-processing waste, >half processed outside China), with claimed visibility to 25 GW/yr. On stack life, a steady 24/7 AI load is gentler than cycling, and the service segment has been profitable six straight quarters. The supplier list stays confidential — so the exposure can't be independently verified either way.",
+      claim: "Professional skeptics keep attacking — most recently over a rare metal",
+      detail: "Short sellers (investors who profit if the stock falls) have targeted Bloom twice: in 2019 over how long the boxes really last, and in July 2026 over scandium — a rare metal in every fuel cell. The new report claims Bloom's supply traces back to China and that its growth plans would need nearly the entire world's annual scandium production.",
+      rebuttal: "Bloom formally rejected the claims: it says supply comes from several countries via its own recycling process, enough for 10× its current plans. But its supplier list is confidential — so nobody outside the company can fully verify either side. That's the honest state of it.",
       source: "Hunterbrook / Bloom 8-K (Jul 2026)",
     },
   ] as Risk[],
@@ -305,16 +305,16 @@ export const risks = {
 export const valuation = {
   eyebrow: "08 · Valuation",
   headline: "What does the price assume?",
-  dek: "Our price targets come from a reverse DCF: instead of asking what Bloom is worth, we ask what the market's price already pays for — then set the entry price where even the full bull case still earns our hurdle return. Defaults are our completed model's assumptions; drag them and see what has to be true.",
-  note: "UNDER REVIEW after the Q2 2026 print (Jul 28): revenue guidance was raised to $3.9–4.2B — above the workbook's FY2026 assumption — and two of our pre-registered falsifiers triggered (see Scorecard). Defaults below are the pre-print v5 model until the re-run lands; we show our stale numbers rather than silently editing them. Educational research, not investment advice.",
+  dek: "We run the usual valuation math backwards: instead of guessing what Bloom is worth, we ask what today's price already assumes — then find the price where even the most optimistic story still pays us well for the risk. Every slider starts at our model's number; drag anything and see what has to be true for a different answer.",
+  note: "UNDER REVIEW after the July 28 earnings: management now forecasts more revenue than our model assumed, and two of our pre-set tripwires triggered (see Scorecard). The numbers below are our pre-earnings model until the re-run lands — we show our stale numbers rather than quietly editing them. Educational research, not investment advice.",
 };
 
 export const theCall = {
   eyebrow: "10 · The call",
   headline: "A real franchise at an unforgiving price.",
-  dek: "Bloom crossed a genuine inflection — but today's price already pays for the bull case. Drag the assumptions and decide what you have to believe.",
+  dek: "Bloom turned the corner for real — but today's price already pays for the happy ending. Drag the assumptions and decide what you have to believe.",
   conclusion:
-    "Great company, demanding valuation. The position sizes to how much of the ~$20B backlog you believe converts at margin — and how much you trust revenue that's still half related-party. We land constructive but disciplined: own the inflection, respect the price.",
+    "Great company, demanding price. How much you'd own comes down to two beliefs: how much of the ~$20B pipeline becomes real orders, and whether Q2's \"independent customers took over\" story survives the fine print of the next filing. We land where we started — own the turnaround, respect the price — and after Q2 tripped two of our own tripwires, we're re-running our numbers in public rather than defending them.",
   note: "Scenario outputs derive from the completed v5 workbook (audited build, Jul 2026); the reverse-DCF frontier in the valuation lab is the formal version of this argument.",
 };
 
