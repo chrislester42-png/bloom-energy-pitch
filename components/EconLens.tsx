@@ -5,14 +5,14 @@ import { Section, SectionHeader, Reveal } from "./ui";
 import { t } from "./tokens";
 
 /**
- * EconLens — the microeconomics of the thesis, in one section.
+ * EconLens, the microeconomics of the thesis, in one section.
  *
  * Panel A · The shock: data-center power demand shifts right against a
  *           short-run inelastic grid supply → scarcity price → Bloom enters
  *           as the elastic segment of the supply curve.
  * Panel B · The clock: Bloom's speed advantage is a *temporary* monopoly on
  *           the customers who can't wait. As turbine/grid capacity returns
- *           (~2029–30), entry competes the economic profit away — which is
+ *           (~2029–30), entry competes the economic profit away, which is
  *           exactly why our valuation uses a mature 16× multiple.
  *
  * The curves are stylized and illustrative (labeled as such), anchored to
@@ -131,14 +131,14 @@ function ShockPanel() {
   return (
     <div className="rounded-2xl border border-line p-6" style={{ background: t.surface }}>
       <h3 className="text-[15px] font-semibold" style={{ color: t.ink }}>
-        A · The shock — demand outruns an inelastic grid
+        A · The shock, demand outruns an inelastic grid
       </h3>
       <p className="mb-2 mt-0.5 font-mono text-[10px] uppercase tracking-[0.14em]" style={{ color: t.fgMute }}>
         short-run supply &amp; demand · stylized, illustrative
       </p>
 
       <svg viewBox={`0 0 ${W} ${H}`} className="w-full">
-        <Axes xLabel="Q — power for data centers (GW)" yLabel="P — effective price ($/MWh)" />
+        <Axes xLabel="Q, power for data centers (GW)" yLabel="P, effective price ($/MWh)" />
 
         {/* grid supply: flat then vertical (inelastic) */}
         <path
@@ -210,10 +210,10 @@ function ShockPanel() {
       </div>
 
       <p className="mt-3 text-[12.5px] leading-relaxed" style={{ color: t.fgDim }}>
-        The grid&apos;s short-run supply is nearly vertical — interconnection queues
+        The grid&apos;s short-run supply is nearly vertical, interconnection queues
         and turbine backlogs mean capacity can&apos;t respond to price. As AI demand
         shifts right, the market clears by <em>waiting</em>, not price. Bloom enters
-        as the elastic segment of the supply curve at ${BLOOM_P}/MWh — expensive
+        as the elastic segment of the supply curve at ${BLOOM_P}/MWh, expensive
         against the grid, cheap against a three-year wait.
       </p>
     </div>
@@ -250,14 +250,14 @@ function ClockPanel() {
   return (
     <div className="rounded-2xl border border-line p-6" style={{ background: t.surface }}>
       <h3 className="text-[15px] font-semibold" style={{ color: t.ink }}>
-        B · The clock — a temporary monopoly on speed
+        B · The clock, a temporary monopoly on speed
       </h3>
       <p className="mb-2 mt-0.5 font-mono text-[10px] uppercase tracking-[0.14em]" style={{ color: t.fgMute }}>
         economic profit vs entry · stylized, illustrative
       </p>
 
       <svg viewBox={`0 0 ${W} ${H}`} className="w-full">
-        <Axes xLabel="year — turbine supply returns ~2029–30" yLabel="$/MWh" />
+        <Axes xLabel="year, turbine supply returns ~2029–30" yLabel="$/MWh" />
 
         {/* economic-profit wedge */}
         <path d={wedge} fill="var(--color-accent)" opacity="0.12" />
@@ -303,7 +303,7 @@ function ClockPanel() {
 
       <p className="mt-3 text-[12.5px] leading-relaxed" style={{ color: t.fgDim }}>
         While alternatives are sold out, Bloom prices against the customer&apos;s
-        cost of waiting — a monopoly on the &quot;can&apos;t wait&quot; segment. Micro 101:
+        cost of waiting, a monopoly on the &quot;can&apos;t wait&quot; segment. Micro 101:
         economic profit attracts entry, and when turbine capacity returns
         (~2029–30) the premium competes away toward normal profit. Durable
         advantages (service annuity, learning curve) survive; the scarcity
@@ -320,7 +320,7 @@ export function EconLens() {
       <SectionHeader
         eyebrow="03b · The economics"
         headline="A supply shock, and a clock."
-        dek="The thesis in two microeconomic pictures: AI demand shifting against an inelastic grid creates the scarcity Bloom monetizes — and the entry that follows is why the premium is temporary. Drag the sliders."
+        dek="The thesis in two microeconomic pictures: AI demand shifting against an inelastic grid creates the scarcity Bloom monetizes, and the entry that follows is why the premium is temporary. Drag the sliders."
       />
 
       <div className="mt-12 grid grid-cols-1 gap-5 lg:grid-cols-2">

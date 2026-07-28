@@ -79,9 +79,9 @@ export default function AskChat({
         content = d.answer || "(no answer)";
         cited = Array.isArray(d.cited) ? d.cited : [];
       } else if (d?.reason === "no-key") {
-        content = "The research assistant isn't switched on yet — an Anthropic API key still needs to be added to the site's settings.";
+        content = "The research assistant isn't switched on yet, an Anthropic API key still needs to be added to the site's settings.";
       } else if (d?.reason === "rate-limited") {
-        content = "A lot of questions just came through — give it a few seconds and try again.";
+        content = "A lot of questions just came through, give it a few seconds and try again.";
       } else {
         const why = [d?.reason, d?.status, d?.detail].filter(Boolean).join(" · ");
         content = "The research assistant hit a problem" + (why ? ` (${why})` : "") + ". Please try again in a moment.";
@@ -129,11 +129,11 @@ export default function AskChat({
           <div className="flex h-full flex-col items-start justify-center gap-3">
             <p className="text-[14px] leading-relaxed" style={{ color: t.fgDim }}>
               {grill ? (
-                <>You&apos;re talking to <b>The Skeptic</b> — a short-seller armed with our own research vault.
+                <>You&apos;re talking to <b>The Skeptic</b>, a short-seller armed with our own research vault.
                 It finds the weakest note, presses on it, and asks the question we&apos;d get from a real
                 investment committee. Push back.</>
               ) : (
-                <>Ask anything about Bloom Energy. I answer <b>only</b> from this project&apos;s research vault —
+                <>Ask anything about Bloom Energy. I answer <b>only</b> from this project&apos;s research vault:
                 and I&apos;ll tell you when something isn&apos;t in it yet.</>
               )}
             </p>
@@ -226,7 +226,7 @@ export default function AskChat({
         </button>
       </form>
       <div className="px-4 pb-2 text-[10.5px]" style={{ color: t.fgMute }}>
-        Educational research, grounded in this project&apos;s vault — not investment advice.
+        Educational research, grounded in this project&apos;s vault, not investment advice.
       </div>
     </div>
   );

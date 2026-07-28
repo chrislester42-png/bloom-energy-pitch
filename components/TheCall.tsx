@@ -23,7 +23,7 @@ const LABEL: Record<Key, string> = { bear: "Bear", base: "Base", bull: "Bull" };
 const BLURB: Record<Key, string> = {
   bear: "Capex digestion; grid, turbines and SMRs compress pricing. FY2030: $5B revenue, 10% margin, 8×.",
   base: "Strong but normal industrial grower; margins mature mid-teens. FY2030: $9.2B revenue, 16% margin, 12×.",
-  bull: "AI power land-grab won — the default behind-the-meter layer. FY2030: $15B revenue, 22% margin, 16×.",
+  bull: "AI power land-grab won, the default behind-the-meter layer. FY2030: $15B revenue, 22% margin, 16×.",
 };
 
 const PS = (n: number) => `$${n.toFixed(0)}`;
@@ -51,7 +51,7 @@ export function TheCall() {
     <Section id="the-call" tone="surface">
       <SectionHeader {...theCall} />
 
-      {/* scenario selector — identical cases to the valuation lab */}
+      {/* scenario selector, identical cases to the valuation lab */}
       <div className="mt-12 grid grid-cols-1 gap-4 sm:grid-cols-3">
         {results.map(({ k, perShare, pv, prob }, i) => {
           const on = k === active;
@@ -131,11 +131,11 @@ export function TheCall() {
           Same three cases, probabilities ({PCT(scenarioProbs.bear)}/
           {PCT(scenarioProbs.base)}/{PCT(scenarioProbs.bull)}), and discounting
           (mid-2026 → FY2030 at {(DISC_RATE * 100).toFixed(1)}%) as the Valuation
-          section&apos;s scenario table — one model, one set of numbers.
+          section&apos;s scenario table, one model, one set of numbers.
         </p>
       </Reveal>
 
-      {/* the street view — how the sell side sees it */}
+      {/* the street view, how the sell side sees it */}
       <Reveal>
         <div className="mt-10">
           <div className="mb-3 flex items-baseline justify-between">
@@ -171,13 +171,13 @@ export function TheCall() {
                 ${trig.toFixed(0)}
               </div>
               <div className="mt-0.5 text-[10.5px] leading-snug" style={{ color: t.fgMute }}>
-                bull case at a 12% hurdle — not a 12-month guess
+                bull case at a 12% hurdle, not a 12-month guess
               </div>
             </div>
           </div>
           <p className="mt-3 text-[12.5px] leading-relaxed" style={{ color: t.fgMute }}>
             Why the gap? A 12-month target asks where the stock trades next year
-            — momentum-anchored forward multiples, barely discounted. Our trigger
+           : momentum-anchored forward multiples, barely discounted. Our trigger
             asks when a buyer is paid for the risk. Note the pattern: targets were
             re-anchored ~10–20% above spot within days of the Brookfield news, the
             lowest firm target still sits ~{((246 / trig - 1) * 100).toFixed(0)}%

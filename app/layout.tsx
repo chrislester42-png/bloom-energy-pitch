@@ -17,7 +17,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Bloom Energy (BE) — Equity Pitch",
+  title: "Bloom Energy (BE) Equity Pitch",
   description:
     "An interactive equity research pitch for Bloom Energy (NYSE: BE). Built on a sourced research vault.",
 };

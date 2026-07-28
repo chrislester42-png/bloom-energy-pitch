@@ -68,10 +68,10 @@ function stepPhysics(nodes: SimNode[], links: { s: SimNode; t: SimNode }[], k: n
   const TARGET = 70;
   const GRAVITY = 0.016;    // a touch stronger centering
   const DAMP = 0.82;
-  const MAX_R = 1050;       // soft radial boundary — keeps isolated nodes from escaping
-  const VMAX = 28;          // per-tick velocity cap — nothing gets flung across the stage
+  const MAX_R = 1050;       // soft radial boundary, keeps isolated nodes from escaping
+  const VMAX = 28;          // per-tick velocity cap, nothing gets flung across the stage
 
-  // repulsion (O(n^2) — fine for a few hundred nodes)
+  // repulsion (O(n^2), fine for a few hundred nodes)
   for (let i = 0; i < nodes.length; i++) {
     const a = nodes[i];
     for (let j = i + 1; j < nodes.length; j++) {
@@ -321,7 +321,7 @@ export default function VaultExplorer() {
         }
         c.globalAlpha = 1;
 
-        // Task 1: clean graph by default — labels only when you engage a node
+        // Task 1: clean graph by default, labels only when you engage a node
         // (hover/select + its neighbors), a chat answer highlights it, it matches
         // the search, or you've zoomed well in.
         const showLabel =
@@ -443,7 +443,7 @@ export default function VaultExplorer() {
     focusNode(id);
   }, [focusNode]);
 
-  // Deep link: /vault#note=<encoded id> opens that note directly — the tier
+  // Deep link: /vault#note=<encoded id> opens that note directly, the tier
   // badges / source chips on the main page link here ("show the receipt").
   useEffect(() => {
     if (!loaded) return;
@@ -473,7 +473,7 @@ export default function VaultExplorer() {
   }, []);
 
   // citation chip in chat → open that note (and reveal the reading pane).
-  // Task 5: don't set an exclusive single-node highlight — clear it so the graph
+  // Task 5: don't set an exclusive single-node highlight, clear it so the graph
   // stays fully visible; the node just gets focus/selection.
   const openFromChat = useCallback((id: string) => {
     highlightRef.current = new Set();
@@ -575,7 +575,7 @@ export default function VaultExplorer() {
         <div ref={wrapRef} className="relative min-w-0 flex-1">
           <canvas ref={canvasRef} className="vault-canvas" />
 
-          {/* theme filter chips — dim everything except matching notes */}
+          {/* theme filter chips, dim everything except matching notes */}
           {loaded && (
             <div className="absolute left-3 right-3 top-3 z-10 flex flex-wrap justify-center gap-1.5">
               {THEMES.map((th, i) => {
@@ -666,13 +666,13 @@ export default function VaultExplorer() {
           )}
         </div>
 
-        {/* ask panel — mounted once opened so chat history persists */}
+        {/* ask panel, mounted once opened so chat history persists */}
         {askMounted && (
           <aside
             className={(askOpen ? "flex" : "hidden") + " relative w-full max-w-full flex-col border-l"}
             style={{ borderColor: t.line, background: t.bg, width: askWidth }}
           >
-            {/* drag handle — widen the panel toward the graph */}
+            {/* drag handle, widen the panel toward the graph */}
             <div
               onPointerDown={onResizeDown}
               title="Drag to resize"

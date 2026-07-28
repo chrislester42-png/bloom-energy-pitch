@@ -8,12 +8,12 @@ import { valuation } from "@/data/content";
 import { useLivePrice } from "./LivePrice";
 
 /**
- * Valuation — two exports:
+ * Valuation, two exports:
  *
  *   <Valuation />     · the MAIN-PAGE section: reverse DCF only, three
  *                       sliders, presentation-friendly. Links to /valuation.
  *   <ValuationLab />  · the FULL lab (used by app/valuation/page.tsx):
- *                       both tabs — the group DCF mirror and the complete
+ *                       both tabs, the group DCF mirror and the complete
  *                       reverse-DCF / entry-price / scenario tool.
  *
  * Every slider shows the value our model actually uses ("ours: …"), so a
@@ -187,7 +187,7 @@ const WB_MARGIN_TABLE = [
 // (30% of ~23.7 GW/yr of new US data-center load).
 const FRONTIER = [
   { r: "8.0%", g1: "58.4%", rev36: "$26.9B", gw: "3.6", ceil: "0.7×", pie: "15% of all new load · 0.5× BTM" },
-  { r: "9.5%", g1: "67.9%", rev36: "$37.3B", gw: "5.0", ceil: "1.0× — ceiling binds", pie: "21% · 0.7× BTM" },
+  { r: "9.5%", g1: "67.9%", rev36: "$37.3B", gw: "5.0", ceil: "1.0×, ceiling binds", pie: "21% · 0.7× BTM" },
   { r: "10.5%", g1: "73.5%", rev36: "$45.0B", gw: "6.0", ceil: "1.2×", pie: "25% · 0.8× BTM" },
   { r: "12.0%", g1: "81.1%", rev36: "$57.8B", gw: "7.7", ceil: "1.5×", pie: "32% · 1.1× BTM" },
   { r: "15.0%", g1: "94.7%", rev36: "$88.4B", gw: "11.8", ceil: "2.4×", pie: "50% · 1.7× BTM" },
@@ -196,9 +196,9 @@ const FRONTIER = [
 ];
 
 const SCEN_DEFAULTS: Scen[] = [
-  { name: "Bull — AI power land-grab won", p: 25, rev: 15, m: 22, x: 16 },
-  { name: "Base — strong industrial grower", p: 50, rev: 9.2, m: 16, x: 12 },
-  { name: "Bear — capex digestion / competition", p: 25, rev: 5, m: 10, x: 8 },
+  { name: "Bull: AI power land-grab won", p: 25, rev: 15, m: 22, x: 16 },
+  { name: "Base, strong industrial grower", p: 50, rev: 9.2, m: 16, x: 12 },
+  { name: "Bear, capex digestion / competition", p: 25, rev: 5, m: 10, x: 8 },
 ];
 
 function blendConstG(g5: number, w: number, netDebt: number, shares: number) {
@@ -239,7 +239,7 @@ const fwdPs = (revB: number, mPct: number, mult: number, netDebt: number, shares
   (revB * 1e9 * (mPct / 100) * mult - netDebt * 1e6) / (shares * 1e6);
 
 // ============================================================================
-// MAIN-PAGE SECTION — compact reverse DCF, three sliders
+// MAIN-PAGE SECTION, compact reverse DCF, three sliders
 // ============================================================================
 export function Valuation() {
   const { ok, price } = useLivePrice();
@@ -308,7 +308,7 @@ export function Valuation() {
             </p>
             <Slider
               label="Bull-case FY2030 revenue (concede the whole bull story)"
-              ours={`ours: $${OURS.bRev}B — our super-bull case (7.4× today)`}
+              ours={`ours: $${OURS.bRev}B, our super-bull case (7.4× today)`}
               value={bRev}
               fmt={(n) => `$${n.toFixed(1)}B`}
               min={4}
@@ -318,7 +318,7 @@ export function Valuation() {
             />
             <Slider
               label="Required IRR (your hurdle rate)"
-              ours={`ours: ${OURS.hr}% — what we demand to hold a story stock`}
+              ours={`ours: ${OURS.hr}%, what we demand to hold a story stock`}
               value={hr}
               fmt={P1}
               min={8}
@@ -328,7 +328,7 @@ export function Valuation() {
             />
             <Slider
               label="Market-level discount rate (for the implied-growth solve)"
-              ours={`ours: ${OURS.rw}% — a market rate, not our 21.0% company WACC`}
+              ours={`ours: ${OURS.rw}%, a market rate, not our 21.0% company WACC`}
               value={rw}
               fmt={P1}
               min={7}
@@ -353,8 +353,8 @@ export function Valuation() {
             <p className="mb-4 font-mono text-[10px] uppercase tracking-[0.14em]" style={{ color: t.fgMute }}>
               reverse DCF · entry price
             </p>
-            <Row k="Growth the market is prepaying for" v={imp ? `${P1(imp.g)} /yr × 5 yrs` : "—"} />
-            <Row k="Implied FY2030 revenue" v={imp ? `${B(imp.rev)} (${(imp.rev / BASE_REV).toFixed(0)}× today)` : "—"} />
+            <Row k="Growth the market is prepaying for" v={imp ? `${P1(imp.g)} /yr × 5 yrs` : "–"} />
+            <Row k="Implied FY2030 revenue" v={imp ? `${B(imp.rev)} (${(imp.rev / BASE_REV).toFixed(0)}× today)` : "–"} />
             <Row k="Bull-case FY2030 value / share" v={PS(ps30)} />
             <Row k="Entry price today (buy trigger)" v={PS(entry)} strong />
             <Row k="Fall needed to reach the trigger" v={`${Math.max(0, down).toFixed(0)}%`} />
@@ -363,7 +363,7 @@ export function Valuation() {
               style={{ borderColor: "#d97706", background: "#fdf6ec", color: t.ink2 }}
             >
               <b>
-                Sell / avoid at {PS(p)} — buy below {PS(entry)}.
+                Sell / avoid at {PS(p)}, buy below {PS(entry)}.
               </b>{" "}
               Even granting ${bRev.toFixed(0)}B of FY2030 revenue, a buyer today
               earns {irrM.toFixed(1)}%/yr against a {hr.toFixed(0)}% hurdle.
@@ -397,11 +397,11 @@ export function Valuation() {
 }
 
 // ============================================================================
-// FULL LAB — /valuation page (both tabs, every assumption editable)
+// FULL LAB: /valuation page (both tabs, every assumption editable)
 // ============================================================================
 
 // ---------- Tab 1 · The group DCF -------------------------------------------
-// CAPM layer — mirrors the workbook's WACC tab exactly:
+// CAPM layer, mirrors the workbook's WACC tab exactly:
 //   cost of equity = rf + β × MRP;  WACC = E/V·CoE + D/V·kd·(1−tax)
 // At β 3.7703 this reproduces the model's 21.03% WACC.
 const CAPM = {
@@ -417,14 +417,14 @@ const betaToWacc = (b: number) =>
 const waccToBeta = (w: number) =>
   ((w - CAPM.dW * CAPM.kd * (1 - CAPM.tax)) / CAPM.eW - CAPM.rf) / CAPM.mrp;
 
-// The beta dispute, made explicit: the same stock, four reported betas —
+// The beta dispute, made explicit: the same stock, four reported betas:
 // window and method choices move the discount rate by >11 points.
 const BETA_PRESETS = [
-  { label: "Ours", beta: 3.77, basis: "our 60-mo monthly regression (workbook β 3.7703 — the model default)" },
+  { label: "Ours", beta: 3.77, basis: "our 60-mo monthly regression (workbook β 3.7703, the model default)" },
   { label: "Kshana", beta: 3.93, basis: "1-year beta, Kshana (Jul 2026)" },
   { label: "Yahoo", beta: 3.74, basis: "5-year monthly, Yahoo Finance" },
   { label: "FactSet", beta: 2.02, basis: "3-year adjusted beta (shrunk toward 1), FactSet" },
-  { label: "Bottom-up", beta: 1.25, basis: "unlevered peer build-up, ~1.1–1.4 (macro analysis) — lands at the rate where the reverse-DCF frontier says the 5 GW ceiling binds" },
+  { label: "Bottom-up", beta: 1.25, basis: "unlevered peer build-up, ~1.1–1.4 (macro analysis), lands at the rate where the reverse-DCF frontier says the 5 GW ceiling binds" },
 ];
 
 const DCF_DEFAULTS = {
@@ -435,7 +435,7 @@ const DCF_DEFAULTS = {
   blend: 50,
   price: 257.98,
   netDebt: 160.621, // $M (workbook, pinned 2026-06-27)
-  shares: 319.7, // M — diluted per Q1 2026 10-Q (v5 audit fix)
+  shares: 319.7, // M, diluted per Q1 2026 10-Q (v5 audit fix)
   growth: [70, 45, 30, 22, 18],
   fcfM: [-2.26, 0.98, 3.7, 5.6, 6.86], // v5: forecast tax sign fixed (+5%)
 };
@@ -551,7 +551,7 @@ function DcfTab() {
         <p className="mt-3 text-[12.5px] leading-relaxed" style={{ color: t.fgMute }}>
           The perpetuity leg is the pure discounted-cash-flow answer; the blended
           figure is lifted by the EBITDA-exit leg (a multiple, not discounting).
-          Defaults reproduce the completed v5 workbook — $8.60 / $27.87 / $18.23
+          Defaults reproduce the completed v5 workbook: $8.60 / $27.87 / $18.23
           (this mirror lands within a few cents on day-count rounding). The v5
           audit build: forecast tax sign fixed, Gordon terminal FCF normalized,
           diluted 319.7M-share divisor.
@@ -568,14 +568,14 @@ function DcfTab() {
             shared across both terminal methods
           </p>
 
-          {/* beta → cost of equity → WACC — the contested input, made explicit */}
+          {/* beta → cost of equity → WACC, the contested input, made explicit */}
           <div
             className="mb-4 rounded-xl border px-4 py-3"
             style={{ borderColor: t.lineStrong, background: t.sunken }}
           >
             <div className="flex items-baseline justify-between">
               <span className="text-[12.5px] font-medium" style={{ color: t.ink }}>
-                Beta — the number everyone reports differently
+                Beta, the number everyone reports differently
               </span>
               <span className="font-mono text-[12px] tabular-nums" style={{ color: t.fgDim }}>
                 β {waccToBeta(S.wacc).toFixed(2)} → CoE{" "}
@@ -619,7 +619,7 @@ function DcfTab() {
               })}
             </div>
             <p className="mt-2 text-[11.5px] leading-relaxed" style={{ color: t.fgMute }}>
-              Same stock, four reported betas — the differences are window and
+              Same stock, four reported betas, the differences are window and
               method (1-yr vs 3-yr vs 5-yr; monthly vs weekly; FactSet shrinks
               toward 1; the bottom-up build ignores BE&apos;s own trading
               history entirely). Because Bloom is ~96.6% equity at market value,
@@ -631,11 +631,11 @@ function DcfTab() {
             </p>
           </div>
 
-          <Slider label="Discount rate (WACC) — synced with beta above" ours="ours: 21.03% — β 3.7703, our 60-mo regression" value={S.wacc} fmt={P1} min={6} max={30} step={0.01} onChange={set("wacc")} />
-          <Slider label="Terminal growth (perpetual)" ours="ours: 3.5% — long-run nominal GDP-ish" value={S.gTerm} fmt={P1} min={1} max={6} step={0.1} onChange={set("gTerm")} />
-          <Slider label="Terminal EBITDA exit multiple" ours="ours: 13.5× — mature industrial multiple" value={S.exMult} fmt={(n) => `${n.toFixed(1)}×`} min={5} max={30} step={0.5} onChange={set("exMult")} />
-          <Slider label="FY2030 EBITDA margin (exit leg)" ours="ours: 15.8% — workbook FY30 margin" value={S.ebM} fmt={P1} min={8} max={24} step={0.1} onChange={set("ebM")} />
-          <Slider label="Blend — perpetuity vs EBITDA" ours="ours: 50/50 — workbook final-valuation block" value={S.blend} fmt={(n) => `${n}% / ${100 - n}%`} min={0} max={100} step={5} onChange={set("blend")} />
+          <Slider label="Discount rate (WACC), synced with beta above" ours="ours: 21.03%, β 3.7703, our 60-mo regression" value={S.wacc} fmt={P1} min={6} max={30} step={0.01} onChange={set("wacc")} />
+          <Slider label="Terminal growth (perpetual)" ours="ours: 3.5%, long-run nominal GDP-ish" value={S.gTerm} fmt={P1} min={1} max={6} step={0.1} onChange={set("gTerm")} />
+          <Slider label="Terminal EBITDA exit multiple" ours="ours: 13.5×, mature industrial multiple" value={S.exMult} fmt={(n) => `${n.toFixed(1)}×`} min={5} max={30} step={0.5} onChange={set("exMult")} />
+          <Slider label="FY2030 EBITDA margin (exit leg)" ours="ours: 15.8%, workbook FY30 margin" value={S.ebM} fmt={P1} min={8} max={24} step={0.1} onChange={set("ebM")} />
+          <Slider label="Blend, perpetuity vs EBITDA" ours="ours: 50/50, workbook final-valuation block" value={S.blend} fmt={(n) => `${n}% / ${100 - n}%`} min={0} max={100} step={5} onChange={set("blend")} />
           <Slider label="Reference share price (for upside)" ours="workbook reference: $257.98" value={S.price} fmt={PS} min={20} max={400} step={0.5} onChange={set("price")} />
           <div className="mt-1 flex flex-wrap items-center gap-4">
             <label className="flex items-center gap-2 text-[12px]" style={{ color: t.fgDim }}>
@@ -655,14 +655,14 @@ function DcfTab() {
             </button>
           </div>
           <p className="mt-3 text-[12px] leading-relaxed" style={{ color: t.fgMute }}>
-            The v5 workbook divides by diluted 319.7M shares (Q1&apos;26 10-Q) —
+            The v5 workbook divides by diluted 319.7M shares (Q1&apos;26 10-Q):
             the audit fix that cut ~11% per share. Its net-debt bridge ($161M) is
             the FY2025 year-end; set 456 (FactSet Q1&apos;26) to roll it forward.
           </p>
           <div className="mt-4 border-t border-line pt-2">
             <Row k="PV of stage-1 UFCF" v={B(m.pvStage1)} />
             <Row k="Net debt" v={M(m.netDebt)} />
-            <Row k="Implied WACC to match price" v={iw ? P1(iw) : "—"} />
+            <Row k="Implied WACC to match price" v={iw ? P1(iw) : "–"} />
             <Row k="Terminal as % of EV (perp / exit)" v={`${(m.perpPct * 100).toFixed(0)}% / ${(m.ebPct * 100).toFixed(0)}%`} />
           </div>
         </div>
@@ -670,7 +670,7 @@ function DcfTab() {
         {/* forecast table */}
         <div className="rounded-2xl border border-line p-6" style={{ background: t.surface }}>
           <h3 className="text-[15px] font-semibold" style={{ color: t.ink }}>
-            Forecast — edit growth &amp; FCF margin per year
+            Forecast, edit growth &amp; FCF margin per year
           </h3>
           <p className="mb-4 font-mono text-[10px] uppercase tracking-[0.14em]" style={{ color: t.fgMute }}>
             FY2026–FY2030 · ours: 70/45/30/22/18% growth · −1.3→8.0% UFCF ramp
@@ -739,7 +739,7 @@ function DcfTab() {
           <p className="mt-3 text-[12px] leading-relaxed" style={{ color: t.fgMute }}>
             FY2026 cash flow is stub-adjusted (×0.5) and discounted from the
             Jul-2026 valuation date (mid-year convention). FY2026 UFCF is negative
-            — a working-capital build funding the ramp.
+           : a working-capital build funding the ramp.
           </p>
         </div>
       </div>
@@ -830,10 +830,10 @@ function ReverseTab({ livePrice }: { livePrice: number }) {
           style={{ borderColor: "#d97706", background: "#fdf6ec", color: t.ink2 }}
         >
           <b>
-            Sell / avoid at {PS(S.price)} — buy below {PS(entry)}.
+            Sell / avoid at {PS(S.price)}, buy below {PS(entry)}.
           </b>{" "}
           Even conceding the full bull case (FY2030 revenue of ${S.bRev.toFixed(0)}B
-          — {((S.bRev * 1e9) / BASE_REV).toFixed(1)}× today — at {S.bM.toFixed(0)}%
+         : {((S.bRev * 1e9) / BASE_REV).toFixed(1)}× today, at {S.bM.toFixed(0)}%
           EBITDA margins and a {S.bX.toFixed(0)}× mature multiple), a buyer today
           earns {irrM.toFixed(1)}%/yr. The stock must fall ~{down.toFixed(0)}%
           before it pays a {S.hr.toFixed(0)}% hurdle.{" "}
@@ -847,19 +847,19 @@ function ReverseTab({ livePrice }: { livePrice: number }) {
         {/* reverse DCF */}
         <div className="rounded-2xl border border-line p-6" style={{ background: t.surface }}>
           <h3 className="text-[15px] font-semibold" style={{ color: t.ink }}>
-            1 · Reverse DCF — what does the price imply?
+            1 · Reverse DCF, what does the price imply?
           </h3>
           <p className="mb-4 font-mono text-[10px] uppercase tracking-[0.14em]" style={{ color: t.fgMute }}>
             expectations investing: invert the model
           </p>
           <Slider label="Market price" ours="defaults to the live quote" value={S.price} fmt={PS} min={20} max={400} step={0.5} onChange={set("price")} />
-          <Slider label="Reasonable discount rate" ours={`ours: ${OURS.rw}% — the market's rate, not our 21.0% company WACC`} value={S.rw} fmt={P1} min={7} max={16} step={0.1} onChange={set("rw")} />
+          <Slider label="Reasonable discount rate" ours={`ours: ${OURS.rw}%, the market's rate, not our 21.0% company WACC`} value={S.rw} fmt={P1} min={7} max={16} step={0.1} onChange={set("rw")} />
           <div className="mt-2">
-            <Row k="Implied revenue growth, next 5 yrs (constant)" v={imp ? `${P1(imp.g)} /yr` : "—"} />
-            <Row k="Implied FY2030 revenue" v={imp ? B(imp.rev) : "—"} />
-            <Row k="× today's revenue ($2.02B)" v={imp ? `${(imp.rev / BASE_REV).toFixed(0)}×` : "—"} />
+            <Row k="Implied revenue growth, next 5 yrs (constant)" v={imp ? `${P1(imp.g)} /yr` : "–"} />
+            <Row k="Implied FY2030 revenue" v={imp ? B(imp.rev) : "–"} />
+            <Row k="× today's revenue ($2.02B)" v={imp ? `${(imp.rev / BASE_REV).toFixed(0)}×` : "–"} />
             <Row k="Our team's bull path gets to" v="$9.34B" />
-            <Row k="Gap: market vs our bull case" v={imp ? `${(imp.rev / 9.34e9).toFixed(1)}×` : "—"} />
+            <Row k="Gap: market vs our bull case" v={imp ? `${(imp.rev / 9.34e9).toFixed(1)}×` : "–"} />
           </div>
           <p className="mt-3 text-[12px] leading-relaxed" style={{ color: t.fgMute }}>
             Method: hold the workbook&apos;s UFCF-margin ramp and 50/50 terminal
@@ -872,15 +872,15 @@ function ReverseTab({ livePrice }: { livePrice: number }) {
         {/* entry price */}
         <div className="rounded-2xl border border-line p-6" style={{ background: t.surface }}>
           <h3 className="text-[15px] font-semibold" style={{ color: t.ink }}>
-            2 · Entry price — when does it become a buy?
+            2 · Entry price, when does it become a buy?
           </h3>
           <p className="mb-4 font-mono text-[10px] uppercase tracking-[0.14em]" style={{ color: t.fgMute }}>
             value FY2030 forward, discount back at your hurdle
           </p>
-          <Slider label="Bull-case FY2030 revenue" ours={`ours: $${OURS.bRev}B — our super-bull case`} value={S.bRev} fmt={(n) => `$${n.toFixed(1)}B`} min={4} max={40} step={0.5} onChange={set("bRev")} />
-          <Slider label="Mature EBITDA margin (FY2030)" ours={`ours: ${OURS.bM}% — mature industrial-tech leader`} value={S.bM} fmt={P1} min={8} max={30} step={0.5} onChange={set("bM")} />
-          <Slider label="Mature EV/EBITDA multiple" ours={`ours: ${OURS.bX}× — post-entry, competed-down multiple`} value={S.bX} fmt={(n) => `${n.toFixed(1)}×`} min={6} max={25} step={0.5} onChange={set("bX")} />
-          <Slider label="Required IRR (hurdle)" ours={`ours: ${OURS.hr}% — our demanded annual return`} value={S.hr} fmt={P1} min={8} max={25} step={0.5} onChange={set("hr")} />
+          <Slider label="Bull-case FY2030 revenue" ours={`ours: $${OURS.bRev}B, our super-bull case`} value={S.bRev} fmt={(n) => `$${n.toFixed(1)}B`} min={4} max={40} step={0.5} onChange={set("bRev")} />
+          <Slider label="Mature EBITDA margin (FY2030)" ours={`ours: ${OURS.bM}%, mature industrial-tech leader`} value={S.bM} fmt={P1} min={8} max={30} step={0.5} onChange={set("bM")} />
+          <Slider label="Mature EV/EBITDA multiple" ours={`ours: ${OURS.bX}×, post-entry, competed-down multiple`} value={S.bX} fmt={(n) => `${n.toFixed(1)}×`} min={6} max={25} step={0.5} onChange={set("bX")} />
+          <Slider label="Required IRR (hurdle)" ours={`ours: ${OURS.hr}%, our demanded annual return`} value={S.hr} fmt={P1} min={8} max={25} step={0.5} onChange={set("hr")} />
           <div className="mt-2">
             <Row k="FY2030 EBITDA" v={B(S.bRev * 1e9 * (S.bM / 100))} />
             <Row k="FY2030 value / share" v={PS(ps30)} />
@@ -889,7 +889,7 @@ function ReverseTab({ livePrice }: { livePrice: number }) {
           </div>
           <p className="mt-3 text-[12px] leading-relaxed" style={{ color: t.fgMute }}>
             entry = (rev₃₀ × margin × multiple − net debt) ÷ shares ÷
-            (1+hurdle)^4.5 — this concedes the whole bull story and still demands
+            (1+hurdle)^4.5, this concedes the whole bull story and still demands
             to be paid for the risk. Whatever it prints is the slide: &quot;we are
             buyers below $X.&quot;
           </p>
@@ -962,7 +962,7 @@ function ReverseTab({ livePrice }: { livePrice: number }) {
       {/* completed-workbook findings: 10-year fade solve + rate–growth frontier */}
       <div className="mt-5 rounded-2xl border border-line p-6" style={{ background: t.surface }}>
         <h3 className="text-[15px] font-semibold" style={{ color: t.ink }}>
-          4 · The completed workbook&apos;s own solve — and the rate–growth frontier
+          4 · The completed workbook&apos;s own solve, and the rate–growth frontier
         </h3>
         <p className="mb-3 font-mono text-[10px] uppercase tracking-[0.14em]" style={{ color: t.fgMute }}>
           10-yr linear fade to 3.5% · 20% terminal FCF margin · goal-seeked on year-one growth
@@ -970,7 +970,7 @@ function ReverseTab({ livePrice }: { livePrice: number }) {
         <p className="text-[13px] leading-relaxed" style={{ color: t.fgDim }}>
           The finished model runs the same inversion over a ten-year fade. At its
           own 21% WACC and the $257.98 pin, the price requires <b>124% year-one
-          growth</b> fading to 3.5% — <b>~$210B of FY2036 revenue, 5.6× the
+          growth</b> fading to 3.5%: <b>~$210B of FY2036 revenue, 5.6× the
           disclosed 5 GW/yr capacity ceiling</b> ($37.5B of product revenue at
           $7.5B/GW). No terminal cash margin escapes it:
         </p>
@@ -999,7 +999,7 @@ function ReverseTab({ livePrice }: { livePrice: number }) {
           </table>
         </div>
         <p className="mt-4 text-[13px] leading-relaxed" style={{ color: t.fgDim }}>
-          But the finding is deliberately <i>not</i> &quot;overvalued at 21%&quot; —
+          But the finding is deliberately <i>not</i> &quot;overvalued at 21%&quot;:
           it&apos;s the frontier. Re-run at the July 14 pin ($243.40 · EV $69.4B)
           across discount rates, the burden falls three-quarters by 10.5%, and the
           disclosed capacity ceiling binds exactly near <b>9.5%</b>. The price is
@@ -1041,7 +1041,7 @@ function ReverseTab({ livePrice }: { livePrice: number }) {
           reverse-DCF experiments annex (re-pulled at the Jul 14 pin; constant
           20% margin from year one is generous to the market case, so every row
           is a lower bound). This is why the sliders above solve at a
-          market-level ~10.5% rate — the honest form of the claim is the
+          market-level ~10.5% rate, the honest form of the claim is the
           frontier, and our entry-price math already lives on its defensible
           edge.
         </p>
@@ -1050,7 +1050,7 @@ function ReverseTab({ livePrice }: { livePrice: number }) {
   );
 }
 
-/** Full lab — rendered by app/valuation/page.tsx. */
+/** Full lab, rendered by app/valuation/page.tsx. */
 export function ValuationLab() {
   const { ok, price } = useLivePrice();
   const p = ok && price != null ? price : 300;
@@ -1066,7 +1066,7 @@ export function ValuationLab() {
       </h1>
       <p className="mt-4 max-w-3xl text-[16px] leading-relaxed" style={{ color: t.fgDim }}>
         The reverse DCF drives our price targets; the group DCF is the workbook it
-        inverts. Every slider shows the value our model uses (&quot;ours: …&quot;) —
+        inverts. Every slider shows the value our model uses (&quot;ours: …&quot;):
         drag anything and see what has to be true for a different answer.
       </p>
 

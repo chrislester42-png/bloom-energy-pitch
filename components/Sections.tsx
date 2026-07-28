@@ -64,7 +64,7 @@ export function Thesis() {
                 <span style={{ color: "var(--color-hot, #dc2626)" }}>
                   Sell / avoid at today&apos;s ${p.toFixed(0)}
                 </span>{" "}
-                — <span style={{ color: t.accent }}>buy below ${trig.toFixed(0)}</span>,
+               : <span style={{ color: t.accent }}>buy below ${trig.toFixed(0)}</span>,
                 our conservative entry price.
               </p>
               <p className="mt-2 text-[15px] leading-relaxed" style={{ color: t.ink2 }}>
@@ -85,7 +85,7 @@ export function Thesis() {
         </div>
       </div>
 
-      {/* Table of contents — jump into the argument */}
+      {/* Table of contents, jump into the argument */}
       <Reveal i={3}>
         <div className="mt-14">
           <div
@@ -147,7 +147,7 @@ function ThesisColumn({
       <ul className="mt-4 flex flex-col gap-3">
         {items.map((it) => (
           <li key={it} className="flex gap-2.5 text-[14px] leading-relaxed" style={{ color: t.fgDim }}>
-            <span style={{ color }}>—</span>
+            <span style={{ color }}>–</span>
             <span>{it}</span>
           </li>
         ))}
@@ -172,7 +172,7 @@ export function WhyNow() {
           </span>
           <span><b style={{ color: t.ink2 }}>MW</b> (megawatt) ≈ power for ~750 homes</span>
           <span><b style={{ color: t.ink2 }}>GW</b> (gigawatt) = 1,000 MW</span>
-          <span><b style={{ color: t.ink2 }}>MWh</b> = one MW running for an hour — a unit of energy you can price</span>
+          <span><b style={{ color: t.ink2 }}>MWh</b> = one MW running for an hour, a unit of energy you can price</span>
         </div>
       </Reveal>
 
@@ -362,7 +362,7 @@ export function Sources() {
       <SectionHeader
         eyebrow="09 · Sources"
         headline="Every number traces to a primary filing."
-        dek="Built on a sourced research vault — filings, transcripts, and deal releases. The audit trail is the point."
+        dek="Built on a sourced research vault, filings, transcripts, and deal releases. The audit trail is the point."
       />
       <Reveal i={2}>
         <div className="mt-6"><TierLegend /></div>

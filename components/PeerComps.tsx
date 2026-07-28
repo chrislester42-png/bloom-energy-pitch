@@ -112,7 +112,7 @@ export function PeerComps() {
         </div>
 
         <p className="mt-4 max-w-3xl text-[13.5px] leading-relaxed" style={{ color: t.fgDim }}>
-          BE trades at a steep premium to every peer on every multiple — ~339× EV/EBITDA
+          BE trades at a steep premium to every peer on every multiple: ~339× EV/EBITDA
           and 128× forward earnings vs. a peer median near 38×. The market is paying
           up for the growth and the moat; the Street&apos;s consensus target (+
           {(((peers[0].priceTarget / peers[0].price) - 1) * 100).toFixed(0)}%) implies

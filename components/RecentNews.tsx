@@ -6,7 +6,7 @@ import { t } from "./tokens";
 import { recentNews, type NewsItem } from "@/data/content";
 
 /**
- * RecentNews — the report's "recent developments" section as an
+ * RecentNews, the report's "recent developments" section as an
  * interactive, filterable timeline (newest first).
  */
 

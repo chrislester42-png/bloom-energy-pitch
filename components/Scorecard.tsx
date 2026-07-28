@@ -8,7 +8,7 @@ import {
 } from "@/data/scorecard";
 
 /**
- * Scorecard — pre-registered predictions, graded in public.
+ * Scorecard, pre-registered predictions, graded in public.
  *
  * The ranges render from data/scorecard.ts, which was committed to public
  * git history BEFORE the Q2 2026 print. After the print, only `reported`
@@ -49,7 +49,7 @@ export function Scorecard() {
       <p className="mt-5 max-w-3xl text-[16px] leading-relaxed" style={{ color: t.fgDim }}>
         Before Bloom&apos;s Q2 2026 print ({PRINT_DATE}), we committed the ranges
         below to this site&apos;s public git history. After the print, each row is
-        graded — hit or miss, no edits, no hindsight. A thesis that can&apos;t say
+        graded, hit or miss, no edits, no hindsight. A thesis that can&apos;t say
         what would surprise it isn&apos;t a thesis.
       </p>
 
@@ -67,7 +67,7 @@ export function Scorecard() {
           className="rounded-xl border border-dashed px-4 py-2.5 font-mono text-[11px] underline-offset-2 hover:underline"
           style={{ borderColor: t.lineStrong, color: t.fgMute }}
         >
-          proof: public commit history — the commit adding these ranges predates the release
+          proof: public commit history, the commit adding these ranges predates the release
         </a>
         {graded.length > 0 && (
           <span
@@ -110,13 +110,13 @@ export function Scorecard() {
                 <td className="px-3.5 py-3.5 text-[13px] leading-relaxed" style={{ color: t.fgDim }}>
                   {r.falsifier && (
                     <span className="mr-1.5 font-mono text-[9.5px] font-semibold uppercase tracking-[0.08em]" style={{ color: "#92400e" }}>
-                      Tripwire №{r.falsifier} —
+                      Tripwire №{r.falsifier}:
                     </span>
                   )}
                   {r.why}
                 </td>
                 <td className="px-3.5 py-3.5 font-mono text-[13px] leading-snug" style={{ color: r.reported ? t.ink : t.fgMute }}>
-                  {r.reported ?? "—"}
+                  {r.reported ?? "–"}
                 </td>
                 <td className="px-3.5 py-3.5"><Pill verdict={r.verdict} /></td>
               </tr>
@@ -127,7 +127,7 @@ export function Scorecard() {
 
       <p className="mt-5 max-w-4xl text-[13px] leading-relaxed" style={{ color: t.fgMute }}>
         Grading rule, fixed in advance: a row is a <b>hit</b> if the reported
-        figure lands inside the range, a <b>miss</b> otherwise — no partial
+        figure lands inside the range, a <b>miss</b> otherwise, no partial
         credit, no re-interpretation. If two or more tripwire rows break
         against us, the call gets formally revisited on the{" "}
         <a href="/process" className="underline underline-offset-2" style={{ color: t.accent }}>Process</a>{" "}

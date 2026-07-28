@@ -6,7 +6,7 @@ import { t, sectionEase } from "./tokens";
 import { PriceTicker } from "./LivePrice";
 
 // Section links are rooted ("/#thesis") so they work from subpages
-// (/scorecard, /process, /vault, /tearsheet) — a bare "#thesis" only
+// (/scorecard, /process, /vault, /tearsheet), a bare "#thesis" only
 // resolves on the homepage itself.
 const links = [
   ["Thesis", "/#thesis"],

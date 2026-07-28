@@ -7,13 +7,13 @@ import { useLivePrice } from "./LivePrice";
 import { latest } from "@/data/financials";
 
 /**
- * Live Buy Trigger — the thesis as a standing, self-updating recommendation.
+ * Live Buy Trigger, the thesis as a standing, self-updating recommendation.
  *
  * Two live numbers, recomputed from the real-time quote:
  *  1) The implied 5-yr revenue growth the market is paying for RIGHT NOW
  *     (reverse DCF: bisect constant growth until the group model's blended
  *     value equals the live price at a market-level discount rate).
- *  2) Distance to our buy trigger — the price at which even our super-bull
+ *  2) Distance to our buy trigger, the price at which even our super-bull
  *     FY2030 case (rev × margin × multiple) clears the hurdle IRR.
  */
 
@@ -122,7 +122,7 @@ export function BuyTrigger() {
               The call, live
             </span>
             <span className="font-mono text-[11px] uppercase tracking-[0.14em]" style={{ color: t.fgMute }}>
-              {live ? "· updates with the tape" : "· live quote offline — showing reference price"}
+              {live ? "· updates with the tape" : "· live quote offline, showing reference price"}
             </span>
           </div>
         </Reveal>
@@ -133,7 +133,7 @@ export function BuyTrigger() {
               <>Below our trigger. This is the price we&apos;ve been waiting for.</>
             ) : (
               <>
-                Right company. Wrong price — by{" "}
+                Right company. Wrong price, by{" "}
                 <span style={{ color: "var(--color-hot, #dc2626)" }}>{fallPct.toFixed(0)}%</span>.
               </>
             )}
@@ -170,10 +170,10 @@ export function BuyTrigger() {
 
         <Reveal i={3}>
           <p className="mt-5 max-w-3xl text-[13px] leading-relaxed" style={{ color: t.fgMute }}>
-            How to read this: we invert our group DCF against the live quote — the growth number is what the
-            current price already pays for, at a 10.5% discount rate. The trigger concedes our most optimistic
+            How to read this: we invert our group DCF against the live quote: the growth number is what the
+            current price already pays for at a 10.5% discount rate. The trigger concedes our most optimistic
             FY2030 case and still demands a {(TRIGGER.hurdle * 100).toFixed(0)}% annual return. We&apos;d rather
-            own it than admire it — at the right price. Educational research, not investment advice.
+            own it than admire it, at the right price. Educational research, not investment advice.
           </p>
         </Reveal>
       </div>

@@ -87,7 +87,7 @@ export default function Hero() {
       />
 
       <div className="relative mx-auto grid min-h-[100dvh] max-w-7xl grid-cols-1 items-center gap-12 px-5 pt-28 pb-20 sm:px-8 lg:grid-cols-[1.05fr_1fr] lg:gap-16">
-        {/* LEFT — copy */}
+        {/* LEFT, copy */}
         <motion.div className="relative z-10" style={{ y: yCopy, opacity: fade }}>
           <motion.p
             initial="hidden"
@@ -133,7 +133,7 @@ export default function Hero() {
             className="mt-6 max-w-[46ch] text-[16px] leading-[1.6] sm:text-[17.5px]"
             style={{ color: t.fgDim }}
           >
-            On-site power for the AI build-out — and a stock the market can&apos;t
+            On-site power for the AI build-out, and a stock the market can&apos;t
             decide how to price. Here&apos;s the debate, and where we land.
           </motion.p>
 
@@ -197,7 +197,7 @@ export default function Hero() {
           </motion.div>
         </motion.div>
 
-        {/* RIGHT — signature cell-grid motif on a depth card */}
+        {/* RIGHT, signature cell-grid motif on a depth card */}
         <motion.div
           initial={{ opacity: 0, y: 22 }}
           animate={{ opacity: 1, y: 0 }}

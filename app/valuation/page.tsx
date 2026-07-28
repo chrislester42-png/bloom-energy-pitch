@@ -4,9 +4,9 @@ import { ValuationLab } from "@/components/Valuation";
 import { LivePriceProvider } from "@/components/LivePrice";
 
 export const metadata: Metadata = {
-  title: "Valuation Lab — Bloom Energy (NYSE: BE)",
+  title: "Valuation Lab: Bloom Energy (NYSE: BE)",
   description:
-    "The full interactive valuation lab behind the Bloom Energy pitch — reverse DCF, hurdle-rate entry price, scenario weighting, and the group DCF, with every assumption editable.",
+    "The full interactive valuation lab behind the Bloom Energy pitch, reverse DCF, hurdle-rate entry price, scenario weighting, and the group DCF, with every assumption editable.",
 };
 
 export default function ValuationPage() {

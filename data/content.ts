@@ -1,6 +1,6 @@
 // Section content for the Bloom pitch site.
 // Sourced from the Obsidian research vault (02 Atomic Notes / 01 Sources).
-// Keep copy punchy — slide logic, not essays.
+// Keep copy punchy, slide logic, not essays.
 
 export interface Fact {
   value: string;
@@ -9,7 +9,7 @@ export interface Fact {
   /** Evidence tier, per the research's discipline:
    *  R = reported primary · D = derived from primaries · E = estimate / third party */
   tier?: "R" | "D" | "E";
-  /** Vault note id backing this figure — the chip deep-links to /vault#note=<id> */
+  /** Vault note id backing this figure, the chip deep-links to /vault#note=<id> */
   note?: string;
 }
 
@@ -19,17 +19,17 @@ export const thesis = {
   statement:
     "Bloom is the only company that can put city-sized amounts of clean power next to an AI data center in months instead of years. After 17 years of losses it's now solidly profitable, with about $20B of future business lined up. The question isn't whether Bloom is a great company. It's whether today's stock price already assumes everything goes perfectly.",
   bull: [
-    "The biggest names in AI — Oracle, the utility powering Amazon's data centers, Brookfield's $25B fund — have signed up, because the power grid can't hook them up fast enough.",
-    "A 17-year technology head start, and every box sold comes with a long-term service contract — like selling the printer and the ink.",
+    "The biggest names in AI (Oracle, the utility powering Amazon's data centers, Brookfield's $25B fund) have signed up because the power grid can't hook them up fast enough.",
+    "A 17-year technology head start, and every box sold comes with a long-term service contract, like selling the printer and the ink.",
     "The growth is no longer a promise: last quarter was Bloom's first billion-dollar quarter (+165%), it generated $226M of real cash, and revenue should roughly double this year.",
   ],
   bear: [
     "Still priced for near-perfection: even after July's 40% fall, the stock costs ~60× the earnings management itself forecasts for this year.",
-    "Of the \"$20B of future business,\" only about $0.5B is firm signed orders — the rest are plans and frameworks. And whether last quarter's sales were truly independent, or the same funded partners under a new label, awaits the next SEC filing.",
-    "Installing the boxes still loses money, and 9 out of 10 run on natural gas — about the same carbon footprint as a gas power plant.",
+    "Of the \"$20B of future business,\" only about $0.5B is firm signed orders, the rest are plans and frameworks. And whether last quarter's sales were truly independent, or the same funded partners under a new label, awaits the next SEC filing.",
+    "Installing the boxes still loses money, and 9 out of 10 run on natural gas, about the same carbon footprint as a gas power plant.",
   ],
   // The explicit stance, stated up front. The Thesis component prefixes this
-  // with the live two-sided rating ("Sell / avoid at $X — buy below $Y").
+  // with the live two-sided rating ("Sell / avoid at $X, buy below $Y").
   call:
     "We like the company and won't pay this price for it. At today's level a buyer earns a poor return even if the whole success story plays out; below the trigger, that same story pays our 12% minimum. Between those two prices, we simply wait.",
   toc: [
@@ -51,7 +51,7 @@ export const whyNow = {
   headline: "AI's power crunch has no easy fix.",
   dek: "The cloud giants (Amazon, Google, Microsoft) have the money; what they can't get fast is electricity. Power, not chips, is the real bottleneck for AI.",
   facts: [
-    { value: "82 → 153 GW", label: "how much power US data centers will need, 2025→2028 — nearly doubling (1 GW ≈ 750,000 homes)", source: "McKinsey", tier: "E", note: "02 Atomic Notes/McKinsey US data center demand 82 to 153 GW" },
+    { value: "82 → 153 GW", label: "how much power US data centers will need, 2025→2028, nearly doubling (1 GW ≈ 750,000 homes)", source: "McKinsey", tier: "E", note: "02 Atomic Notes/McKinsey US data center demand 82 to 153 GW" },
     { value: "~$375B", label: "Amazon + Google's planned 2026 spending on AI", source: "Q4 2025 call", tier: "E", note: "02 Atomic Notes/Amazon Google AI capex $375B+ for 2026" },
     { value: "90 days vs 3–5 yrs", label: "how fast Bloom installs vs the wait for a gas turbine", source: "SemiAnalysis / Utility Dive", tier: "E", note: "02 Atomic Notes/Speed to power vs gas turbine queue" },
     { value: "$50B → 3×", label: "Brookfield AI spend, tripling in 3 yrs", source: "Q3 2025 call", tier: "R", note: "02 Atomic Notes/Brookfield $50B AI already tripling next 3 years" },
@@ -61,12 +61,12 @@ export const whyNow = {
 export const whatBloomIs = {
   eyebrow: "01 · What Bloom is",
   headline: "Shippable power blocks, online in months.",
-  dek: "Bloom makes fuel cells — boxes that turn natural gas into electricity through a chemical reaction instead of burning it — installed right next to the building that needs power. No smokestack, and no multi-year wait for the utility grid.",
+  dek: "Bloom makes fuel cells, boxes that turn natural gas into electricity through a chemical reaction instead of burning it, installed right next to the building that needs power. No smokestack, and no multi-year wait for the utility grid.",
   facts: [
-    { value: "325 kW", label: "one shippable building block; about 300 of them make a 100-megawatt site — enough to power a small city or an AI data center", source: "Heat Capture datasheet", tier: "R", note: "02 Atomic Notes/325 kW base block is shippable unit" },
-    { value: "54% → >90%", label: "share of the gas's energy that becomes electricity — rising past 90% once the leftover heat (above 350°C) is captured for cooling or heating instead of wasted", source: "Heat Capture brochure", tier: "R", note: "02 Atomic Notes/Heat Capture CHP raises total efficiency above 90 percent" },
-    { value: "100 MW", label: "of power per acre of land — about twice what a gas-turbine plant fits in the same space", source: "Check-in memo", tier: "R", note: "02 Atomic Notes/100 MW per acre power density" },
-    { value: ">800°C", label: "how hot the cells run — hot enough to skip the costly precious-metal catalysts other fuel cells need", source: "Server brochure / DOE", tier: "R", note: "02 Atomic Notes/SOFC operates above 800C" },
+    { value: "325 kW", label: "one shippable building block; about 300 of them make a 100-megawatt site, enough to power a small city or an AI data center", source: "Heat Capture datasheet", tier: "R", note: "02 Atomic Notes/325 kW base block is shippable unit" },
+    { value: "54% → >90%", label: "share of the gas's energy that becomes electricity, rising past 90% once the leftover heat (above 350°C) is captured for cooling or heating instead of wasted", source: "Heat Capture brochure", tier: "R", note: "02 Atomic Notes/Heat Capture CHP raises total efficiency above 90 percent" },
+    { value: "100 MW", label: "of power per acre of land, about twice what a gas-turbine plant fits in the same space", source: "Check-in memo", tier: "R", note: "02 Atomic Notes/100 MW per acre power density" },
+    { value: ">800°C", label: "how hot the cells run, hot enough to skip the costly precious-metal catalysts other fuel cells need", source: "Server brochure / DOE", tier: "R", note: "02 Atomic Notes/SOFC operates above 800C" },
   ] as Fact[],
 };
 
@@ -81,33 +81,33 @@ export interface NewsItem {
 export const recentNews = {
   eyebrow: "02 · Recent news",
   headline: "Twelve months that changed the story.",
-  dek: "Press releases, earnings, and the contracts behind the numbers — newest first. These are the events we update our math against.",
+  dek: "Press releases, earnings, and the contracts behind the numbers, newest first. These are the events we update our math against.",
   items: [
     {
       date: "Jul 28, 2026",
       tag: "Earnings",
       title: "Record Q2: first billion-dollar quarter; guidance raised to $3.9–4.2B",
-      blurb: "Revenue $1,065M (+165%), non-GAAP EPS $0.78 vs ~$0.36 expected, $226M operating cash flow — and related-party revenue collapsed to $2.8M from ~$373M in Q1. Two of our pre-registered falsifiers triggered; our call is under formal review (see the Scorecard).",
+      blurb: "Revenue $1,065M (+165%), non-GAAP EPS $0.78 vs ~$0.36 expected, $226M operating cash flow, and related-party revenue collapsed to $2.8M from ~$373M in Q1. Two of our pre-registered falsifiers triggered; our call is under formal review (see the Scorecard).",
       source: "Q2 2026 release",
     },
     {
       date: "Jul 16, 2026",
       tag: "Deal",
       title: "Oaktree + IDF commit $1.7B to Bloom-powered Nebius AI buildout",
-      blurb: "Third-party project capital — Morgan Stanley as tax equity, MUFG senior debt — financing Bloom deployments for Nebius's cloud, part of a >$2.6B IDF portfolio. Institutional money underwriting the arm's-length channel.",
+      blurb: "Third-party project capital: Morgan Stanley as tax equity, MUFG senior debt, financing Bloom deployments for Nebius's cloud, part of a >$2.6B IDF portfolio. Institutional money underwriting the arm's-length channel.",
       source: "IDF/Oaktree PR",
     },
     {
       date: "Jul 14–16, 2026",
       tag: "Analyst",
-      title: "New Mexico blocks Project Jupiter's gas pipeline — twice",
-      blurb: "The land commissioner denied Energy Transfer's reconsideration for the pipeline feeding Jupiter's 2.45 GW site; Oracle had already dropped turbines for 100% Bloom. Fuel cells still need the pipe — October air-permit hearing is the next gate.",
+      title: "New Mexico blocks Project Jupiter's gas pipeline, twice",
+      blurb: "The land commissioner denied Energy Transfer's reconsideration for the pipeline feeding Jupiter's 2.45 GW site; Oracle had already dropped turbines for 100% Bloom. Fuel cells still need the pipe: October air-permit hearing is the next gate.",
       source: "Source NM / state filings",
     },
     {
       date: "Jul 8–9, 2026",
       tag: "Analyst",
-      title: "Hunterbrook short report — and Bloom's same-day rebuttal",
+      title: "Hunterbrook short report, and Bloom's same-day rebuttal",
       blurb: "A short seller alleges China-linked scandium sourcing and re-hammers backlog vs firm orders; Bloom's 8-K calls it \"false and misleading\" and claims supply visibility for 25 GW/yr. The stock fell ~6%, then recovered on the rebuttal.",
       source: "Hunterbrook / Bloom 8-K",
     },
@@ -115,42 +115,42 @@ export const recentNews = {
       date: "Jun 30, 2026",
       tag: "Deal",
       title: "Brookfield expands partnership fivefold: $5B → $25B",
-      blurb: "The financing framework for Bloom-powered AI projects grows 5× in under nine months, drawn from Brookfield's $100B AI Infrastructure Fund. A framework, not firm orders — but the capital behind the pipeline is now much deeper.",
+      blurb: "The financing framework for Bloom-powered AI projects grows 5× in under nine months, drawn from Brookfield's $100B AI Infrastructure Fund. A framework, not firm orders, but the capital behind the pipeline is now much deeper.",
       source: "Brookfield–Bloom PR",
     },
     {
       date: "May 2026",
       tag: "Deal",
       title: "Nebius signs guaranteed ~$2.6B agreement",
-      blurb: "250 MW for the AI neo-cloud — a guaranteed offtake, not a framework, and Bloom's first anchor outside the hyperscale majors.",
+      blurb: "250 MW for the AI neo-cloud, a guaranteed offtake, not a framework, and Bloom's first anchor outside the hyperscale majors.",
       source: "Nebius agreement",
     },
     {
       date: "Apr 28, 2026",
       tag: "Earnings",
       title: "Record Q1 2026; FY guidance raised",
-      blurb: "First sustained profit after 17 years: $143M adj. EBITDA (~6× YoY) and 2026 revenue guided to $3.4–3.8B — an ~80% step-up.",
+      blurb: "First sustained profit after 17 years: $143M adj. EBITDA (~6× YoY) and 2026 revenue guided to $3.4–3.8B, an ~80% step-up.",
       source: "Q1 2026 release",
     },
     {
       date: "Apr 2026",
       tag: "Deal",
       title: "Oracle expands to up to 2.8 GW (~$8–9B lifetime)",
-      blurb: "Project Jupiter switched from gas turbines to Bloom — the largest fuel-cell commitment ever, and a head-to-head win against the incumbent technology.",
+      blurb: "Project Jupiter switched from gas turbines to Bloom, the largest fuel-cell commitment ever, and a head-to-head win against the incumbent technology.",
       source: "Bloom–Oracle PR",
     },
     {
       date: "Feb 5, 2026",
       tag: "Earnings",
       title: "FY2025: revenue $2.02B, +37%",
-      blurb: "Full-year gross margin reached ~29% and the service segment turned profitable — the inflection the bulls had been waiting for.",
+      blurb: "Full-year gross margin reached ~29% and the service segment turned profitable, the inflection the bulls had been waiting for.",
       source: "Q4 2025 call / FY2025 10-K",
     },
     {
       date: "Nov 2025",
       tag: "Deal",
       title: "AEP orders 1 GW (~$2.65B)",
-      blurb: "The largest commercial fuel-cell procurement at signing — utility-scale units powering AWS data centers before the meter.",
+      blurb: "The largest commercial fuel-cell procurement at signing, utility-scale units powering AWS data centers before the meter.",
       source: "Bloom–AEP PR",
     },
     {
@@ -164,7 +164,7 @@ export const recentNews = {
       date: "Jul 2025",
       tag: "Analyst",
       title: "JPMorgan upgrades on fuel-cell tax credit",
-      blurb: "The restored 30% investment tax credit for fuel cells under OBBBA cuts Bloom's effective cost ~25% — sell-side turns constructive.",
+      blurb: "The restored 30% investment tax credit for fuel cells under OBBBA cuts Bloom's effective cost ~25%, sell-side turns constructive.",
       source: "Benzinga",
     },
   ] as NewsItem[],
@@ -173,12 +173,12 @@ export const recentNews = {
 export const moat = {
   eyebrow: "05 · The moat",
   headline: "A 17-year head start nobody can buy.",
-  dek: "Time, running data, and repeat service contracts — advantages a competitor can't buy or copy quickly.",
+  dek: "Time, running data, and repeat service contracts, advantages a competitor can't buy or copy quickly.",
   facts: [
-    { value: "~17 yrs", label: "lead in this fuel-cell tech (called SOFC); ~1.8 GW already installed — roughly a mid-size city's worth of power", source: "Doosan-Ceres SOP / 10-K", tier: "D", note: "02 Atomic Notes/Bloom 17-year SOFC head start" },
-    { value: "100%", label: "service attach rate — every box sold also signs a long-term service contract", source: "Q1 2026 call", tier: "R", note: "02 Atomic Notes/100 percent attach rate service to product" },
+    { value: "~17 yrs", label: "lead in this fuel-cell tech (called SOFC); ~1.8 GW already installed, roughly a mid-size city's worth of power", source: "Doosan-Ceres SOP / 10-K", tier: "D", note: "02 Atomic Notes/Bloom 17-year SOFC head start" },
+    { value: "100%", label: "service attach rate, every box sold also signs a long-term service contract", source: "Q1 2026 call", tier: "R", note: "02 Atomic Notes/100 percent attach rate service to product" },
     { value: "1T+ cell-hrs", label: "over a trillion hours of run-data; 6 billion sensor readings a day train a digital model of each unit to predict maintenance before it fails", source: "Q4 2025 call", tier: "R", note: "02 Atomic Notes/Trillion cell hours 6 billion data points per day" },
-    { value: "~$127M", label: "recurring service revenue per deployed GW — the annuity compounds with the fleet", source: "FY2025 (derived)", tier: "D", note: "02 Atomic Notes/Service annuity 127M per GW-year" },
+    { value: "~$127M", label: "recurring service revenue per deployed GW; the annuity compounds with the fleet", source: "FY2025 (derived)", tier: "D", note: "02 Atomic Notes/Service annuity 127M per GW-year" },
   ] as Fact[],
 };
 
@@ -192,20 +192,20 @@ export interface FieldRow {
 
 export const competition = {
   eyebrow: "04 · The field",  // industry & market positioning
-  headline: "Built for speed today — the real debate is durability.",
+  headline: "Built for speed today; the real debate is durability.",
   dek: "Bloom wins the AI-power land grab on speed and density. The honest question isn't who it beats now, but what happens when the bottleneck clears.",
   rows: [
     {
       name: "Gas turbines",
       role: "The real alternative",
       point: "The standard way to make on-site power (a \"combined-cycle gas turbine,\" or CCGT) takes 3–5+ years to order a turbine and get hooked up. Bloom installs in 90–120 days, now goes head-to-head with turbines on the biggest projects, and matches grid prices in most US markets.",
-      caveat: "The core long-term risk — but relief isn't near: gas-turbine supply is largely sold out through ~2029–2030, so Bloom's speed edge holds for several more years before the real pivot.",
+      caveat: "The core long-term risk, but relief isn't near: gas-turbine supply is largely sold out through ~2029–2030, so Bloom's speed edge holds for several more years before the real pivot.",
       source: "SemiAnalysis / Q1 2026 call",
     },
     {
       name: "Nuclear / SMR",
       role: "Not yet a competitor",
-      point: "Small modular reactors (SMRs) — compact next-gen nuclear — are a 2030s story; AI needs power now. Bloom fills the gap the next decade can't.",
+      point: "Small modular reactors (SMRs), compact next-gen nuclear, are a 2030s story; AI needs power now. Bloom fills the gap the next decade can't.",
       caveat: "A genuine long-term substitute if SMR costs and timelines ever arrive.",
       source: "SMR timeline note",
     },
@@ -219,16 +219,16 @@ export const competition = {
     {
       name: "The grid",
       role: "The status quo it displaces",
-      point: "Making power on-site skips the years-long wait to connect to the utility grid; Bloom's setup needs no grid, no diesel, no batteries, no turbines. Each box does still need a gas line — \"off-grid\" means off the electric grid, not off fuel.",
-      caveat: "At roughly $121 to make an hour of power, Bloom still costs more than buying from the grid — so it sells speed, not price. Where the grid is cheap and available, it's a harder sell.",
+      point: "Making power on-site skips the years-long wait to connect to the utility grid; Bloom's setup needs no grid, no diesel, no batteries, no turbines. Each box does still need a gas line: \"off-grid\" means off the electric grid, not off fuel.",
+      caveat: "At roughly $121 to make an hour of power, Bloom still costs more than buying from the grid, so it sells speed, not price. Where the grid is cheap and available, it's a harder sell.",
       source: "Q1 2026 call / Tech page",
     },
   ] as FieldRow[],
   facts: [
     { value: "~$121/MWh", label: "the all-in cost to make one unit of power (a megawatt-hour); about $95 after a federal tax credit. Cheaper than a backup generator, still pricier than the grid", source: "Driver Tree (derived)", tier: "D", note: "02 Atomic Notes/All-in cost 121 per MWh fuel slice small" },
-    { value: "90–120 days", label: "to install and switch on — versus 3–5+ years for a gas turbine", source: "SemiAnalysis", tier: "E", note: "02 Atomic Notes/Speed to power vs gas turbine queue" },
-    { value: "100 MW/acre", label: "power packed into an acre of land — about double a gas-turbine plant", source: "Heat Capture datasheet", tier: "R", note: "02 Atomic Notes/100 MW per acre power density" },
-    { value: "679–839", label: "pounds of CO₂ per unit of power on gas — about the same carbon as a regular gas power plant", source: "NG-SOFC emissions note", tier: "D", note: "02 Atomic Notes/Bloom NG-SOFC emissions at gas turbine parity" },
+    { value: "90–120 days", label: "to install and switch on, versus 3–5+ years for a gas turbine", source: "SemiAnalysis", tier: "E", note: "02 Atomic Notes/Speed to power vs gas turbine queue" },
+    { value: "100 MW/acre", label: "power packed into an acre of land, about double a gas-turbine plant", source: "Heat Capture datasheet", tier: "R", note: "02 Atomic Notes/100 MW per acre power density" },
+    { value: "679–839", label: "pounds of CO₂ per unit of power on gas, about the same carbon as a regular gas power plant", source: "NG-SOFC emissions note", tier: "D", note: "02 Atomic Notes/Bloom NG-SOFC emissions at gas turbine parity" },
   ] as Fact[],
 };
 
@@ -237,17 +237,17 @@ export const financials = {
   headline: "The inflection is finally on the P&L.",
   dek: "After 17 years of losses, 2026 delivered the proof: a record first half, the first billion-dollar quarter, and revenue guided to roughly double.",
   facts: [
-    { value: "$1.07B", label: "Q2 2026 revenue (+165% YoY) — the first billion-dollar quarter; $0.78 non-GAAP EPS, $226M operating cash flow", source: "Q2 2026 release", tier: "R", note: "02 Atomic Notes/Q2 2026 revenue 1.07B up 165 percent" },
+    { value: "$1.07B", label: "Q2 2026 revenue (+165% YoY): the first billion-dollar quarter; $0.78 non-GAAP EPS, $226M operating cash flow", source: "Q2 2026 release", tier: "R", note: "02 Atomic Notes/Q2 2026 revenue 1.07B up 165 percent" },
     { value: "$3.9–4.2B", label: "2026 revenue guidance, raised Jul 28 (~2× FY2025); non-GAAP EPS guided $2.55–2.85", source: "Q2 2026 release", tier: "R", note: "02 Atomic Notes/FY2026 guidance raised to 3.9-4.2B" },
-    { value: "$253M", label: "Q2 2026 adj. EBITDA — more in one quarter than all of FY2025; product gross margin held 37.2%", source: "Q2 2026 release", tier: "R", note: "02 Atomic Notes/Q2 2026 EPS and profitability records" },
-    { value: "~$100M", label: "to add each additional gigawatt of factory capacity — capex ran just 4.8% of revenue in Q2, so growth stays capital-light", source: "Q1 2026 call / Q2 release", tier: "R", note: "02 Atomic Notes/Q2 2026 cash flow 226M capex 4.8 percent" },
+    { value: "$253M", label: "Q2 2026 adj. EBITDA, more in one quarter than all of FY2025; product gross margin held 37.2%", source: "Q2 2026 release", tier: "R", note: "02 Atomic Notes/Q2 2026 EPS and profitability records" },
+    { value: "~$100M", label: "to add each additional gigawatt of factory capacity, capex ran just 4.8% of revenue in Q2, so growth stays capital-light", source: "Q1 2026 call / Q2 release", tier: "R", note: "02 Atomic Notes/Q2 2026 cash flow 226M capex 4.8 percent" },
   ] as Fact[],
 };
 
 export const catalysts = {
   eyebrow: "07 · Catalysts",
   headline: "A backlog of gigawatt-scale anchors.",
-  dek: "The deals are signed, the logos are real, and factory capacity is being built to meet them. (One gigawatt — GW — is enough to power roughly 750,000 homes.)",
+  dek: "The deals are signed, the logos are real, and factory capacity is being built to meet them. (One gigawatt, or GW, is enough to power roughly 750,000 homes.)",
   deals: [
     { partner: "Oracle", terms: "up to 2.8 GW · ~$8–9B lifetime", note: "Project Jupiter switched from gas turbines to Bloom", source: "Bloom-Oracle PR" },
     { partner: "AEP", terms: "1 GW · ~$2.65B", note: "powering AWS on-site, before the utility meter", source: "Bloom-AEP PR" },
@@ -257,9 +257,9 @@ export const catalysts = {
   ],
   facts: [
     { value: "6 vs 1", label: "big-cloud and AI-cloud customers, up from just one a year earlier", source: "Q4 2025 call", tier: "R", note: "02 Atomic Notes/Hyperscale customer count 6 vs 1 year earlier" },
-    { value: "2 GW", label: "of annual factory capacity by end-2026 — and the plants can stretch to 5 GW", source: "Utility Dive", tier: "R", note: "02 Atomic Notes/Bloom 2GW capacity by YE2026" },
-    { value: "800V DC", label: "the new power standard AI server racks are moving to — Bloom's boxes already put it out directly", source: "Q1 2026 call", tier: "R", note: "02 Atomic Notes/Bloom only solution natively producing 800V DC today" },
-    { value: "~$20B", label: "of signed backlog behind the anchors above — roughly $6B in equipment plus ~$14B of long-term service", source: "FY2025 10-K", tier: "R", note: "02 Atomic Notes/Bloom $20B total backlog" },
+    { value: "2 GW", label: "of annual factory capacity by end-2026, and the plants can stretch to 5 GW", source: "Utility Dive", tier: "R", note: "02 Atomic Notes/Bloom 2GW capacity by YE2026" },
+    { value: "800V DC", label: "the new power standard AI server racks are moving to: Bloom's boxes already put it out directly", source: "Q1 2026 call", tier: "R", note: "02 Atomic Notes/Bloom only solution natively producing 800V DC today" },
+    { value: "~$20B", label: "of signed backlog behind the anchors above, roughly $6B in equipment plus ~$14B of long-term service", source: "FY2025 10-K", tier: "R", note: "02 Atomic Notes/Bloom $20B total backlog" },
   ] as Fact[],
 };
 
@@ -272,31 +272,31 @@ export interface Risk {
 
 export const risks = {
   eyebrow: "09 · The risks",
-  headline: "Priced for perfection — and leaning on related parties.",
+  headline: "Priced for perfection, and leaning on related parties.",
   dek: "We're not naive. Here's the bear case, and the honest counter to each point.",
   items: [
     {
-      claim: "Who's really buying? The question changed shape in Q2 — it didn't disappear",
-      detail: "Until last quarter, about half of Bloom's sales went to partners Bloom helped fund — like selling cars to a dealership you co-own. The sales are real, but the price and urgency deserve scrutiny, and Bloom doesn't disclose how profitable those sales are versus normal ones. Then in Q2 that number suddenly fell to almost nothing ($2.8M, from ~$373M) while total sales exploded. Either truly independent customers took over — or the same buyers are now simply labeled differently under accounting rules.",
-      rebuttal: "Taken at face value, Q2 is the bulls' answer: sales to independent customers nearly tripled, $226M of real cash came in without funded partners supplying it, and Bloom now serves 6 big cloud companies versus 1 a year ago. This tripped tripwire №1 of our own thesis — the next SEC filing settles which reading is right, and we've committed to grading it in public either way.",
+      claim: "Who's really buying? The question changed shape in Q2, it didn't disappear",
+      detail: "Until last quarter, about half of Bloom's sales went to partners Bloom helped fund, like selling cars to a dealership you co-own. The sales are real, but the price and urgency deserve scrutiny, and Bloom doesn't disclose how profitable those sales are versus normal ones. Then in Q2 that number suddenly fell to almost nothing ($2.8M, from ~$373M) while total sales exploded. Either truly independent customers took over, or the same buyers are now simply labeled differently under accounting rules.",
+      rebuttal: "Taken at face value, Q2 is the bulls' answer: sales to independent customers nearly tripled, $226M of real cash came in without funded partners supplying it, and Bloom now serves 6 big cloud companies versus 1 a year ago. This tripped tripwire №1 of our own thesis, the next SEC filing settles which reading is right, and we've committed to grading it in public either way.",
       source: "Q2 2026 release (footnote 1) / Q1 2026 release",
     },
     {
       claim: "Still priced as if the doubling never stops",
-      detail: "Even after July's 40% fall to ~$163, the stock costs about 60× the earnings management itself expects this year — a price that only works if revenue keeps doubling for years. And of the headline \"$20B of future business,\" only ~$0.5B was firm, legally booked orders as of the last filing; the rest turns into revenue only if and when purchase orders actually land.",
+      detail: "Even after July's 40% fall to ~$163, the stock costs about 60× the earnings management itself expects this year, a price that only works if revenue keeps doubling for years. And of the headline \"$20B of future business,\" only ~$0.5B was firm, legally booked orders as of the last filing; the rest turns into revenue only if and when purchase orders actually land.",
       rebuttal: "The fair counter: management just raised its own profit forecast to $800–900M, which shrinks that multiple faster than we modeled. This was the strongest quarter the bulls have ever had, and our model re-run has to take it seriously.",
       source: "Q2 2026 release / Q1 2026 10-Q",
     },
     {
       claim: "It burned $4 billion getting here",
-      detail: "Bloom lost money for seventeen straight years — $4B in total — before 2026's profits arrived. A track record like that earns skepticism about whether the good quarters last.",
+      detail: "Bloom lost money for seventeen straight years: $4B in total, before 2026's profits arrived. A track record like that earns skepticism about whether the good quarters last.",
       rebuttal: "The turn looks structural, not lucky: the service business (the recurring \"ink\" revenue) is now profitable and growing, and the last two quarters generated real cash, not just accounting profit.",
       source: "FY2025 10-K / Q2 2026 release",
     },
     {
-      claim: "Professional skeptics keep attacking — most recently over a rare metal",
-      detail: "Short sellers (investors who profit if the stock falls) have targeted Bloom twice: in 2019 over how long the boxes really last, and in July 2026 over scandium — a rare metal in every fuel cell. The new report claims Bloom's supply traces back to China and that its growth plans would need nearly the entire world's annual scandium production.",
-      rebuttal: "Bloom formally rejected the claims: it says supply comes from several countries via its own recycling process, enough for 10× its current plans. But its supplier list is confidential — so nobody outside the company can fully verify either side. That's the honest state of it.",
+      claim: "Professional skeptics keep attacking, most recently over a rare metal",
+      detail: "Short sellers (investors who profit if the stock falls) have targeted Bloom twice: in 2019 over how long the boxes really last, and in July 2026 over scandium, a rare metal in every fuel cell. The new report claims Bloom's supply traces back to China and that its growth plans would need nearly the entire world's annual scandium production.",
+      rebuttal: "Bloom formally rejected the claims: it says supply comes from several countries via its own recycling process, enough for 10× its current plans. But its supplier list is confidential, so nobody outside the company can fully verify either side. That's the honest state of it.",
       source: "Hunterbrook / Bloom 8-K (Jul 2026)",
     },
   ] as Risk[],
@@ -305,20 +305,20 @@ export const risks = {
 export const valuation = {
   eyebrow: "08 · Valuation",
   headline: "What does the price assume?",
-  dek: "We run the usual valuation math backwards: instead of guessing what Bloom is worth, we ask what today's price already assumes — then find the price where even the most optimistic story still pays us well for the risk. Every slider starts at our model's number; drag anything and see what has to be true for a different answer.",
-  note: "UNDER REVIEW after the July 28 earnings: management now forecasts more revenue than our model assumed, and two of our pre-set tripwires triggered (see Scorecard). The numbers below are our pre-earnings model until the re-run lands — we show our stale numbers rather than quietly editing them. Educational research, not investment advice.",
+  dek: "We run the usual valuation math backwards: instead of guessing what Bloom is worth, we ask what today's price already assumes, then find the price where even the most optimistic story still pays us well for the risk. Every slider starts at our model's number; drag anything and see what has to be true for a different answer.",
+  note: "UNDER REVIEW after the July 28 earnings: management now forecasts more revenue than our model assumed, and two of our pre-set tripwires triggered (see Scorecard). The numbers below are our pre-earnings model until the re-run lands, we show our stale numbers rather than quietly editing them. Educational research, not investment advice.",
 };
 
 export const theCall = {
   eyebrow: "10 · The call",
   headline: "A real franchise at an unforgiving price.",
-  dek: "Bloom turned the corner for real — but today's price already pays for the happy ending. Drag the assumptions and decide what you have to believe.",
+  dek: "Bloom turned the corner for real, but today's price already pays for the happy ending. Drag the assumptions and decide what you have to believe.",
   conclusion:
-    "Great company, demanding price. How much you'd own comes down to two beliefs: how much of the ~$20B pipeline becomes real orders, and whether Q2's \"independent customers took over\" story survives the fine print of the next filing. We land where we started — own the turnaround, respect the price — and after Q2 tripped two of our own tripwires, we're re-running our numbers in public rather than defending them.",
+    "Great company, demanding price. How much you'd own comes down to two beliefs: how much of the ~$20B pipeline becomes real orders, and whether Q2's \"independent customers took over\" story survives the fine print of the next filing. We land where we started, own the turnaround, respect the price, and after Q2 tripped two of our own tripwires, we're re-running our numbers in public rather than defending them.",
   note: "Scenario outputs derive from the completed v5 workbook (audited build, Jul 2026); the reverse-DCF frontier in the valuation lab is the formal version of this argument.",
 };
 
-// Market reference — fallback when the live quote hasn't loaded.
+// Market reference, fallback when the live quote hasn't loaded.
 // Refreshed from FactSet (Q1 2026). The live Finnhub quote overrides this.
 export const market = {
   capProvisional: 88.24e9, // ~$88B (FactSet, Q1 2026)
@@ -326,12 +326,12 @@ export const market = {
   source: "TipRanks, Jul 2026",
   bearPT: 149.93, // 24/7 Wall St bear case
   consensusPT: 287.05, // TipRanks 21-analyst mean, Jul 6 2026 (9 buy / 10 hold / 0 sell)
-  // Individual firm targets, July 2026 — for the "street view" strip.
+  // Individual firm targets, July 2026, for the "street view" strip.
   streetPTs: [
     { firm: "UBS", pt: 350, note: "highest visible target", asOf: "Jul 2026" },
     { firm: "Susquehanna", pt: 298, note: "raised from $293", asOf: "Jul 2026" },
     { firm: "Consensus", pt: 287.05, note: "21 analysts · 9 buy / 10 hold / 0 sell", asOf: "Jul 2026" },
-    { firm: "Jefferies", pt: 246, note: "raised from $207 — rating: Hold", asOf: "Jul 2026" },
+    { firm: "Jefferies", pt: 246, note: "raised from $207, rating: Hold", asOf: "Jul 2026" },
     { firm: "24/7 Wall St", pt: 149.93, note: "published bear case (a publication, not a bank)", asOf: "May 2026" },
   ],
 };

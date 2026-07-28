@@ -7,7 +7,7 @@ import { latest } from "@/data/financials";
 import { market } from "@/data/content";
 
 /**
- * TearSheet — the classic one-page equity-research front page, generated
+ * TearSheet, the classic one-page equity-research front page, generated
  * from the live model. Print it (or Save as PDF) the morning you present:
  * the price, cap, and distance-to-trigger refresh from the live quote.
  *
@@ -120,7 +120,7 @@ export function TearSheet() {
             <H2>The two-sided call</H2>
             <p style={{ color: S.ink2, fontSize: 12, margin: 0 }}>
               Bloom is the only company that can drop gigawatt-scale power next
-              to an AI data center in months instead of years — a 17-year SOFC
+              to an AI data center in months instead of years, a 17-year SOFC
               lead, ~$20B backlog, first sustained profit. We like the company
               and won&apos;t pay this price for it: at ${p.toFixed(0)} a buyer earns a
               negative-to-low return <i>even if the full bull case plays out</i>.
@@ -152,7 +152,7 @@ export function TearSheet() {
                   </tr>
                 ))}
                 <tr>
-                  <td style={{ padding: "5px 6px" }}><b>Entry trigger — bull case at a {(TRIGGER.hurdle * 100).toFixed(0)}% hurdle</b></td>
+                  <td style={{ padding: "5px 6px" }}><b>Entry trigger, bull case at a {(TRIGGER.hurdle * 100).toFixed(0)}% hurdle</b></td>
                   <td style={{ padding: "5px 6px", textAlign: "right", fontFamily: S.mono, fontWeight: 700, color: S.accent }}>${trig.toFixed(2)}</td>
                 </tr>
               </tbody>
@@ -168,9 +168,9 @@ export function TearSheet() {
           <div>
             <H2>Catalysts · next 90 days</H2>
             {([
-              ["JUL 28", "Q2 2026 print — graded against our pre-registered scorecard (/scorecard)"],
+              ["JUL 28", "Q2 2026 print, graded against our pre-registered scorecard (/scorecard)"],
               ["OCT", "New Mexico air-permit hearing on Project Jupiter's fuel cells (pipeline blocked twice)"],
-              ["DEC 31", "Treasury FEOC safe-harbor tables due — the compliance-risk clock"],
+              ["DEC 31", "Treasury FEOC safe-harbor tables due, the compliance-risk clock"],
             ] as const).map(([d, txt]) => (
               <div key={d} style={{ display: "flex", gap: 8, fontSize: 11, color: S.ink2, marginBottom: 4 }}>
                 <span style={{ fontFamily: S.mono, fontWeight: 600, color: S.ink, whiteSpace: "nowrap", fontSize: 10, paddingTop: 1 }}>{d}</span>
@@ -199,9 +199,9 @@ export function TearSheet() {
 
             <H2>Evidence discipline</H2>
             <p style={{ color: S.ink2, fontSize: 11, margin: 0 }}>
-              Every figure is tiered — <b style={{ color: "#166534" }}>R</b> reported primary ·{" "}
+              Every figure is tiered: <b style={{ color: "#166534" }}>R</b> reported primary ·{" "}
               <b style={{ color: "#92400e" }}>D</b> derived ·{" "}
-              <b style={{ color: "#6b21a8" }}>E</b> estimate — pinned to dated, frozen
+              <b style={{ color: "#6b21a8" }}>E</b> estimate, pinned to dated, frozen
               sources, and backed by a 287-note public research vault with the
               full audit changelog at <b>bep2.netlify.app/process</b>.
             </p>

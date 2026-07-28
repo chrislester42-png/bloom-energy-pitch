@@ -3,9 +3,9 @@ import Nav from "@/components/Nav";
 import { Scorecard } from "@/components/Scorecard";
 
 export const metadata: Metadata = {
-  title: "Pre-registered earnings scorecard — Bloom Energy (BE)",
+  title: "Pre-registered earnings scorecard: Bloom Energy (BE)",
   description:
-    "Q2 2026 predictions committed to public git history before the print, graded hit/miss after — no edits, no hindsight.",
+    "Q2 2026 predictions committed to public git history before the print, graded hit/miss after, no edits, no hindsight.",
 };
 
 export default function ScorecardPage() {

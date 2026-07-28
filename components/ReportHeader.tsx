@@ -9,12 +9,12 @@ import { market } from "@/data/content";
 import { latest } from "@/data/financials";
 
 /**
- * ReportHeader — the "page one" of a classic equity research report:
+ * ReportHeader, the "page one" of a classic equity research report:
  * rating, price target(s), and the stock-data block, rendered live.
  *
  * Our call is two-sided (per the team's pitch):
- *   SELL / AVOID at market (short term) — the price prepays for the bull case.
- *   BUY below the trigger — the entry at which even the super-bull FY2030
+ *   SELL / AVOID at market (short term), the price prepays for the bull case.
+ *   BUY below the trigger, the entry at which even the super-bull FY2030
  *   case clears the hurdle IRR (a long-term position in a company we like).
  */
 
@@ -78,7 +78,7 @@ export function ReportHeader() {
                 Bloom Energy Corporation
               </h2>
               <p className="mt-1 text-[14px]" style={{ color: t.fgDim }}>
-                NYSE: BE · Electrical equipment — solid-oxide fuel cells · On-site
+                NYSE: BE · Electrical equipment, solid-oxide fuel cells · On-site
                 power for AI data centers
               </p>
             </div>
@@ -134,7 +134,7 @@ export function ReportHeader() {
                   {PS(trig)}
                 </div>
                 <div className="text-[11px]" style={{ color: t.fgMute }}>
-                  our entry trigger — {downToTrigger.toFixed(0)}% below market
+                  our entry trigger: {downToTrigger.toFixed(0)}% below market
                 </div>
               </div>
             </div>
@@ -180,7 +180,7 @@ export function ReportHeader() {
         <Reveal i={2}>
           <p className="mt-4 text-[12.5px] leading-relaxed" style={{ color: t.fgMute }}>
             The two-sided call: a great company priced past its bull case. We would
-            sell or avoid at today&apos;s price — and become aggressive long-term
+            sell or avoid at today&apos;s price, and become aggressive long-term
             buyers below the trigger, where even our most optimistic FY2030 case
             still pays a {(TRIGGER.hurdle * 100).toFixed(0)}% annual return. Full
             reasoning in{" "}

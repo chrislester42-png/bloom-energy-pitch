@@ -3,9 +3,9 @@ import Nav from "@/components/Nav";
 import { TearSheet } from "@/components/TearSheet";
 
 export const metadata: Metadata = {
-  title: "One-page tear sheet — Bloom Energy (BE)",
+  title: "One-page tear sheet: Bloom Energy (BE)",
   description:
-    "The classic equity-research front page, generated from the live model — print or save as PDF.",
+    "The classic equity-research front page, generated from the live model, print or save as PDF.",
 };
 
 export default function TearSheetPage() {

@@ -7,10 +7,10 @@ import { useLivePrice } from "./LivePrice";
 import { latest, scenarios, valuePerShare, HORIZON_YEARS } from "@/data/financials";
 
 /**
- * Monte Carlo valuation — instead of three point scenarios, price the whole
+ * Monte Carlo valuation, instead of three point scenarios, price the whole
  * distribution. Each driver is a triangular distribution (min / most-likely /
  * max); a "correlation" dial ties the drivers to a shared world-quality factor
- * (in good worlds growth, margins AND the exit multiple are all high — which
+ * (in good worlds growth, margins AND the exit multiple are all high, which
  * is what fattens the tails in real life).
  */
 
@@ -27,7 +27,7 @@ interface Params {
 }
 
 // Modes anchor on OUR base case (FY2030: $9.2B rev · 16% margin · 12×),
-// with tails spanning roughly bear→beyond-bull — consistent with TheCall
+// with tails spanning roughly bear→beyond-bull, consistent with TheCall
 // and the valuation lab's scenario table.
 const DEFAULTS: Params = {
   revCagr:  { min: 0.10, mode: 0.354, max: 0.60 },
@@ -139,7 +139,7 @@ export function MonteCarlo() {
   const mktRank = rankOf(draws, mkt);
   const probAbove = 1 - mktRank;
 
-  // histogram — clip the x-axis at the 99th percentile or the market price,
+  // histogram, clip the x-axis at the 99th percentile or the market price,
   // whichever is larger, so the price marker is always on the chart
   const xMax = Math.max(pctl(draws, 0.99), mkt * 1.08);
   const bins = useMemo(() => {
@@ -163,9 +163,9 @@ export function MonteCarlo() {
   return (
     <Section id="monte-carlo" tone="deep">
       <SectionHeader
-        eyebrow="08 · Valuation — the distribution"
+        eyebrow="08 · Valuation, the distribution"
         headline="20,000 futures, one chart."
-        dek={`Point estimates hide the argument. We draw ${HORIZON_YEARS}-year growth, mature EBITDA margin and exit multiple from ranges (correlated — good worlds are good everywhere), value each future, and ask where today's price sits inside the whole distribution.`}
+        dek={`Point estimates hide the argument. We draw ${HORIZON_YEARS}-year growth, mature EBITDA margin and exit multiple from ranges (correlated, good worlds are good everywhere), value each future, and ask where today's price sits inside the whole distribution.`}
       />
 
       {/* headline stats */}
@@ -257,7 +257,7 @@ export function MonteCarlo() {
               Driver correlation
             </div>
             <div className="text-[12.5px]" style={{ color: t.fgDim }}>
-              0 = independent draws · 1 = one shared fate. Correlation fattens both tails — that&apos;s the honest way to model a story stock.
+              0 = independent draws · 1 = one shared fate. Correlation fattens both tails, that&apos;s the honest way to model a story stock.
             </div>
           </div>
           <div className="flex items-center gap-3">
@@ -274,7 +274,7 @@ export function MonteCarlo() {
       <Reveal>
         <p className="mt-6 max-w-3xl text-[13px] leading-relaxed" style={{ color: t.fgMute }}>
           Reading it: if the red line sits far into the right tail, the market is paying today for one of the
-          best futures we can simulate — the thesis can be right and the stock still expensive. Same engine as
+          best futures we can simulate, the thesis can be right and the stock still expensive. Same engine as
           &ldquo;The Call&rdquo; above (FY{latest.fy} revenue base, FactSet Q1&apos;26 capital structure), just run
           {" "}{N_DRAWS.toLocaleString()} times instead of three. Educational model, not investment advice.
         </p>

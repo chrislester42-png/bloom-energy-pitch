@@ -68,7 +68,7 @@ function HistoryChart() {
         })}
       </div>
       <p className="mt-5 text-[12.5px] leading-relaxed" style={{ color: t.fgMute }}>
-        Bars: revenue. Below: GAAP EBITDA margin — red through FY23, green and
+        Bars: revenue. Below: GAAP EBITDA margin, red through FY23, green and
         rising from FY24. That sign flip is the thesis.
       </p>
     </div>

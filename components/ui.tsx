@@ -5,7 +5,7 @@ import type { ReactNode } from "react";
 import { fadeUp, t } from "./tokens";
 import type { Fact } from "@/data/content";
 
-/** Scroll-reveal wrapper — fadeUp, fires once on enter. */
+/** Scroll-reveal wrapper, fadeUp, fires once on enter. */
 export function Reveal({
   i = 0,
   children,
@@ -112,13 +112,13 @@ export function TierBadge({ tier }: { tier: "R" | "D" | "E" }) {
   );
 }
 
-/** Legend for the tier badges — render once, near the sources. */
+/** Legend for the tier badges, render once, near the sources. */
 export function TierLegend() {
   return (
     <p className="font-mono text-[10.5px] uppercase tracking-[0.1em]" style={{ color: t.fgMute }}>
-      Every figure carries its evidence tier — <TierBadge tier="R" /> reported
+      Every figure carries its evidence tier: <TierBadge tier="R" /> reported
       primary · <TierBadge tier="D" /> derived by us · <TierBadge tier="E" />{" "}
-      estimate / third party — and its chip opens the vault note behind it.
+      estimate / third party, and its chip opens the vault note behind it.
     </p>
   );
 }
@@ -160,7 +160,7 @@ export function SourceChip({
   );
 }
 
-/** Bordered fact grid — divide lines, not boxes (anti-card). */
+/** Bordered fact grid, divide lines, not boxes (anti-card). */
 export function FactGrid({ facts }: { facts: Fact[] }) {
   const hasTiers = facts.some((f) => f.tier);
   return (

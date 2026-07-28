@@ -55,7 +55,7 @@ export const scenarioProbs: Record<'bear' | 'base' | 'bull', number> = {
   bear: 0.25, base: 0.50, bull: 0.25,
 };
 
-// Ranges widened so the model can reach (and exceed) today's ~$275 price —
+// Ranges widened so the model can reach (and exceed) today's ~$275 price:
 // the point is to let a viewer dial in "what you must believe."
 export const sliderRanges = {
   revCagr:      { min: 0.05, max: 0.80, step: 0.01,  default: 0.354 },
@@ -63,7 +63,7 @@ export const sliderRanges = {
   exitMultiple: { min: 6,    max: 60,   step: 0.5,   default: 12 },
 };
 
-// OUR model's three cases — identical to the valuation lab's scenario table.
+// OUR model's three cases, identical to the valuation lab's scenario table.
 // CAGRs are derived so FY2030 revenue lands exactly on the lab's cases:
 //   bear $5.0B (19.8%/yr), base $9.2B (35.4%/yr), bull $15.0B (49.3%/yr).
 export const scenarios: Record<'bear' | 'base' | 'bull', Scenario> = {
