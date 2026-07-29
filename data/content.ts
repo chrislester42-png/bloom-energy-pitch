@@ -25,7 +25,7 @@ export const thesis = {
   ],
   bear: [
     "Still priced for near-perfection: even after July's 40% fall, the stock costs ~60× the earnings management itself forecasts for this year.",
-    "Of the \"$20B of future business,\" only about $0.5B is firm signed orders, the rest are plans and frameworks. And whether last quarter's sales were truly independent, or the same funded partners under a new label, awaits the next SEC filing.",
+    "Of the \"$20B of future business,\" only about $0.5B is firm signed orders, the rest are plans and frameworks. And the 10-Q gives two different answers on how independent last quarter's buyers were: $2.8M of related-party revenue in one note, a related-party customer at 21% of revenue in another.",
     "Installing the boxes still loses money, and 9 out of 10 run on natural gas, about the same carbon footprint as a gas power plant.",
   ],
   // The explicit stance, stated up front. The Thesis component prefixes this
@@ -276,10 +276,16 @@ export const risks = {
   dek: "We're not naive. Here's the bear case, and the honest counter to each point.",
   items: [
     {
-      claim: "Who's really buying? The question changed shape in Q2, it didn't disappear",
-      detail: "Until last quarter, about half of Bloom's sales went to partners Bloom helped fund, like selling cars to a dealership you co-own. The sales are real, but the price and urgency deserve scrutiny, and Bloom doesn't disclose how profitable those sales are versus normal ones. Then in Q2 that number suddenly fell to almost nothing ($2.8M, from ~$373M) while total sales exploded. Either truly independent customers took over, or the same buyers are now simply labeled differently under accounting rules.",
-      rebuttal: "Taken at face value, Q2 is the bulls' answer: sales to independent customers nearly tripled, $226M of real cash came in without funded partners supplying it, and Bloom now serves 6 big cloud companies versus 1 a year ago. This tripped tripwire №1 of our own thesis, the next SEC filing settles which reading is right, and we've committed to grading it in public either way.",
-      source: "Q2 2026 release (footnote 1) / Q1 2026 release",
+      claim: "Who's really buying? The 10-Q answered it two different ways",
+      detail: "Until Q1, about half of Bloom's sales went to partners Bloom helped fund, like selling cars to a dealership you co-own. In Q2 that figure collapsed to $2.8M from ~$373M while total sales exploded, and that is where the headline \"0.3% related-party\" number comes from. Then the 10-Q landed with a second number. Its concentration note says two customers were 44% and 21% of the quarter's revenue, and that the 21% one is a related party. That is roughly $224M, not $2.8M. Both can be technically true: the concentration note counts the contractual counterparty, which it says may be a project-finance affiliate rather than the end user, while the related-party note is scoped to the joint ventures Bloom holds equity in. The gap between them is the original question, restated inside the company's own filing.",
+      rebuttal: "The bull case survives the arithmetic. Strip $224M instead of $2.8M and independent revenue still grew ~125% year over year, far past anything we modelled, and $226M of operating cash still came in. What does not survive is the clean story. The same filing that reports 0.3% related-party revenue also flags a related-party counterparty at a fifth of the quarter, and the receivable side ties between the two notes, so this is not a definitions artifact we can wave off. We said the next filing would settle this. It didn't, and we would rather say so than bank the reading that flatters us.",
+      source: "Q2 2026 10-Q, Note 1 (Concentration of Risk) and Note 11 (Related Party Transactions)",
+    },
+    {
+      claim: "One customer was 73% of the first half",
+      detail: "The 10-Q reports that for the six months ended June 30, a single customer, not a related party, accounted for approximately 73% of total revenue. Inside Q2 itself, two customers were 44% and 21%. Bloom does not name them. A revenue base that concentrated means one project schedule slipping, or one counterparty renegotiating, moves the entire year rather than a line item.",
+      rebuttal: "This is what winning gigawatt-scale anchors looks like early: Oracle's Jupiter alone is up to 2.8 GW, so a lumpy revenue line is the arithmetic of the deal size, not evidence of weakness. Management also says backlog is growing faster than revenue, which is the thing that would eventually spread the base out. But it is a real fragility today, the Q2 filing is the first place it is quantified, and our scenario spread does not yet price a single-customer slip.",
+      source: "Q2 2026 10-Q, Note 1 (Concentration of Risk)",
     },
     {
       claim: "Still priced as if the doubling never stops",
@@ -314,7 +320,7 @@ export const theCall = {
   headline: "A real franchise at an unforgiving price.",
   dek: "Bloom turned the corner for real, but today's price already pays for the happy ending. Drag the assumptions and decide what you have to believe.",
   conclusion:
-    "Great company, demanding price. How much you'd own comes down to two beliefs: how much of the ~$20B pipeline becomes real orders, and whether Q2's \"independent customers took over\" story survives the fine print of the next filing. We land where we started, own the turnaround, respect the price, and after Q2 tripped two of our own tripwires, we're re-running our numbers in public rather than defending them.",
+    "Great company, demanding price. How much you'd own comes down to two beliefs: how much of the ~$20B pipeline becomes real orders, and whether Q2's \"independent customers took over\" story holds up, which the 10-Q left genuinely unresolved: $2.8M of related-party revenue in one note, a related-party customer at 21% of the quarter in another. We land where we started, own the turnaround, respect the price, and after Q2 tripped two of our own tripwires, we've re-run our numbers in public rather than defending them.",
   note: "Scenario outputs derive from the v9 workbook (Q2 2026 roll-forward, Jul 28 2026); the reverse-DCF frontier in the valuation lab is the formal version of this argument.",
 };
 

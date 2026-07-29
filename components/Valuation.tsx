@@ -177,7 +177,7 @@ interface Scen {
 // ---------- completed-workbook reverse-DCF findings (static, sourced) --------
 // Workbook Reverse DCF tab, re-solved on the 06/30/2026 bridge ($257.98 →
 // EV $83.5B): the terminal-FCF-margin "mystery table", goal-seeked at the
-// model's 21% WACC. The Q2 print barely moved it — the implied year-one growth
+// model's 21% WACC. The Q2 print barely moved it: the implied year-one growth
 // the price demands is still ~124% at a generous 20% terminal margin.
 const WB_MARGIN_TABLE = [
   { m: "10% (harsh)", g1: "153%", cagr: "71.7%", rev36: "$452B", ceil: "12.0×" },
