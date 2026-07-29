@@ -22,7 +22,7 @@ const ORDER: Key[] = ["bear", "base", "bull"];
 const LABEL: Record<Key, string> = { bear: "Bear", base: "Base", bull: "Bull" };
 const BLURB: Record<Key, string> = {
   bear: "Capex digestion; grid, turbines and SMRs compress pricing. FY2030: $5B revenue, 10% margin, 8×.",
-  base: "Strong but normal industrial grower; margins mature mid-teens. FY2030: $9.2B revenue, 16% margin, 12×.",
+  base: "Strong but normal industrial grower; margins mature mid-teens. FY2030: $11.0B revenue, 15.8% margin, 12×.",
   bull: "AI power land-grab won, the default behind-the-meter layer. FY2030: $15B revenue, 22% margin, 16×.",
 };
 

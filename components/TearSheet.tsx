@@ -142,9 +142,9 @@ export function TearSheet() {
             <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 11.5 }}>
               <tbody>
                 {([
-                  ["Perpetuity DCF (g = 3.5%, WACC 21.0%)", "$8.60"],
-                  ["EBITDA exit (13.5× FY2030)", "$27.87"],
-                  ["Blended 50 / 50", "$18.23"],
+                  ["Perpetuity DCF (g = 3.5%, WACC 21.0%)", "$10.36"],
+                  ["EBITDA exit (13.5× FY2030)", "$32.81"],
+                  ["Blended 50 / 50", "$21.59"],
                 ] as const).map(([k, v]) => (
                   <tr key={k}>
                     <td style={{ padding: "5px 6px", borderBottom: `1px solid ${S.line}` }}>{k}</td>
@@ -193,7 +193,7 @@ export function TearSheet() {
             <ul style={{ paddingLeft: 15, color: S.ink2, fontSize: 11.5, margin: 0 }}>
               <li style={{ marginBottom: 3 }}>FactSet β 2.02 → 13.3% → ~$28/sh</li>
               <li style={{ marginBottom: 3 }}>Yahoo β 3.74 → 20.9% → ~$18/sh</li>
-              <li style={{ marginBottom: 3 }}><b style={{ color: S.ink }}>Ours β 3.77 → 21.0% → $18.23/sh</b></li>
+              <li style={{ marginBottom: 3 }}><b style={{ color: S.ink }}>Ours β 3.77 → 21.0% → $21.59/sh</b></li>
               <li>Bottom-up β ~1.25 → 9.8% → the only rate the price nearly fits</li>
             </ul>
 

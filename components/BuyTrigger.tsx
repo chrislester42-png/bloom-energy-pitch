@@ -19,9 +19,9 @@ import { latest } from "@/data/financials";
 
 // ---- group DCF engine constants (mirror of reverse-dcf-lab.html) ----------
 const BASE_REV = 2023994000;                  // FY2025 revenue
-const FCFM = [-2.26, 0.98, 3.70, 5.60, 6.86]; // v5 workbook UFCF ramp (tax fix), %
+const FCFM = [-4.744, 0.98, 3.704, 5.601, 6.864]; // v9 workbook UFCF ramp, %
 const G_TERM = 0.035;                         // Gordon terminal growth
-const K_NORM = 1.416;                         // v5 Gordon terminal-FCF normalization
+const K_NORM = 1.4178;                        // v9 Gordon terminal-FCF normalization
 const EX_MULT = 13.5;                         // workbook exit multiple
 const EB_M = 0.1582;                          // workbook FY30 EBITDA margin
 const YRS = 4.5;                              // mid-2026 → FY2030
@@ -29,7 +29,7 @@ const DISC = 0.105;                           // market-level discount rate
 
 // ---- our trigger: concede the super-bull case, demand the hurdle ----------
 export const TRIGGER = {
-  rev2030: 15e9,   // super-bull FY2030 revenue
+  rev2030: 17.9e9, // super-bull FY2030 revenue (re-anchored on the v9 workbook)
   margin: 0.22,    // mature EBITDA margin
   multiple: 16,    // mature EV/EBITDA
   hurdle: 0.12,    // required IRR

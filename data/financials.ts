@@ -30,14 +30,16 @@ export const annual: FYData[] = [
   { fy: 2025, revenue: 2023994000, revGrowth: 0.3733, grossProfit: 587400000, grossMargin: 0.2902, operatingIncome: 72802000, operatingMargin: 0.036, ebitda: 123368000, ebitdaMargin: 0.061, netIncome: -87140000, cfo: 113949000, capex: 56759000, fcf: 57190000, cash: 2454108000, totalDebt: 2617879000, netDebt: 163771000, dilutedShares: 240402000 },
 ];
 
-// netDebt + dilutedShares refreshed from FactSet (as of Q1 2026, 03/31/2026)
-// so per-share math reflects the real current capital structure.
+// netDebt + dilutedShares rolled to the Q2 2026 10-Q (06/30/2026) so per-share
+// math reflects the real current capital structure. Net debt is now near zero:
+// $2,688.5M cash vs $2,478.0M debt is a $181.9M NET CASH position, offset by the
+// $215.5M unamortized Oracle warrant revenue contra carried in the bridge.
 export const latest = {
   fy: 2025,
   revenue: 2023994000,
   ebitdaMargin: 0.061,
-  netDebt: 456449000, // FactSet Q1 2026
-  dilutedShares: 319708000, // FactSet diluted, Q1 2026
+  netDebt: 33671000, // v9 workbook bridge, 06/30/2026
+  dilutedShares: 323331000, // diluted, Q2 2026 10-Q
 };
 
 export interface Scenario { revCagr: number; ebitdaMargin: number; exitMultiple: number; }
@@ -58,18 +60,22 @@ export const scenarioProbs: Record<'bear' | 'base' | 'bull', number> = {
 // Ranges widened so the model can reach (and exceed) today's ~$275 price:
 // the point is to let a viewer dial in "what you must believe."
 export const sliderRanges = {
-  revCagr:      { min: 0.05, max: 0.80, step: 0.01,  default: 0.354 },
-  ebitdaMargin: { min: 0.05, max: 0.25, step: 0.005, default: 0.16 },
+  revCagr:      { min: 0.05, max: 0.80, step: 0.01,  default: 0.403 },
+  ebitdaMargin: { min: 0.05, max: 0.25, step: 0.005, default: 0.158 },
   exitMultiple: { min: 6,    max: 60,   step: 0.5,   default: 12 },
 };
 
 // OUR model's three cases, identical to the valuation lab's scenario table.
-// CAGRs are derived so FY2030 revenue lands exactly on the lab's cases:
-//   bear $5.0B (19.8%/yr), base $9.2B (35.4%/yr), bull $15.0B (49.3%/yr).
+// Re-anchored on the v9 workbook after the Q2 2026 print: the base case now
+// lands exactly on the workbook's FY2030 revenue of $10.99B, driven by FY2026
+// revenue re-anchored to management's raised guidance midpoint of $4.05B.
+// Bear and bull are scaled by the same 1.1946x uplift the base received, which
+// preserves the deliberate width of the spread rather than re-judging it:
+//   bear $5.97B (24.2%/yr), base $10.99B (40.3%/yr), bull $17.92B (54.7%/yr).
 export const scenarios: Record<'bear' | 'base' | 'bull', Scenario> = {
-  bear: { revCagr: 0.1983, ebitdaMargin: 0.10, exitMultiple: 8 },
-  base: { revCagr: 0.3537, ebitdaMargin: 0.16, exitMultiple: 12 },
-  bull: { revCagr: 0.4927, ebitdaMargin: 0.22, exitMultiple: 16 },
+  bear: { revCagr: 0.2416, ebitdaMargin: 0.10, exitMultiple: 8 },
+  base: { revCagr: 0.4027, ebitdaMargin: 0.158, exitMultiple: 12 },
+  bull: { revCagr: 0.5468, ebitdaMargin: 0.22, exitMultiple: 16 },
 };
 
 export function valuePerShare(s: Scenario) {

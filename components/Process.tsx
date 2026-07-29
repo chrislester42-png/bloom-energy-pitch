@@ -21,6 +21,11 @@ const CHANGELOG = [
   { id: "E", sheet: "FSM", cells: "H90", change: "FY2025 actual capex 0 → −$56,759k restored", dir: "Base year only", src: "[R] FY2025 10-K, accn 0001628280-26-006516" },
   { id: "F", sheet: "CAPM data", cells: "N10, N11, B7", change: "Return-range alignment; stale beta label rewritten", dir: "None (cosmetic)", src: "–" },
   { id: "G", sheet: "Reverse DCF", cells: "new tab", change: "CFA implied-expectations solve: price → EV → implied revenue path via goal-seek on year-one growth at the model WACC", dir: "Diagnostic (drives the frontier)", src: "[D] built on the v5 bridge" },
+  { id: "K", sheet: "FSM", cells: "I236", change: "v9 Q2 roll-forward: FY2026 revenue growth 70% → 100.1%, re-anchoring FY2026 to the raised $4.05B guidance midpoint", dir: "Value UP (drives every forecast year)", src: "[R] Q2 2026 release, FY2026 guidance $3.9–4.2B" },
+  { id: "L", sheet: "FSM", cells: "I237", change: "v9: gross-margin driver HELD at 30.0%, not raised to the 32.0% H1 print — a $37.4M one-time import-tariff recovery accounts for the beat (ex-tariff H1 = 29.9%)", dir: "None (deliberately not raised)", src: "[R] Q2 2026 10-Q, MD&A Product Gross Profit" },
+  { id: "O", sheet: "DCF", cells: "C54, C57, C59", change: "v9: net-debt bridge rolled from FY2025 to 06/30/2026 — debt $2,617.9M → $2,478.0M, cash $2,481.6M → $2,688.5M. Bloom is now $182M NET CASH", dir: "Value UP", src: "[R] Q2 2026 10-Q balance sheet" },
+  { id: "P", sheet: "DCF", cells: "C61 (new)", change: "v9: $215.5M unamortized Oracle warrant revenue contra deducted — the warrant's fair value reduces revenue as Energy Servers are delivered", dir: "Value DOWN ~$0.67/share", src: "[R] Q2 2026 10-Q, Note 3" },
+  { id: "Q", sheet: "DCF", cells: "C69, D69", change: "v9: per-share divisor 319,700k → 323,331k diluted shares", dir: "Value DOWN ~1.1% per share", src: "[R] Q2 2026 10-Q, Note 15" },
 ];
 
 const DECISIONS = [
@@ -115,9 +120,12 @@ export function Process() {
           </table>
         </div>
         <p className="mt-4 text-[13px] leading-relaxed" style={{ color: t.fgMute }}>
-          Net effect of the audit: blended per-share value moved from $20.51 to
-          $18.23. The fixes cut in both directions, which is what an honest
-          audit looks like.
+          Net effect of the v5 audit: blended per-share value moved from $20.51
+          to $18.23. The fixes cut in both directions, which is what an honest
+          audit looks like. The v9 roll-forward (rows K–Q, Jul 28 2026) then
+          moved it to $21.59: re-anchoring FY2026 to the raised guidance and a
+          net-cash balance sheet lifted the value, while the bigger share count
+          and the Oracle warrant contra clawed part of it back.
         </p>
       </Card>
 

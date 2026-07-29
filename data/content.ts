@@ -306,7 +306,7 @@ export const valuation = {
   eyebrow: "08 · Valuation",
   headline: "What does the price assume?",
   dek: "We run the usual valuation math backwards: instead of guessing what Bloom is worth, we ask what today's price already assumes, then find the price where even the most optimistic story still pays us well for the risk. Every slider starts at our model's number; drag anything and see what has to be true for a different answer.",
-  note: "UNDER REVIEW after the July 28 earnings: management now forecasts more revenue than our model assumed, and two of our pre-set tripwires triggered (see Scorecard). The numbers below are our pre-earnings model until the re-run lands, we show our stale numbers rather than quietly editing them. Educational research, not investment advice.",
+  note: "RE-RUN COMPLETE (v9 workbook, Jul 28 2026): FY2026 revenue is re-anchored to management's raised $4.05B guidance midpoint, the net-debt bridge is rolled to the Q2 10-Q balance sheet, and the divisor is now 323.3M diluted shares. Two things we did NOT do: we did not raise the gross-margin driver to the 32.0% H1 print, because a $37.4M one-time import-tariff recovery accounts for essentially all of the beat (ex-tariff H1 margin is 29.9%, versus our 30.0% assumption); and we deducted the $215.5M unamortized Oracle warrant revenue contra, which reduces revenue in future years as Energy Servers are delivered. Blended value moves from $18.23 to $21.59 a share. Educational research, not investment advice.",
 };
 
 export const theCall = {
@@ -315,7 +315,7 @@ export const theCall = {
   dek: "Bloom turned the corner for real, but today's price already pays for the happy ending. Drag the assumptions and decide what you have to believe.",
   conclusion:
     "Great company, demanding price. How much you'd own comes down to two beliefs: how much of the ~$20B pipeline becomes real orders, and whether Q2's \"independent customers took over\" story survives the fine print of the next filing. We land where we started, own the turnaround, respect the price, and after Q2 tripped two of our own tripwires, we're re-running our numbers in public rather than defending them.",
-  note: "Scenario outputs derive from the completed v5 workbook (audited build, Jul 2026); the reverse-DCF frontier in the valuation lab is the formal version of this argument.",
+  note: "Scenario outputs derive from the v9 workbook (Q2 2026 roll-forward, Jul 28 2026); the reverse-DCF frontier in the valuation lab is the formal version of this argument.",
 };
 
 // Market reference, fallback when the live quote hasn't loaded.

@@ -26,7 +26,7 @@ interface Params {
   rho: number;    // 0..1 correlation to shared factor
 }
 
-// Modes anchor on OUR base case (FY2030: $9.2B rev · 16% margin · 12×),
+// Modes anchor on OUR base case (FY2030: $11.0B rev · 15.8% margin · 12×),
 // with tails spanning roughly bear→beyond-bull, consistent with TheCall
 // and the valuation lab's scenario table.
 const DEFAULTS: Params = {
@@ -275,7 +275,7 @@ export function MonteCarlo() {
         <p className="mt-6 max-w-3xl text-[13px] leading-relaxed" style={{ color: t.fgMute }}>
           Reading it: if the red line sits far into the right tail, the market is paying today for one of the
           best futures we can simulate, the thesis can be right and the stock still expensive. Same engine as
-          &ldquo;The Call&rdquo; above (FY{latest.fy} revenue base, FactSet Q1&apos;26 capital structure), just run
+          &ldquo;The Call&rdquo; above (FY{latest.fy} revenue base, Q2&apos;26 10-Q capital structure), just run
           {" "}{N_DRAWS.toLocaleString()} times instead of three. Educational model, not investment advice.
         </p>
       </Reveal>

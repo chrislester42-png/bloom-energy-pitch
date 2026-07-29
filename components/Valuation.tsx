@@ -144,25 +144,26 @@ const TH =
 const TD = "px-2 py-1.5 text-right font-mono text-[12px] tabular-nums";
 
 // ---------- reverse-DCF engine (shared) --------------------------------------
-// UFCF margin ramp per the completed v5 workbook (post tax-sign fix).
-const FCFM_RAMP = [-2.26, 0.98, 3.7, 5.6, 6.86];
+// UFCF margin ramp per the v9 workbook. FY2026 is a deeper cash drag than v5
+// because doubling revenue to $4.05B builds far more working capital.
+const FCFM_RAMP = [-4.744, 0.98, 3.704, 5.601, 6.864];
 const G_TERM = 3.5,
   EX_MULT = 13.5,
   EB_M = 15.82;
 // v5 Gordon-leg fix: terminal-year FCF normalized (ΔNWC at g × terminal NWC),
 // applied as a multiplier on UFCF₂₀₃₀×(1+g) so the perpetuity leg matches the
 // workbook's $939.1M numerator at base assumptions.
-const K_NORM = 1.416;
+const K_NORM = 1.4178;
 
-// our model's reverse-DCF assumptions (FactSet Q1'26 capital structure)
+// our model's reverse-DCF assumptions (Q2'26 10-Q capital structure)
 export const OURS = {
   rw: 10.5, // market-level discount rate
-  bRev: 15, // super-bull FY2030 revenue, $B
+  bRev: 17.9, // super-bull FY2030 revenue, $B (re-anchored post-Q2)
   bM: 22, // mature EBITDA margin, %
   bX: 16, // mature EV/EBITDA
   hr: 12, // hurdle IRR, %
-  netDebt: 456, // $M
-  shares: 319.7, // M
+  netDebt: 34, // $M, v9 workbook bridge at 06/30/2026
+  shares: 323.3, // M, diluted per Q2 2026 10-Q
 };
 
 interface Scen {
@@ -174,13 +175,15 @@ interface Scen {
 }
 
 // ---------- completed-workbook reverse-DCF findings (static, sourced) --------
-// Workbook Reverse DCF tab, pinned 2026-06-27 ($257.98 → EV $82.7B): the
-// terminal-FCF-margin "mystery table", goal-seeked at the model's 21% WACC.
+// Workbook Reverse DCF tab, re-solved on the 06/30/2026 bridge ($257.98 →
+// EV $83.5B): the terminal-FCF-margin "mystery table", goal-seeked at the
+// model's 21% WACC. The Q2 print barely moved it — the implied year-one growth
+// the price demands is still ~124% at a generous 20% terminal margin.
 const WB_MARGIN_TABLE = [
-  { m: "10% (harsh)", g1: "153%", cagr: "71.5%", rev36: "$446B", ceil: "11.9×" },
-  { m: "15%", g1: "136%", cagr: "64.2%", rev36: "$288B", ceil: "7.7×" },
-  { m: "20% (generous)", g1: "124%", cagr: "59.1%", rev36: "$210B", ceil: "5.6×" },
-  { m: "25% (heroic)", g1: "115%", cagr: "55.2%", rev36: "$164B", ceil: "4.4×" },
+  { m: "10% (harsh)", g1: "153%", cagr: "71.7%", rev36: "$452B", ceil: "12.0×" },
+  { m: "15%", g1: "136%", cagr: "64.4%", rev36: "$291B", ceil: "7.8×" },
+  { m: "20% (generous)", g1: "124%", cagr: "59.3%", rev36: "$213B", ceil: "5.7×" },
+  { m: "25% (heroic)", g1: "116%", cagr: "55.4%", rev36: "$166B", ceil: "4.4×" },
 ];
 // Experiments annex, re-pulled at the 2026-07-14 pin ($243.40 → EV $69.4B):
 // the rate–growth frontier. "BTM pie" = the measured behind-the-meter segment
@@ -196,9 +199,9 @@ const FRONTIER = [
 ];
 
 const SCEN_DEFAULTS: Scen[] = [
-  { name: "Bull: AI power land-grab won", p: 25, rev: 15, m: 22, x: 16 },
-  { name: "Base, strong industrial grower", p: 50, rev: 9.2, m: 16, x: 12 },
-  { name: "Bear, capex digestion / competition", p: 25, rev: 5, m: 10, x: 8 },
+  { name: "Bull: AI power land-grab won", p: 25, rev: 17.9, m: 22, x: 16 },
+  { name: "Base, strong industrial grower", p: 50, rev: 11.0, m: 15.8, x: 12 },
+  { name: "Bear, capex digestion / competition", p: 25, rev: 6.0, m: 10, x: 8 },
 ];
 
 function blendConstG(g5: number, w: number, netDebt: number, shares: number) {
@@ -339,7 +342,7 @@ export function Valuation() {
             <p className="mt-1 text-[12px] leading-relaxed" style={{ color: t.fgMute }}>
               Held fixed here (edit them in the full lab): {OURS.bM}% mature EBITDA
               margin, {OURS.bX}× mature EV/EBITDA, ${OURS.netDebt}M net debt,{" "}
-              {OURS.shares}M diluted shares (FactSet Q1&apos;26).
+              {OURS.shares}M diluted shares (Q2&apos;26 10-Q).
             </p>
           </div>
         </Reveal>
@@ -434,10 +437,10 @@ const DCF_DEFAULTS = {
   ebM: 15.82,
   blend: 50,
   price: 257.98,
-  netDebt: 160.621, // $M (workbook, pinned 2026-06-27)
-  shares: 319.7, // M, diluted per Q1 2026 10-Q (v5 audit fix)
-  growth: [70, 45, 30, 22, 18],
-  fcfM: [-2.26, 0.98, 3.7, 5.6, 6.86], // v5: forecast tax sign fixed (+5%)
+  netDebt: 33.671, // $M (v9 workbook bridge, 06/30/2026)
+  shares: 323.331, // M, diluted per Q2 2026 10-Q
+  growth: [100.1, 45, 30, 22, 18], // FY26 re-anchored to $4.05B guidance midpoint
+  fcfM: [-4.744, 0.98, 3.704, 5.601, 6.864], // v9: heavier FY26 NWC build on 2x revenue
 };
 
 type DcfState = typeof DCF_DEFAULTS;
@@ -551,10 +554,11 @@ function DcfTab() {
         <p className="mt-3 text-[12.5px] leading-relaxed" style={{ color: t.fgMute }}>
           The perpetuity leg is the pure discounted-cash-flow answer; the blended
           figure is lifted by the EBITDA-exit leg (a multiple, not discounting).
-          Defaults reproduce the completed v5 workbook: $8.60 / $27.87 / $18.23
-          (this mirror lands within a few cents on day-count rounding). The v5
-          audit build: forecast tax sign fixed, Gordon terminal FCF normalized,
-          diluted 319.7M-share divisor.
+          Defaults reproduce the v9 workbook: $10.36 / $32.81 / $21.59 (this
+          mirror lands within a few cents on day-count rounding). v9 rolls the
+          Q2 2026 print in: FY2026 revenue re-anchored to the raised $4.05B
+          guidance midpoint, the net-debt bridge rolled to 06/30/2026, and the
+          divisor moved to diluted 323.3M shares.
         </p>
       </div>
 
@@ -655,9 +659,10 @@ function DcfTab() {
             </button>
           </div>
           <p className="mt-3 text-[12px] leading-relaxed" style={{ color: t.fgMute }}>
-            The v5 workbook divides by diluted 319.7M shares (Q1&apos;26 10-Q):
-            the audit fix that cut ~11% per share. Its net-debt bridge ($161M) is
-            the FY2025 year-end; set 456 (FactSet Q1&apos;26) to roll it forward.
+            The v9 workbook divides by diluted 323.3M shares (Q2&apos;26 10-Q).
+            Its net-debt bridge ($34M) is the 06/30/2026 balance sheet: Bloom is
+            actually $182M NET CASH, offset here by the $215.5M unamortized
+            Oracle warrant revenue contra.
           </p>
           <div className="mt-4 border-t border-line pt-2">
             <Row k="PV of stage-1 UFCF" v={B(m.pvStage1)} />
@@ -970,7 +975,7 @@ function ReverseTab({ livePrice }: { livePrice: number }) {
         <p className="text-[13px] leading-relaxed" style={{ color: t.fgDim }}>
           The finished model runs the same inversion over a ten-year fade. At its
           own 21% WACC and the $257.98 pin, the price requires <b>124% year-one
-          growth</b> fading to 3.5%: <b>~$210B of FY2036 revenue, 5.6× the
+          growth</b> fading to 3.5%: <b>~$213B of FY2036 revenue, 5.7× the
           disclosed 5 GW/yr capacity ceiling</b> ($37.5B of product revenue at
           $7.5B/GW). No terminal cash margin escapes it:
         </p>
@@ -1037,7 +1042,7 @@ function ReverseTab({ livePrice }: { livePrice: number }) {
           </table>
         </div>
         <p className="mt-3 text-[12px] leading-relaxed" style={{ color: t.fgMute }}>
-          Source: completed v5 workbook (Reverse DCF tab, pinned Jun 27) and the
+          Source: v9 workbook (Reverse DCF tab, re-solved on the Jun 30 bridge) and the
           reverse-DCF experiments annex (re-pulled at the Jul 14 pin; constant
           20% margin from year one is generous to the market case, so every row
           is a lower bound). This is why the sliders above solve at a
