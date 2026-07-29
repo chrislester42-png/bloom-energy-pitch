@@ -307,8 +307,17 @@ export function Risks() {
     <Section id="risks" tone="surface">
       <SectionHeader {...risks} />
       <div className="mt-12 grid grid-cols-1 gap-5 lg:grid-cols-2">
-        {risks.items.map((r, i) => (
-          <Reveal key={r.claim} i={i % 2}>
+        {risks.items.map((r, i) => {
+          // An odd number of cards leaves a hole in the 2-up grid. The last one
+          // spans both columns and lays its body out side by side instead.
+          const wide =
+            risks.items.length % 2 === 1 && i === risks.items.length - 1;
+          return (
+          <Reveal
+            key={r.claim}
+            i={i % 2}
+            className={wide ? "lg:col-span-2" : undefined}
+          >
             <div
               className="flex h-full flex-col rounded-2xl border border-line p-6"
               style={{ background: t.surface }}
@@ -325,7 +334,14 @@ export function Risks() {
                   {r.claim}
                 </h3>
               </div>
-              <ul className="mt-3 space-y-2">
+              <div
+                className={
+                  wide
+                    ? "mt-3 flex-1 lg:grid lg:grid-cols-2 lg:items-start lg:gap-6"
+                    : "flex flex-1 flex-col"
+                }
+              >
+              <ul className={wide ? "space-y-2" : "mt-3 space-y-2"}>
                 {r.bullets.map((b) => (
                   <li
                     key={b}
@@ -342,7 +358,9 @@ export function Risks() {
                 ))}
               </ul>
               <div
-                className="mt-4 rounded-xl border-l-2 px-4 py-3"
+                className={`rounded-xl border-l-2 px-4 py-3 ${
+                  wide ? "mt-4 lg:mt-0" : "mt-4"
+                }`}
                 style={{
                   borderColor: t.accent,
                   background: "var(--color-accent-soft)",
@@ -355,12 +373,14 @@ export function Risks() {
                   {r.rebuttal}
                 </p>
               </div>
+              </div>
               <div className="mt-3">
                 <SourceChip>{r.source}</SourceChip>
               </div>
             </div>
           </Reveal>
-        ))}
+          );
+        })}
       </div>
     </Section>
   );
