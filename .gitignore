@@ -36,6 +36,9 @@ yarn-error.log*
 # vercel
 .vercel
 
+# netlify (CLI state, written by `netlify deploy` / @netlify/mcp)
+.netlify
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
