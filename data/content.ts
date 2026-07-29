@@ -265,44 +265,64 @@ export const catalysts = {
 
 export interface Risk {
   claim: string;
-  detail: string;
+  /** 2-3 scannable points, the substance of the risk. Keep each under ~18 words. */
+  bullets: string[];
   rebuttal: string;
   source: string;
 }
 
 export const risks = {
-  eyebrow: "09 · The risks",
+  eyebrow: "09 \u00b7 The risks",
   headline: "Priced for perfection, and leaning on related parties.",
   dek: "We're not naive. Here's the bear case, and the honest counter to each point.",
   items: [
     {
-      claim: "Who's really buying? The 10-Q answered it two different ways",
-      detail: "Q2 related-party revenue was $2.8M, down from ~$373M. That is the headline \"0.3%\" number. But the same filing's concentration note puts a related-party customer at 21% of the quarter, about $224M. Both are technically true: the two notes count \"customer\" differently. The gap is the original question, restated inside Bloom's own filing.",
-      rebuttal: "Either way the bulls win the arithmetic: strip $224M instead of $2.8M and independent revenue still grew ~125%, with $226M of cash in the door. The clean story is what doesn't survive. We said this filing would settle it. It didn't, and we would rather say so than bank the reading that flatters us.",
-      source: "Q2 2026 10-Q, Note 1 (Concentration of Risk) and Note 11 (Related Party Transactions)",
+      claim: "Who's really buying? The 10-Q answered it two ways",
+      bullets: [
+        "Q2 related-party revenue: $2.8M, down from ~$373M in Q1.",
+        "Same filing, concentration note: a related-party customer at 21% of the quarter, about $224M.",
+        "Both are technically true. The two notes count \"customer\" differently.",
+      ],
+      rebuttal: "Either way the bulls win the arithmetic: independent revenue still grew ~125%, with $226M of cash in the door. The clean story is what doesn't survive. We said this filing would settle it, and it didn't.",
+      source: "Q2 2026 10-Q, Notes 1 and 11",
     },
     {
       claim: "One customer was 73% of the first half",
-      detail: "One customer, not a related party, was ~73% of first-half revenue. Inside Q2, two customers were 44% and 21%. Bloom does not name them. At that concentration, one schedule slipping moves the whole year, not a line item.",
-      rebuttal: "That is the arithmetic of gigawatt anchors: Oracle alone is up to 2.8 GW, and backlog is growing faster than revenue, which spreads the base out over time. Still a real fragility today, and our scenario spread does not yet price a single-customer slip.",
-      source: "Q2 2026 10-Q, Note 1 (Concentration of Risk)",
+      bullets: [
+        "A single customer, not a related party, was ~73% of H1 revenue.",
+        "Inside Q2: two customers at 44% and 21%.",
+        "Bloom does not name them.",
+      ],
+      rebuttal: "That's the arithmetic of gigawatt anchors like Oracle's 2.8 GW, and backlog is growing faster than revenue. Still a real fragility, and our scenario spread doesn't yet price a single-customer slip.",
+      source: "Q2 2026 10-Q, Note 1",
     },
     {
       claim: "Still priced as if the doubling never stops",
-      detail: "Even after July's 40% fall to ~$163, the stock costs about 60× the earnings management itself expects this year, a price that only works if revenue keeps doubling for years. And of the headline \"$20B of future business,\" only ~$0.5B was firm, legally booked orders as of the last filing; the rest turns into revenue only if and when purchase orders actually land.",
-      rebuttal: "The fair counter: management just raised its own profit forecast to $800–900M, which shrinks that multiple faster than we modeled. This was the strongest quarter the bulls have ever had, and our model re-run has to take it seriously.",
-      source: "Q2 2026 release / Q1 2026 10-Q",
+      bullets: [
+        "About 60\u00d7 the earnings management itself guides for this year, even after July's 40% fall.",
+        "Of the headline \"$20B of future business,\" only ~$0.5B is firm booked orders.",
+        "The rest becomes revenue only if and when purchase orders land.",
+      ],
+      rebuttal: "Management just raised its own profit forecast to $800\u2013900M, which shrinks that multiple faster than we modelled. This was the strongest quarter the bulls have had, and our re-run takes it seriously.",
+      source: "Q2 2026 release / Q2 2026 10-Q",
     },
     {
       claim: "It burned $4 billion getting here",
-      detail: "Bloom lost money for seventeen straight years: $4B in total, before 2026's profits arrived. A track record like that earns skepticism about whether the good quarters last.",
-      rebuttal: "The turn looks structural, not lucky: the service business (the recurring \"ink\" revenue) is now profitable and growing, and the last two quarters generated real cash, not just accounting profit.",
+      bullets: [
+        "Seventeen straight years of losses, about $4B in total, before 2026.",
+        "The profitability is two quarters old.",
+      ],
+      rebuttal: "The turn looks structural, not lucky: the service business (the recurring \"ink\") is now profitable and growing, and the last two quarters generated real cash, not just accounting profit.",
       source: "FY2025 10-K / Q2 2026 release",
     },
     {
       claim: "Professional skeptics keep attacking, most recently over a rare metal",
-      detail: "Short sellers (investors who profit if the stock falls) have targeted Bloom twice: in 2019 over how long the boxes really last, and in July 2026 over scandium, a rare metal in every fuel cell. The new report claims Bloom's supply traces back to China and that its growth plans would need nearly the entire world's annual scandium production.",
-      rebuttal: "Bloom formally rejected the claims: it says supply comes from several countries via its own recycling process, enough for 10× its current plans. But its supplier list is confidential, so nobody outside the company can fully verify either side. That's the honest state of it.",
+      bullets: [
+        "Targeted twice: 2019 over how long the boxes last, July 2026 over scandium.",
+        "The claim: supply traces back to China, and growth plans would need most of world output.",
+        "Bloom formally rejected it, citing several countries plus its own recycling.",
+      ],
+      rebuttal: "Its supplier list is confidential, so nobody outside the company can fully verify either side. That's the honest state of it.",
       source: "Hunterbrook / Bloom 8-K (Jul 2026)",
     },
   ] as Risk[],

@@ -325,12 +325,22 @@ export function Risks() {
                   {r.claim}
                 </h3>
               </div>
-              <p
-                className="mt-3 text-[14.5px] leading-relaxed"
-                style={{ color: t.fgDim }}
-              >
-                {r.detail}
-              </p>
+              <ul className="mt-3 space-y-2">
+                {r.bullets.map((b) => (
+                  <li
+                    key={b}
+                    className="flex gap-2.5 text-[14.5px] leading-snug"
+                    style={{ color: t.fgDim }}
+                  >
+                    <span
+                      aria-hidden
+                      className="mt-[7px] inline-block h-1 w-1 shrink-0 rounded-full"
+                      style={{ background: t.fgMute }}
+                    />
+                    <span>{b}</span>
+                  </li>
+                ))}
+              </ul>
               <div
                 className="mt-4 rounded-xl border-l-2 px-4 py-3"
                 style={{
